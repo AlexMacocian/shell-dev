@@ -115,21 +115,58 @@ return {
           end
 
           -- DLL path: <proj>/bin/Debug/net*/Name.dll
-          -- project root = three levels up
-          return vim.fn.fnamemodify(dll, ":h:h:h")
+          return vim.fn.fnamemodify(dll, ":h")
         end,
       }
 
-      -- Apply to C#
+      local config_build = {
+        type = "coreclr",
+        name = "Build & Launch .NET (auto)",
+        request = "launch",
+        preLaunchTask = function()
+          local csproj = pick_csproj()
+          if not csproj then
+            return nil
+          end
+
+          last_dll = nil -- Clear cache to force re-resolve after build
+
+          local cmd = string.format("dotnet build %s", vim.fn.shellescape(csproj))
+
+          vim.notify("Building: " .. csproj, vim.log.levels.INFO)
+          local result = vim.fn.system(cmd)
+
+          if vim.v.shell_error ~= 0 then
+            vim.notify("Build failed:\n" .. result, vim.log.levels.ERROR)
+            return false
+          end
+
+          vim.notify("Build succeeded", vim.log.levels.INFO)
+          return true
+        end,
+        program = function()
+          return resolve_dll()
+        end,
+        cwd = function()
+          local dll = resolve_dll()
+          if not dll then
+            return vim.fn.getcwd()
+          end
+          return vim.fn.fnamemodify(dll, ":h")
+        end,
+      }
+
       dap.configurations.cs = dap.configurations.cs or {}
       table.insert(dap.configurations.cs, config)
+      table.insert(dap.configurations.cs, config_build)
 
-      -- Optional: support F# or VB.NET too
       dap.configurations.fsharp = dap.configurations.fsharp or {}
       table.insert(dap.configurations.fsharp, config)
+      table.insert(dap.configurations.fsharp, config_build)
 
       dap.configurations.vb = dap.configurations.vb or {}
       table.insert(dap.configurations.vb, config)
+      table.insert(dap.configurations.vb, config_build)
     end,
   },
 }
