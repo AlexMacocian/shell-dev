@@ -14,7 +14,8 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 if ([string]::IsNullOrEmpty($PSScriptRoot)) {
     $RepoRoot = (Get-Location).Path
 } else {
-    $RepoRoot = $PSScriptRoot
+    # Get the parent directory of the windows folder (the actual repo root)
+    $RepoRoot = Split-Path $PSScriptRoot -Parent
 }
 
 $ConfigSource = Join-Path $RepoRoot ".config\nvim"
