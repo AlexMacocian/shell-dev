@@ -1,0 +1,9 @@
+sharkdp.fd
+GitHub.cli
+BurntSushi.ripgrep.MSVC
+jesseduffield.lazygit
+fzf.fzf
+Info-ZIP.UnZip
+GnuWin32.Wget
+GnuWin32.Gzip
+7zip.7zip
