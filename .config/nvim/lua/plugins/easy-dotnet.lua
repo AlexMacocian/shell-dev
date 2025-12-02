@@ -10,7 +10,7 @@ return {
     dotnet.setup({
       lsp = {
         enabled = false, -- Disable roslyn
-        roslynator_enabled = false, -- Disable roslynator
+        roslynator_enabled = true, -- Disable roslynator
         analyzer_assemblies = {}, -- Any additional roslyn analyzers you might use like SonarAnalyzer.CSharp
         config = {},
       },

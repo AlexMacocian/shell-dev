@@ -2,7 +2,7 @@
 return {
   -- Add the custom mason registry
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     opts = function(_, opts)
       opts.registries = opts.registries or {}
       table.insert(opts.registries, "github:mason-org/mason-registry")
