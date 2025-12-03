@@ -10,6 +10,11 @@ vim.keymap.set({ "i", "n", "v" }, "<C-\\><C-n>", "<Esc>", { noremap = true, sile
 vim.keymap.set("n", "<leader>cx", function()
   vim.fn.setreg("+", vim.fn.expand("%:p"))
 end, { desc = "Copy absolute file path to clipboard" })
+-- map <leader>cX to copy the entire repo glob to clipboard
+vim.keymap.set("n", "<leader>cX", function()
+  vim.fn.setreg("+", "#files://glob/**/*")
+  vim.notify("Copied: #files://glob/**/*", vim.log.levels.INFO)
+end, { desc = "Copy repo glob command to clipboard" })
 
 -- Code actions (fix suggestions) for C#, etc.
 vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {

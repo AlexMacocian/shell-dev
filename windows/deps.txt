@@ -7,3 +7,6 @@ Info-ZIP.UnZip
 GnuWin32.Wget
 GnuWin32.Gzip
 7zip.7zip
+Kitware.CMake
+mingw
+Ninja-build.Ninja
