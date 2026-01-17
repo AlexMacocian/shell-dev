@@ -7,11 +7,13 @@ vim.keymap.set("t", "<C-\\><C-n>", "<C-\\><C-n>", { desc = "Terminal Normal Mode
 vim.keymap.set({ "i", "n", "v" }, "<C-\\><C-n>", "<Esc>", { noremap = true, silent = true })
 
 -- map <leader>cx to copy current file path
-vim.keymap.set("n", "<leader>cx", function()
-  vim.fn.setreg("+", vim.fn.expand("%:p"))
+vim.keymap.set("n", "<leader>af", function()
+  local file_path = "#file:" .. vim.fn.expand("%:p")
+  vim.fn.setreg("+", file_path)
+  vim.notify("Copied " .. file_path, vim.log.levels.INFO)
 end, { desc = "Copy absolute file path to clipboard" })
 -- map <leader>cX to copy the entire repo glob to clipboard
-vim.keymap.set("n", "<leader>cX", function()
+vim.keymap.set("n", "<leader>aF", function()
   vim.fn.setreg("+", "#files://glob/**/*")
   vim.notify("Copied: #files://glob/**/*", vim.log.levels.INFO)
 end, { desc = "Copy repo glob command to clipboard" })
