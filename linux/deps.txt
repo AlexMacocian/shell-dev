@@ -1,0 +1,13 @@
+fd
+github-cli
+ripgrep
+lazygit
+fzf
+unzip
+wget
+gzip
+p7zip
+cmake
+ninja
+neovim
+wl-clipboard
