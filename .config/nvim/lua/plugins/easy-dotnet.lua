@@ -17,9 +17,7 @@ return {
           config = {},
         },
         debugger = {
-          -- Path to custom coreclr DAP adapter
-          -- easy-dotnet-server falls back to its own netcoredbg binary if bin_path is nil
-          bin_path = nil,
+          bin_path = vim.fn.stdpath("data") .. "/mason/bin/netcoredbg" .. (vim.fn.has("win32") == 1 and ".cmd" or ""),
           apply_value_converters = true,
           auto_register_dap = true,
           mappings = {
