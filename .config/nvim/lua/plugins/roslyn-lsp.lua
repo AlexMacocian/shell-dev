@@ -6,6 +6,9 @@ return {
       opts.registries = opts.registries or {}
       table.insert(opts.registries, "github:mason-org/mason-registry")
       table.insert(opts.registries, "github:Crashdummyy/mason-registry")
+      opts.ensure_installed = opts.ensure_installed or {}
+      table.insert(opts.ensure_installed, "html-lsp")
+      table.insert(opts.ensure_installed, "roslyn")
     end,
   },
 
@@ -15,5 +18,13 @@ return {
     opts = {
       filewatching = "auto",
     },
+    init = function()
+      vim.filetype.add({
+        extension = {
+          razor = "razor",
+          cshtml = "razor",
+        },
+      })
+    end,
   },
 }
