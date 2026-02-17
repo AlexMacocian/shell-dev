@@ -32,4 +32,27 @@ Get-Content $depsFile | ForEach-Object {
     if ($dep) { Install-IfMissing -PackageId $dep }
 }
 
+# Install .NET global tools from deps-dotnet.txt
+$dotnetDepsFile = Join-Path $PSScriptRoot "deps-dotnet.txt"
+if (Test-Path $dotnetDepsFile) {
+    if (Get-Command dotnet -ErrorAction SilentlyContinue) {
+        Write-Host "`nInstalling .NET global tools..." -ForegroundColor Cyan
+        Get-Content $dotnetDepsFile | ForEach-Object {
+            $tool = $_.Trim()
+            if ($tool -and -not $tool.StartsWith('#')) {
+                $installed = dotnet tool list -g 2>$null | Select-String -Pattern $tool
+                if ($installed) {
+                    Write-Host "$tool is already installed, updating..." -ForegroundColor Yellow
+                    dotnet tool update -g $tool
+                } else {
+                    Write-Host "Installing $tool..." -ForegroundColor Cyan
+                    dotnet tool install -g $tool
+                }
+            }
+        }
+    } else {
+        Write-Host "WARNING: dotnet not found. Skipping .NET global tool installs." -ForegroundColor Red
+    }
+}
+
 Write-Host "`nDependency setup complete!" -ForegroundColor Green

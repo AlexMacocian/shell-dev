@@ -9,5 +9,6 @@ gzip
 p7zip
 cmake
 ninja
+dotnet-sdk
 neovim
 wl-clipboard
