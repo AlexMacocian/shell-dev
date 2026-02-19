@@ -24,6 +24,23 @@ if [[ -f "$DOTNET_DEPS_FILE" ]]; then
   if command -v dotnet &>/dev/null; then
     echo
     echo "Installing .NET global tools..."
+
+    # Ensure ~/.dotnet/tools is in PATH for fish shell
+    FISH_CONFIG="$HOME/.config/fish/config.fish"
+    if [[ -f "$FISH_CONFIG" ]]; then
+      if ! grep -q "fish_add_path.*\.dotnet/tools" "$FISH_CONFIG"; then
+        echo "Adding ~/.dotnet/tools to fish PATH..."
+        echo 'fish_add_path ~/.dotnet/tools' >> "$FISH_CONFIG"
+      fi
+    fi
+
+    # Also add to bash/zsh if they exist
+    for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
+      if [[ -f "$rc" ]] && ! grep -q '\.dotnet/tools' "$rc"; then
+        echo "Adding ~/.dotnet/tools to PATH in $rc..."
+        echo 'export PATH="$HOME/.dotnet/tools:$PATH"' >> "$rc"
+      fi
+    done
     while IFS= read -r tool || [[ -n "$tool" ]]; do
       tool="$(echo "$tool" | sed 's/\r$//' | xargs)"
       [[ -z "$tool" || "$tool" == \#* ]] && continue

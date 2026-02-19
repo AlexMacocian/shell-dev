@@ -37,6 +37,15 @@ $dotnetDepsFile = Join-Path $PSScriptRoot "deps-dotnet.txt"
 if (Test-Path $dotnetDepsFile) {
     if (Get-Command dotnet -ErrorAction SilentlyContinue) {
         Write-Host "`nInstalling .NET global tools..." -ForegroundColor Cyan
+
+        # Ensure ~/.dotnet/tools is in user PATH
+        $dotnetToolsPath = [System.IO.Path]::Combine($env:USERPROFILE, ".dotnet", "tools")
+        $userPath = [Environment]::GetEnvironmentVariable("PATH", "User")
+        if ($userPath -notlike "*$dotnetToolsPath*") {
+            Write-Host "Adding $dotnetToolsPath to user PATH..." -ForegroundColor Cyan
+            [Environment]::SetEnvironmentVariable("PATH", "$dotnetToolsPath;$userPath", "User")
+            $env:PATH = "$dotnetToolsPath;$env:PATH"
+        }
         Get-Content $dotnetDepsFile | ForEach-Object {
             $tool = $_.Trim()
             if ($tool -and -not $tool.StartsWith('#')) {
