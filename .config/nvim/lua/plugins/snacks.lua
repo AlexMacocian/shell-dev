@@ -11,7 +11,7 @@ return {
               vim.schedule(function()
                 Snacks.explorer.open()
                 --Snacks.terminal.open()
-                --vim.cmd("CopilotChatToggle")
+
               end)
             end
           end,
