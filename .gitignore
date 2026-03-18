@@ -1,0 +1,2 @@
+# Machine-specific configs (not shared across machines)
+.config/hypr/monitors.conf
