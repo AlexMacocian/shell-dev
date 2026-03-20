@@ -1,5 +1,6 @@
 fd
 github-cli
+jq
 ripgrep
 lazygit
 fzf

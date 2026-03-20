@@ -184,10 +184,10 @@ sudo grub-mkstandalone \
   --sbat /usr/share/grub/sbat.csv \
   -O x86_64-efi \
   -o /boot/efi/EFI/cachyos/grubx64.efi \
-  --modules="part_gpt part_msdos fat btrfs ext2 normal boot linux linuxefi \
+  --modules="part_gpt part_msdos fat btrfs ext2 normal boot linux \
     chain configfile echo search search_fs_uuid search_fs_file search_label \
     ls cat help true test keystatus regexp reboot halt gfxterm gfxterm_background \
-    gfxterm_menu gfxmenu font png jpeg all_video video video_bochs video_cirrus \
+    gfxmenu font png jpeg all_video video video_bochs video_cirrus \
     videoinfo gettext tpm cryptodisk luks luks2 gcry_rijndael gcry_sha256 \
     gcry_sha512 password_pbkdf2 sleep loadenv" \
   "boot/grub/grub.cfg=/boot/grub/grub.cfg"
