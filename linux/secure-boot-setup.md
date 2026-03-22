@@ -110,14 +110,16 @@ sudo grub-mkstandalone \
   --sbat /usr/share/grub/sbat.csv \
   -O x86_64-efi \
   -o /boot/efi/EFI/cachyos/grubx64.efi \
-  --modules="part_gpt part_msdos fat btrfs ext2 normal boot linux linuxefi \
+  --modules="part_gpt part_msdos fat btrfs ext2 normal boot linux \
     chain configfile echo search search_fs_uuid search_fs_file search_label \
     ls cat help true test keystatus regexp reboot halt gfxterm gfxterm_background \
-    gfxterm_menu gfxmenu font png jpeg all_video video video_bochs video_cirrus \
+    gfxmenu font png jpeg all_video video video_bochs video_cirrus \
     videoinfo gettext tpm cryptodisk luks luks2 gcry_rijndael gcry_sha256 \
     gcry_sha512 password_pbkdf2 sleep loadenv" \
   "boot/grub/grub.cfg=/boot/grub/grub.cfg"
 ```
+
+> **Note**: `linuxefi` and `gfxterm_menu` modules do not exist on CachyOS — the `linux` module handles EFI loading natively.
 
 Then sign it:
 ```bash
@@ -207,3 +209,50 @@ sudo efibootmgr --create --disk /dev/nvme0n1 --part 1 \
 ```
 
 **Do NOT run plain `grub-install`** — it will overwrite the standalone GRUB with a regular one that will fail under shim.
+
+## LUKS Keyfile (Single Passphrase Prompt)
+
+By default, GRUB prompts for the LUKS passphrase to load the kernel, then the initramfs prompts again to mount root. A keyfile embedded in the initramfs eliminates the second prompt.
+
+### Key Files
+
+| File | Purpose |
+|---|---|
+| `/etc/cryptsetup-keys.d/root.key` | 2KB random keyfile (root:root, mode 600) |
+| `/etc/crypttab.initramfs` | Tells `sd-encrypt` to use the keyfile |
+
+### How It Works
+
+1. GRUB unlocks LUKS with your passphrase to read kernel + initramfs
+2. initramfs uses the embedded keyfile to unlock LUKS for root — no second prompt
+
+The keyfile lives on the encrypted partition, so it cannot be read without first unlocking LUKS.
+
+### Setup
+
+```bash
+# Create keyfile
+sudo mkdir -p /etc/cryptsetup-keys.d
+sudo dd bs=512 count=4 if=/dev/urandom of=/etc/cryptsetup-keys.d/root.key iflag=fullblock
+sudo chmod 600 /etc/cryptsetup-keys.d/root.key
+
+# Add keyfile to LUKS partition
+sudo cryptsetup luksAddKey /dev/nvme0n1p2 /etc/cryptsetup-keys.d/root.key
+```
+
+Add to `/etc/mkinitcpio.conf`:
+```
+FILES=(/etc/cryptsetup-keys.d/root.key)
+```
+
+Create `/etc/crypttab.initramfs`:
+```
+cryptroot  UUID=cacb6282-f437-48ff-be8b-d0050e04a10f  /etc/cryptsetup-keys.d/root.key  luks
+```
+
+Rebuild:
+```bash
+sudo mkinitcpio -P
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+# Then rebuild standalone GRUB and sign (see "After GRUB Package Updates" above)
+```
