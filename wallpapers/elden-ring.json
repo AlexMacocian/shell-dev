@@ -46,7 +46,7 @@
   },
   "waybar": {
     "height": 34,
-    "font_size": 13,
+    "font_size": 12,
     "separator": "◆",
     "opacity": 0.82,
     "border_width": 2,

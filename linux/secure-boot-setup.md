@@ -85,6 +85,63 @@ for kernel in /boot/vmlinuz-*; do
 done
 ```
 
+## Automatic Standalone GRUB Rebuild
+
+A pacman hook rebuilds the standalone GRUB binary whenever the `grub` package or kernels are updated. This is necessary because the standalone GRUB embeds `grub.cfg` at build time — a disk-only `grub-mkconfig` does not update the embedded copy.
+
+**Hook** — `/etc/pacman.d/hooks/zz-secureboot-grub.hook`:
+```ini
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Path
+Target = usr/lib/grub/*
+
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Path
+Target = boot/vmlinuz-*
+
+[Action]
+Description = Rebuilding standalone GRUB for Secure Boot...
+When = PostTransaction
+Exec = /usr/local/bin/rebuild-grub-standalone
+Depends = grub
+Depends = sbsigntools
+```
+
+**Script** — `/usr/local/bin/rebuild-grub-standalone`:
+```bash
+#!/usr/bin/env bash
+KEY="/etc/mok/MOK.key"
+CERT="/etc/mok/MOK.crt"
+GRUB_EFI="/boot/efi/EFI/cachyos/grubx64.efi"
+SBAT="/usr/share/grub/sbat.csv"
+GRUB_CFG="/boot/grub/grub.cfg"
+
+# Regenerate grub.cfg first (picks up new/removed kernels)
+grub-mkconfig -o "$GRUB_CFG"
+
+# Build standalone GRUB with all modules embedded
+grub-mkstandalone \
+  --sbat "$SBAT" \
+  -O x86_64-efi \
+  -o "$GRUB_EFI" \
+  --modules="part_gpt part_msdos fat btrfs ext2 normal boot linux \
+    chain configfile echo search search_fs_uuid search_fs_file search_label \
+    ls cat help true test keystatus regexp reboot halt gfxterm gfxterm_background \
+    gfxmenu font png jpeg all_video video video_bochs video_cirrus \
+    videoinfo gettext tpm cryptodisk luks luks2 gcry_rijndael gcry_sha256 \
+    gcry_sha512 password_pbkdf2 sleep loadenv" \
+  "boot/grub/grub.cfg=$GRUB_CFG"
+
+# Sign with MOK key
+sbsign --key "$KEY" --cert "$CERT" --output "$GRUB_EFI" "$GRUB_EFI"
+
+echo "✓ Signed $GRUB_EFI"
+```
+
 ## HP-Specific Gotchas
 
 ### 1. Missing Microsoft 3rd Party UEFI CA (Secured-core PC)
@@ -178,31 +235,15 @@ Or from MokManager directly:
 
 ## After GRUB Package Updates
 
-If `grub` is updated by pacman, you need to rebuild the standalone GRUB:
+This is now handled automatically by the `zz-secureboot-grub.hook` pacman hook (see above). It triggers on both `grub` package and kernel updates, regenerates `grub.cfg`, rebuilds the standalone GRUB, and signs it.
 
+To run manually if needed:
 ```bash
-# Rebuild standalone GRUB with embedded modules
-sudo grub-mkstandalone \
-  --sbat /usr/share/grub/sbat.csv \
-  -O x86_64-efi \
-  -o /boot/efi/EFI/cachyos/grubx64.efi \
-  --modules="part_gpt part_msdos fat btrfs ext2 normal boot linux \
-    chain configfile echo search search_fs_uuid search_fs_file search_label \
-    ls cat help true test keystatus regexp reboot halt gfxterm gfxterm_background \
-    gfxmenu font png jpeg all_video video video_bochs video_cirrus \
-    videoinfo gettext tpm cryptodisk luks luks2 gcry_rijndael gcry_sha256 \
-    gcry_sha512 password_pbkdf2 sleep loadenv" \
-  "boot/grub/grub.cfg=/boot/grub/grub.cfg"
+sudo /usr/local/bin/rebuild-grub-standalone
+```
 
-# Sign it
-sudo sbsign --key /etc/mok/MOK.key --cert /etc/mok/MOK.crt \
-  --output /boot/efi/EFI/cachyos/grubx64.efi \
-  /boot/efi/EFI/cachyos/grubx64.efi
-
-# Also update grub.cfg
-sudo grub-mkconfig -o /boot/grub/grub.cfg
-
-# Fix boot entry if grub-install overwrote it
+If `grub-install` was accidentally run and overwrote the boot entry:
+```bash
 sudo efibootmgr -b 0000 -B
 sudo efibootmgr --create --disk /dev/nvme0n1 --part 1 \
   --label "cachyos" --loader '\EFI\cachyos\BOOTx64.EFI'

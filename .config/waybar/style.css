@@ -3,7 +3,7 @@
 
 * {
     font-family: "JetBrainsMono Nerd Font", FontAwesome, Roboto, sans-serif;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 window#waybar {
@@ -116,7 +116,7 @@ button:hover {
 
 #clock {
     font-weight: bold;
-    font-size: 13px;
+    font-size: 12px;
     color: #A89070;
     padding: 0 16px;
 }
