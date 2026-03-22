@@ -26,3 +26,5 @@ wofi
 hyprlock
 xdg-desktop-portal-gtk
 nautilus
+fprintd
+npm

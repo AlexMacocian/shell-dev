@@ -18,3 +18,4 @@ Switch themes instantly from the power menu or command line.
 - [Theme Engine](docs/theme-engine.md) — how it works, how to extend it
 - [Theme JSON](docs/theme-json.md) — how to create themes
 - [Keybindings](docs/keybindings.md) — keyboard shortcuts
+- [Fingerprint](docs/fingerprint.md) — fingerprint unlock for hyprlock
