@@ -16,7 +16,7 @@ public class KittyGenerator : IGenerator
 
 # Font
 font_family {{f.Family}}
-font_size {{f.Size}}
+font_size {{f.Size - 2}}
 
 # Colors
 foreground {{c.Text}}

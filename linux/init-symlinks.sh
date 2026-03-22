@@ -10,7 +10,7 @@ mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.local/share/nvim"
 
 # Configs to symlink: each entry is a directory under .config/
-CONFIGS=(nvim hypr waybar dunst gtk-3.0 kitty wofi)
+CONFIGS=(nvim hypr waybar dunst gtk-3.0 kitty wofi firefox-theme)
 
 for cfg in "${CONFIGS[@]}"; do
   SOURCE="$REPO_ROOT/.config/$cfg"
@@ -82,6 +82,42 @@ sudo tee /etc/sddm.conf > /dev/null <<EOF
 User=$USER
 Session=hyprland
 EOF
+
+# Symlink Firefox userChrome.css to the active profile's chrome/ dir
+FIREFOX_THEME_SOURCE="$REPO_ROOT/.config/firefox-theme"
+FIREFOX_PROFILES_DIR=""
+for dir in "$HOME/.config/mozilla/firefox" "$HOME/.mozilla/firefox"; do
+  if [[ -f "$dir/profiles.ini" ]]; then
+    FIREFOX_PROFILES_DIR="$dir"
+    break
+  fi
+done
+
+if [[ -n "$FIREFOX_PROFILES_DIR" ]]; then
+  PROFILE_PATH=$(grep -A2 'Name=default-release' "$FIREFOX_PROFILES_DIR/profiles.ini" | grep 'Path=' | cut -d= -f2)
+  if [[ -n "$PROFILE_PATH" ]]; then
+    CHROME_TARGET="$FIREFOX_PROFILES_DIR/$PROFILE_PATH/chrome"
+    if [[ -e "$CHROME_TARGET" && ! -L "$CHROME_TARGET" ]]; then
+      BACKUP="$CHROME_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
+      echo "Backing up existing Firefox chrome dir: $CHROME_TARGET -> $BACKUP"
+      mv "$CHROME_TARGET" "$BACKUP"
+    fi
+    echo "Linking Firefox chrome:"
+    echo "  $FIREFOX_THEME_SOURCE -> $CHROME_TARGET"
+    ln -sfn "$FIREFOX_THEME_SOURCE" "$CHROME_TARGET"
+
+    # Enable userChrome.css in Firefox prefs
+    PREFS_FILE="$FIREFOX_PROFILES_DIR/$PROFILE_PATH/user.js"
+    if ! grep -q 'toolkit.legacyUserProfileCustomizations.stylesheets' "$PREFS_FILE" 2>/dev/null; then
+      echo 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);' >> "$PREFS_FILE"
+      echo "Enabled userChrome.css in Firefox user.js"
+    fi
+  else
+    echo "Skipping Firefox: could not find default-release profile"
+  fi
+else
+  echo "Skipping Firefox: no profiles.ini found"
+fi
 
 echo
 echo "Setup complete!"

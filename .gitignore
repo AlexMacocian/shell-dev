@@ -20,6 +20,8 @@ obj/
 .config/dunst/dunstrc
 .config/gtk-3.0/gtk.css
 .config/gtk-3.0/settings.ini
+.config/firefox-theme/userChrome.css
+.config/firefox-theme/userContent.css
 .config/kitty/kitty.conf
 .config/nvim/lua/plugins/colorscheme.lua
 .config/Code/User/settings.json
