@@ -1,6 +1,6 @@
 # Machine-specific configs (not shared across machines)
 .config/hypr/monitors.conf
-.config/hypr/wallpapers.conf
+.config/hypr/wallpapers
 
 # .NET build output
 bin/
