@@ -105,6 +105,16 @@ if (restart)
 {
     Console.WriteLine("Restarting services...");
 
+    // Show a progress popup via wofi (fixed size, no resize)
+    var wofiPsi = new System.Diagnostics.ProcessStartInfo("bash",
+        "-c \"echo '  Applying theme...' | wofi -d -j -W 600 -H 40 -k /dev/null -s ~/.config/wofi/style.css -D dynamic_lines=false 2>/dev/null\"")
+    {
+        RedirectStandardOutput = true,
+        RedirectStandardError = true,
+        UseShellExecute = false,
+    };
+    var wofiProc = System.Diagnostics.Process.Start(wofiPsi);
+
     static void Run(string cmd)
     {
         var parts = cmd.Split(' ', 2);
@@ -117,21 +127,63 @@ if (restart)
         System.Diagnostics.Process.Start(psi)?.WaitForExit(5000);
     }
 
+    var firefoxWasRunning = System.Diagnostics.Process.GetProcessesByName("firefox").Length > 0;
+    var firefoxWorkspace = "";
+    if (firefoxWasRunning)
+    {
+        var psi = new System.Diagnostics.ProcessStartInfo("hyprctl", "clients -j")
+        {
+            RedirectStandardOutput = true,
+            UseShellExecute = false,
+        };
+        var proc = System.Diagnostics.Process.Start(psi);
+        var output = proc?.StandardOutput.ReadToEnd() ?? "";
+        proc?.WaitForExit(3000);
+        try
+        {
+            var clients = System.Text.Json.JsonSerializer.Deserialize<System.Text.Json.JsonElement>(output);
+            foreach (var client in clients.EnumerateArray())
+            {
+                var cls = client.GetProperty("class").GetString() ?? "";
+                if (cls.Contains("firefox", StringComparison.OrdinalIgnoreCase))
+                {
+                    firefoxWorkspace = client.GetProperty("workspace").GetProperty("id").ToString();
+                    break;
+                }
+            }
+        }
+        catch { }
+    }
+
     Run("killall hyprpaper");
     Run("killall waybar");
     Run("killall dunst");
     Run("killall hyprlauncher");
+    if (firefoxWasRunning) Run("killall firefox");
     Thread.Sleep(500);
+
     Run("hyprpaper");
     Run("waybar");
     Run("dunst");
+
+    if (firefoxWasRunning)
+    {
+        Run("firefox");
+        if (!string.IsNullOrEmpty(firefoxWorkspace))
+        {
+            Thread.Sleep(500);
+            Run($"hyprctl dispatch movetoworkspacesilent {firefoxWorkspace},class:firefox");
+        }
+    }
 
     // Apply GTK theme to running session
     Run($"gsettings set org.gnome.desktop.interface color-scheme '{theme.Gtk.ColorScheme}'");
     Run($"gsettings set org.gnome.desktop.interface gtk-theme '{theme.Gtk.Theme}'");
 
-    // Wait for dunst to be ready before sending notification
-    Thread.Sleep(1000);
+    // Close the progress popup
+    try { wofiProc?.Kill(); } catch { }
+    try { wofiProc?.WaitForExit(1000); } catch { }
+    Run("killall wofi");
 }
 
 if (errors.Count > 0)

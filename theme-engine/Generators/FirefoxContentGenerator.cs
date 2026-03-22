@@ -14,6 +14,19 @@ public class FirefoxContentGenerator : IGenerator
 /* Theme: {{theme.Name}} */
 /* Styles web page content (links, new tab page, etc.) */
 
+/* ---- Text selection ---- */
+@-moz-document url-prefix("http"), url-prefix("https"), url-prefix("file"), url-prefix("about") {
+    ::selection {
+        background-color: {{c.Border}} !important;
+        color: {{c.Bg0}} !important;
+    }
+
+    ::-moz-selection {
+        background-color: {{c.Border}} !important;
+        color: {{c.Bg0}} !important;
+    }
+}
+
 /* ---- Hyperlink colors ---- */
 @-moz-document url-prefix("http"), url-prefix("https"), url-prefix("file") {
     a:link {

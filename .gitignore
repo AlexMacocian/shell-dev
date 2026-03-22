@@ -22,6 +22,7 @@ obj/
 .config/gtk-3.0/settings.ini
 .config/firefox-theme/userChrome.css
 .config/firefox-theme/userContent.css
+.config/firefox-theme/user-prefs.js
 .config/kitty/kitty.conf
 .config/nvim/lua/plugins/colorscheme.lua
 .config/Code/User/settings.json

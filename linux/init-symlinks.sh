@@ -111,12 +111,17 @@ if [[ -n "$FIREFOX_PROFILES_DIR" ]]; then
     echo "  $FIREFOX_THEME_SOURCE -> $CHROME_TARGET"
     ln -sfn "$FIREFOX_THEME_SOURCE" "$CHROME_TARGET"
 
-    # Enable userChrome.css in Firefox prefs
-    PREFS_FILE="$FIREFOX_PROFILES_DIR/$PROFILE_PATH/user.js"
-    if ! grep -q 'toolkit.legacyUserProfileCustomizations.stylesheets' "$PREFS_FILE" 2>/dev/null; then
-      echo 'user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);' >> "$PREFS_FILE"
-      echo "Enabled userChrome.css in Firefox user.js"
+    # Symlink generated user-prefs.js as Firefox's user.js
+    PREFS_SOURCE="$FIREFOX_THEME_SOURCE/user-prefs.js"
+    PREFS_TARGET="$FIREFOX_PROFILES_DIR/$PROFILE_PATH/user.js"
+    if [[ -e "$PREFS_TARGET" && ! -L "$PREFS_TARGET" ]]; then
+      BACKUP="$PREFS_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
+      echo "Backing up existing Firefox user.js: $PREFS_TARGET -> $BACKUP"
+      mv "$PREFS_TARGET" "$BACKUP"
     fi
+    echo "Linking Firefox user.js:"
+    echo "  $PREFS_SOURCE -> $PREFS_TARGET"
+    ln -sfn "$PREFS_SOURCE" "$PREFS_TARGET"
   else
     echo "Skipping Firefox: could not find default-release profile"
   fi

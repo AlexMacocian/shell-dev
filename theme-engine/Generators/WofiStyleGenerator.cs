@@ -55,19 +55,33 @@ window {
     margin: 0;
     padding: 6px 12px;
     color: {{c.Text}};
+    background: transparent;
+    min-width: 100%;
 }
 
 #entry {
     padding: 0;
     margin: 2px 4px;
     border-radius: 4px;
+    background: transparent;
 }
 
-#entry:selected {
+#entry * {
+    background: transparent;
+}
+
+#entry:selected,
+#entry:selected * {
     background-color: {{c.Bg2}};
 }
 
-#entry:selected #text {
+#entry:selected:active,
+#entry:selected:active * {
+    background-color: {{ColorHelper.ToCssRgba(c.Border, 0.25)}};
+}
+
+#entry:selected #text,
+#entry:selected:active #text {
     color: {{c.Accent1}};
     font-weight: bold;
 }

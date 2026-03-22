@@ -22,7 +22,7 @@ if [[ -z "$entries" ]]; then
     exit 1
 fi
 
-selected=$(echo -e "$entries" | wofi --dmenu --prompt "Theme" --width 350 --height 300 --cache-file /dev/null --style ~/.config/wofi/style.css)
+selected=$(echo -e "$entries" | wofi --dmenu --prompt "Theme" --width 600 --height 300 --cache-file /dev/null --style ~/.config/wofi/style.css)
 
 if [[ -z "$selected" ]]; then
     exit 0

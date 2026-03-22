@@ -3,7 +3,7 @@
 
 entries="⏻  Shutdown\n󰜉  Reboot\n⏾  Suspend\n󰌾  Lock\n󰏘  Change Theme\n󰗼  Logout"
 
-selected=$(echo -e "$entries" | wofi --dmenu --prompt "Power" --width 250 --height 300 --cache-file /dev/null --style ~/.config/wofi/style.css)
+selected=$(echo -e "$entries" | wofi --dmenu --prompt "Power" --width 600 --height 300 --cache-file /dev/null --style ~/.config/wofi/style.css)
 
 case "$selected" in
     *Shutdown*) systemctl poweroff ;;
