@@ -18,6 +18,28 @@ mapfile -t DEPS < <(grep -vE '^\s*($|#)' "$DEPS_FILE" | sed 's/\r$//')
 echo "Installing dependencies via pacman..."
 sudo pacman -S --needed "${DEPS[@]}"
 
+# Install AUR packages from deps-aur.txt
+AUR_DEPS_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/deps-aur.txt"
+if [[ -f "$AUR_DEPS_FILE" ]]; then
+  AUR_HELPER=""
+  if command -v paru &>/dev/null; then
+    AUR_HELPER="paru"
+  elif command -v yay &>/dev/null; then
+    AUR_HELPER="yay"
+  fi
+
+  if [[ -n "$AUR_HELPER" ]]; then
+    mapfile -t AUR_DEPS < <(grep -vE '^\s*($|#)' "$AUR_DEPS_FILE" | sed 's/\r$//')
+    if [[ ${#AUR_DEPS[@]} -gt 0 ]]; then
+      echo
+      echo "Installing AUR packages via $AUR_HELPER..."
+      "$AUR_HELPER" -S --needed --noconfirm "${AUR_DEPS[@]}"
+    fi
+  else
+    echo "WARNING: No AUR helper found (paru/yay). Skipping AUR packages." >&2
+  fi
+fi
+
 # Install .NET global tools from deps-dotnet.txt
 DOTNET_DEPS_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/deps-dotnet.txt"
 if [[ -f "$DOTNET_DEPS_FILE" ]]; then

@@ -1,2 +1,12 @@
 # Machine-specific configs (not shared across machines)
 .config/hypr/monitors.conf
+
+# .NET build output
+bin/
+obj/
+
+# Waybar backups
+.config/waybar/*.bak
+
+# VS Code backups
+.config/Code/User/*.bak

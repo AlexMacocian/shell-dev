@@ -10,7 +10,7 @@ mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.local/share/nvim"
 
 # Configs to symlink: each entry is a directory under .config/
-CONFIGS=(nvim hypr waybar)
+CONFIGS=(nvim hypr waybar dunst gtk-3.0 kitty wofi)
 
 for cfg in "${CONFIGS[@]}"; do
   SOURCE="$REPO_ROOT/.config/$cfg"
@@ -33,6 +33,35 @@ for cfg in "${CONFIGS[@]}"; do
   ln -sfn "$SOURCE" "$TARGET"
 done
 
+# Symlink wallpapers into hypr config dir so hyprpaper can find them
+WALL_SOURCE="$REPO_ROOT/wallpapers"
+WALL_TARGET="$HOME/.config/hypr/wallpapers"
+if [[ -d "$WALL_SOURCE" ]]; then
+  if [[ -e "$WALL_TARGET" && ! -L "$WALL_TARGET" ]]; then
+    BACKUP="$WALL_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
+    echo "Backing up existing wallpapers dir: $WALL_TARGET -> $BACKUP"
+    mv "$WALL_TARGET" "$BACKUP"
+  fi
+  echo "Linking wallpapers:"
+  echo "  $WALL_SOURCE -> $WALL_TARGET"
+  ln -sfn "$WALL_SOURCE" "$WALL_TARGET"
+fi
+
+# Symlink VS Code settings.json (file-level, not the whole User dir)
+VSCODE_SOURCE="$REPO_ROOT/.config/Code/User/settings.json"
+VSCODE_TARGET="$HOME/.config/Code/User/settings.json"
+if [[ -f "$VSCODE_SOURCE" ]]; then
+  mkdir -p "$HOME/.config/Code/User"
+  if [[ -e "$VSCODE_TARGET" && ! -L "$VSCODE_TARGET" ]]; then
+    BACKUP="$VSCODE_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
+    echo "Backing up existing VS Code settings: $VSCODE_TARGET -> $BACKUP"
+    mv "$VSCODE_TARGET" "$BACKUP"
+  fi
+  echo "Linking VS Code settings.json:"
+  echo "  $VSCODE_SOURCE -> $VSCODE_TARGET"
+  ln -sfn "$VSCODE_SOURCE" "$VSCODE_TARGET"
+fi
+
 # Create a default monitors.conf if it doesn't exist (machine-specific, not tracked in git)
 MONITORS_CONF="$REPO_ROOT/.config/hypr/monitors.conf"
 if [[ ! -f "$MONITORS_CONF" ]]; then
@@ -45,6 +74,14 @@ if [[ ! -f "$MONITORS_CONF" ]]; then
 monitor = ,preferred,auto,1
 EOF
 fi
+
+# Configure SDDM autologin for current user (machine-specific)
+echo "Configuring SDDM autologin for user: $USER"
+sudo tee /etc/sddm.conf > /dev/null <<EOF
+[Autologin]
+User=$USER
+Session=hyprland
+EOF
 
 echo
 echo "Setup complete!"

@@ -13,3 +13,12 @@ ninja
 dotnet-sdk
 neovim
 wl-clipboard
+hyprland
+hyprpaper
+waybar
+kitty
+dunst
+pavucontrol
+pulsemixer
+wofi
+hyprlock
