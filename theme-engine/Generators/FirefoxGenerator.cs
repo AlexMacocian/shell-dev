@@ -55,7 +55,7 @@ public class FirefoxGenerator : IGenerator
     --sidebar-background-color: var(--er-bg0) !important;
     --sidebar-text-color: var(--er-text) !important;
     --sidebar-border-color: var(--er-bg2) !important;
-    color-scheme: dark !important;
+    color-scheme: {{(theme.Gtk.ColorScheme == "prefer-dark" ? "dark" : "light")}} !important;
 }
 
 /* ---- Tab bar ---- */
@@ -166,6 +166,36 @@ public class FirefoxGenerator : IGenerator
 
 #sidebar-box {
     background-color: var(--er-bg0) !important;
+}
+
+/* ---- Vertical sidebar (Firefox 131+) ---- */
+#sidebar-main {
+    background-color: var(--er-bg0) !important;
+    color: var(--er-text) !important;
+}
+
+#sidebar-launcher {
+    background-color: var(--er-bg0) !important;
+}
+
+#sidebar-launcher toolbarbutton,
+#sidebar-launcher .sidebar-launcher-button {
+    fill: var(--er-text-dim) !important;
+    color: var(--er-text-dim) !important;
+}
+
+#sidebar-launcher toolbarbutton:hover,
+#sidebar-launcher .sidebar-launcher-button:hover {
+    background-color: var(--er-bg1) !important;
+    fill: var(--er-accent1) !important;
+    color: var(--er-accent1) !important;
+}
+
+#sidebar-launcher toolbarbutton[checked],
+#sidebar-launcher .sidebar-launcher-button[active] {
+    background-color: var(--er-bg1) !important;
+    fill: var(--er-border) !important;
+    color: var(--er-border) !important;
 }
 
 /* ---- Sidebar splitter / resize border ---- */

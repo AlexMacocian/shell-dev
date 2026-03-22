@@ -19,6 +19,14 @@ public class VscodeSettingsGenerator : IGenerator
             ["workbench.colorTheme"] = "Monokai",
             ["workbench.colorCustomizations"] = new Dictionary<string, string>
             {
+                // Global defaults
+                ["foreground"] = c.Text,
+                ["descriptionForeground"] = c.TextDim,
+                ["disabledForeground"] = c.Inactive,
+                ["icon.foreground"] = c.TextDim,
+                ["textLink.foreground"] = c.Blue,
+                ["textLink.activeForeground"] = c.Accent1,
+
                 // Title bar
                 ["titleBar.activeBackground"] = c.Bg0,
                 ["titleBar.activeForeground"] = c.Text,
@@ -61,6 +69,8 @@ public class VscodeSettingsGenerator : IGenerator
                 ["tab.activeForeground"] = c.Accent1,
                 ["tab.inactiveBackground"] = c.Bg0,
                 ["tab.inactiveForeground"] = c.TextDim,
+                ["tab.unfocusedActiveForeground"] = c.TextDim,
+                ["tab.unfocusedInactiveForeground"] = c.Inactive,
                 ["tab.border"] = c.Bg2,
                 ["tab.activeBorderTop"] = c.Border,
 
@@ -103,8 +113,13 @@ public class VscodeSettingsGenerator : IGenerator
                 ["list.activeSelectionBackground"] = c.Border + "20",
                 ["list.activeSelectionForeground"] = c.Accent1,
                 ["list.inactiveSelectionBackground"] = c.Bg2,
+                ["list.inactiveSelectionForeground"] = c.Text,
+                ["list.inactiveFocusOutline"] = c.Border + "40",
                 ["list.hoverBackground"] = c.Bg1,
                 ["list.highlightForeground"] = c.Accent1,
+
+                // Tree
+                ["tree.indentGuidesStroke"] = c.Bg3,
 
                 // Input
                 ["input.background"] = c.Bg1,
@@ -135,7 +150,19 @@ public class VscodeSettingsGenerator : IGenerator
 
                 // Widgets
                 ["editorWidget.background"] = c.Bg1,
+                ["editorWidget.foreground"] = c.Text,
                 ["editorWidget.border"] = c.Inactive,
+
+                // Badges
+                ["badge.background"] = c.Accent2,
+                ["badge.foreground"] = c.Bg0,
+
+                // Notifications
+                ["notificationCenterHeader.foreground"] = c.Text,
+                ["notificationCenterHeader.background"] = c.Bg1,
+                ["notifications.foreground"] = c.Text,
+                ["notifications.background"] = c.Bg1,
+                ["notifications.border"] = c.Bg2,
 
                 // Minimap
                 ["minimap.background"] = c.Bg0,
@@ -153,6 +180,24 @@ public class VscodeSettingsGenerator : IGenerator
                 ["gitDecoration.deletedResourceForeground"] = c.Red,
                 ["gitDecoration.conflictingResourceForeground"] = c.Accent2,
                 ["gitDecoration.ignoredResourceForeground"] = c.Inactive,
+                ["gitDecoration.submoduleResourceForeground"] = c.Blue,
+
+                // Command palette / quick input
+                ["quickInput.background"] = c.Bg1,
+                ["quickInput.foreground"] = c.Text,
+                ["quickInputTitle.background"] = c.Bg2,
+                ["quickInputList.focusBackground"] = c.Border + "20",
+                ["quickInputList.focusForeground"] = c.Text,
+
+                // Keybinding labels
+                ["keybindingLabel.foreground"] = c.Text,
+                ["keybindingLabel.background"] = c.Bg2,
+                ["keybindingLabel.border"] = c.Bg3,
+
+                // Settings
+                ["settings.headerForeground"] = c.Accent1,
+                ["settings.modifiedItemIndicator"] = c.Border,
+                ["settings.focusedRowBackground"] = c.Bg1,
             }
         };
 
