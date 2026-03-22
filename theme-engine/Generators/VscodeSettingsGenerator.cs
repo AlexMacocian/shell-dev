@@ -10,13 +10,15 @@ public class VscodeSettingsGenerator : IGenerator
     public string Generate(Theme theme, string wallpapersDir)
     {
         var c = theme.Colors;
+        var isLight = theme.Gtk.ColorScheme.Contains("light");
+        var baseTheme = isLight ? "Default Light Modern" : "Monokai";
 
         var settings = new Dictionary<string, object>
         {
             ["github.copilot.nextEditSuggestions.enabled"] = true,
             ["git.enableSmartCommit"] = true,
             ["chat.viewSessions.orientation"] = "stacked",
-            ["workbench.colorTheme"] = "Monokai",
+            ["workbench.colorTheme"] = baseTheme,
             ["workbench.colorCustomizations"] = new Dictionary<string, string>
             {
                 // Global defaults
@@ -91,16 +93,16 @@ public class VscodeSettingsGenerator : IGenerator
                 ["terminal.ansiYellow"] = c.Accent1,
                 ["terminal.ansiBlue"] = c.Blue,
                 ["terminal.ansiMagenta"] = c.Accent2,
-                ["terminal.ansiCyan"] = "#6A8A7A",
+                ["terminal.ansiCyan"] = c.Blue,
                 ["terminal.ansiWhite"] = c.Text,
-                ["terminal.ansiBrightBlack"] = c.Inactive,
-                ["terminal.ansiBrightRed"] = "#A83000",
-                ["terminal.ansiBrightGreen"] = "#6A8A57",
+                ["terminal.ansiBrightBlack"] = isLight ? c.TextDim : c.Inactive,
+                ["terminal.ansiBrightRed"] = c.Red,
+                ["terminal.ansiBrightGreen"] = c.Green,
                 ["terminal.ansiBrightYellow"] = c.Border,
-                ["terminal.ansiBrightBlue"] = "#5A7A8A",
-                ["terminal.ansiBrightMagenta"] = "#C8843A",
-                ["terminal.ansiBrightCyan"] = "#7A9A8A",
-                ["terminal.ansiBrightWhite"] = "#F0E0CC",
+                ["terminal.ansiBrightBlue"] = c.Blue,
+                ["terminal.ansiBrightMagenta"] = c.Accent2,
+                ["terminal.ansiBrightCyan"] = c.Blue,
+                ["terminal.ansiBrightWhite"] = isLight ? c.Bg3 : c.Bg1,
 
                 // Panels
                 ["panel.background"] = c.Bg0,
@@ -198,6 +200,34 @@ public class VscodeSettingsGenerator : IGenerator
                 ["settings.headerForeground"] = c.Accent1,
                 ["settings.modifiedItemIndicator"] = c.Border,
                 ["settings.focusedRowBackground"] = c.Bg1,
+
+                // Context menus
+                ["menu.background"] = c.Bg1,
+                ["menu.foreground"] = c.Text,
+                ["menu.selectionBackground"] = c.Border + "20",
+                ["menu.selectionForeground"] = c.Text,
+                ["menu.separatorBackground"] = c.Bg2,
+                ["menu.border"] = c.Bg2,
+
+                // Menu bar
+                ["menubar.selectionBackground"] = c.Border + "20",
+                ["menubar.selectionForeground"] = c.Text,
+
+                // CodeLens
+                ["editorCodeLens.foreground"] = c.TextDim,
+
+                // Inlay hints (references, type hints, etc.)
+                ["editorInlayHint.foreground"] = c.TextDim,
+                ["editorInlayHint.background"] = c.Bg2 + "80",
+                ["editorInlayHint.typeForeground"] = c.Blue,
+                ["editorInlayHint.parameterForeground"] = c.TextDim,
+
+                // Bracket match
+                ["editorBracketMatch.background"] = c.Border + "20",
+                ["editorBracketMatch.border"] = c.Border,
+
+                // Widget shadows
+                ["widget.shadow"] = c.Bg0 + "40",
             }
         };
 
