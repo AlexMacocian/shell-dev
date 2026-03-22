@@ -1,0 +1,80 @@
+{
+  "name": "Scarlet Rot",
+  "colors": {
+    "bg0": "#F8F2EB",
+    "bg1": "#F0E6DA",
+    "bg2": "#E5D8C8",
+    "bg3": "#D8C8B5",
+    "border": "#cc6633",
+    "accent1": "#cc3333",
+    "accent2": "#996633",
+    "text": "#2A1A0A",
+    "text_dim": "#663300",
+    "red": "#B83030",
+    "green": "#4A7A3A",
+    "blue": "#3878A0",
+    "inactive": "#A89880"
+  },
+  "hyprland": {
+    "border_size": 2,
+    "rounding": 4,
+    "gaps_in": 4,
+    "gaps_out": 16,
+    "shadow_range": 8,
+    "shadow_render_power": 3,
+    "blur_size": 5,
+    "blur_passes": 2,
+    "blur_vibrancy": 0.2,
+    "active_opacity": 1.0,
+    "inactive_opacity": 0.95,
+    "animation_speed_global": 12,
+    "animation_speed_border": 6,
+    "animation_speed_windows": 5.5,
+    "animation_speed_windows_in": 5,
+    "animation_speed_windows_out": 2,
+    "animation_speed_fade_in": 2.5,
+    "animation_speed_fade_out": 2,
+    "animation_speed_workspaces": 3
+  },
+  "font": {
+    "family": "JetBrainsMono Nerd Font",
+    "fallback": [
+      "FontAwesome",
+      "Roboto",
+      "sans-serif"
+    ],
+    "size": 12
+  },
+  "gtk": {
+    "color_scheme": "prefer-light",
+    "theme": "Adwaita"
+  },
+  "waybar": {
+    "height": 34,
+    "separator": "◆",
+    "opacity": 0.85,
+    "border_width": 2,
+    "workspace_labels": [
+      "I",
+      "II",
+      "III",
+      "IV",
+      "V",
+      "VI",
+      "VII",
+      "VIII",
+      "IX",
+      "X"
+    ]
+  },
+  "wallpapers": {
+    "fit_mode": "cover",
+    "images": [
+      "elden-ring/scarletrot-01.jpg",
+      "elden-ring/scarletrot-02.png",
+      "elden-ring/scarletrot-03.png",
+      "elden-ring/scarletrot-04.png"
+    ],
+    "videos": []
+  }
+}

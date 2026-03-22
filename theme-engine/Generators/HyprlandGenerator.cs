@@ -82,6 +82,9 @@ misc {
     disable_hyprland_logo = true
     vrr = 0
 }
+
+# GTK theme for GTK4 apps (Nautilus, etc.)
+env = GTK_THEME,{{theme.Gtk.Theme}}
 """;
     }
 }

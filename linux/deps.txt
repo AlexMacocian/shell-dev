@@ -12,6 +12,8 @@ cmake
 ninja
 dotnet-sdk
 neovim
+imagemagick
+luarocks
 wl-clipboard
 hyprland
 hyprpaper
@@ -22,3 +24,5 @@ pavucontrol
 pulsemixer
 wofi
 hyprlock
+xdg-desktop-portal-gtk
+nautilus
