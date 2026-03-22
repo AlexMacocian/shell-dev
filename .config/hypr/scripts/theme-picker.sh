@@ -1,35 +1,37 @@
 #!/usr/bin/env bash
 # Theme picker using wofi
-# Lists available themes from wallpapers/*.json and applies the selected one
+# Lists available themes from themes/*.json and applies the selected one
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-WALLPAPERS_DIR="$REPO_ROOT/wallpapers"
+THEMES_DIR="$REPO_ROOT/themes"
 ENGINE_DIR="$REPO_ROOT/theme-engine"
 
-# Build list of themes using display names
+# Build list of themes using display names and their separator glyphs
 entries=""
-for f in "$WALLPAPERS_DIR"/*.json; do
+for f in "$THEMES_DIR"/*.json; do
     [[ ! -f "$f" ]] && continue
     display=$(grep -o '"name": *"[^"]*"' "$f" | head -1 | sed 's/"name": *"//' | sed 's/"//')
-    entries+="󰏘  ${display}\n"
+    sep=$(grep -o '"separator": *"[^"]*"' "$f" | head -1 | sed 's/"separator": *"//' | sed 's/"//')
+    sep=${sep:-"󰏘"}
+    entries+="${sep}\t${display}\n"
 done
 
 if [[ -z "$entries" ]]; then
-    notify-send "Theme Picker" "No themes found in $WALLPAPERS_DIR" 2>/dev/null
+    notify-send "Theme Picker" "No themes found in $THEMES_DIR" 2>/dev/null
     exit 1
 fi
 
-selected=$(echo -e "$entries" | wofi --dmenu --prompt "Theme" --width 600 --height 300 --cache-file /dev/null --style ~/.config/wofi/style.css)
+selected=$(echo -en "$entries" | wofi --dmenu --prompt "Theme" --width 600 --height 350 --cache-file /dev/null --style ~/.config/wofi/style.css)
 
 if [[ -z "$selected" ]]; then
     exit 0
 fi
 
-# Extract the display name (strip the icon prefix)
-theme_name=$(echo "$selected" | sed 's/^[^ ]* *//')
+# Extract the display name (strip the separator and tab prefix)
+theme_name=$(echo "$selected" | sed 's/^.*\t//')
 
 if [[ -z "$theme_name" ]]; then
     notify-send "Theme Picker" "Could not parse theme name" 2>/dev/null
@@ -38,7 +40,7 @@ fi
 
 # Find theme file by display name
 theme_file=""
-for f in "$WALLPAPERS_DIR"/*.json; do
+for f in "$THEMES_DIR"/*.json; do
     [[ ! -f "$f" ]] && continue
     display=$(grep -o '"name": *"[^"]*"' "$f" | head -1 | sed 's/"name": *"//' | sed 's/"//')
     if [[ "$display" == "$theme_name" ]]; then
@@ -53,4 +55,4 @@ if [[ -z "$theme_file" ]]; then
 fi
 
 # Apply the theme with restart
-dotnet run --project "$ENGINE_DIR" -- "$theme_file" --restart
+dotnet run --project "$ENGINE_DIR" -- "$theme_file"

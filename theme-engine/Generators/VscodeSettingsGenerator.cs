@@ -19,6 +19,10 @@ public class VscodeSettingsGenerator : IGenerator
             ["git.enableSmartCommit"] = true,
             ["chat.viewSessions.orientation"] = "stacked",
             ["workbench.colorTheme"] = baseTheme,
+            ["editor.fontFamily"] = $"'{theme.Font.Family}', monospace",
+            ["editor.fontSize"] = theme.Font.Size + 2,
+            ["terminal.integrated.fontFamily"] = $"'{theme.Font.Family}'",
+            ["terminal.integrated.fontSize"] = theme.Font.Size + 2,
             ["workbench.colorCustomizations"] = new Dictionary<string, string>
             {
                 // Global defaults

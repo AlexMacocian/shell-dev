@@ -35,7 +35,7 @@ for cfg in "${CONFIGS[@]}"; do
 done
 
 # Symlink wallpapers into hypr config dir so hyprpaper can find them
-WALL_SOURCE="$REPO_ROOT/wallpapers"
+WALL_SOURCE="$REPO_ROOT/themes"
 WALL_TARGET="$HOME/.config/hypr/wallpapers"
 if [[ -d "$WALL_SOURCE" ]]; then
   if [[ -e "$WALL_TARGET" && ! -L "$WALL_TARGET" ]]; then

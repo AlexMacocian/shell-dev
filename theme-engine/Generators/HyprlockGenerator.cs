@@ -52,9 +52,12 @@ input-field {
 
 label {
     text = $TIME
-    color = rgb({{StripHash(c.Accent1)}})
+    color = rgb({{StripHash(c.Text)}})
     font_size = 64
     font_family = {{f.Family}}
+    shadow_passes = 2
+    shadow_size = 4
+    shadow_color = rgb({{StripHash(c.Bg0)}})
     position = 0, 80
     halign = center
     valign = center
@@ -62,9 +65,12 @@ label {
 
 label {
     text = $USER
-    color = rgb({{StripHash(c.TextDim)}})
+    color = rgb({{StripHash(c.Text)}})
     font_size = 16
     font_family = {{f.Family}}
+    shadow_passes = 2
+    shadow_size = 3
+    shadow_color = rgb({{StripHash(c.Bg0)}})
     position = 0, -20
     halign = center
     valign = center

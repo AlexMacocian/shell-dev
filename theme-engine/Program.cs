@@ -5,9 +5,9 @@ using ThemeEngine.Generators;
 
 if (args.Length < 1)
 {
-    Console.Error.WriteLine("Usage: dotnet run -- <theme.json> [--output-dir <dir>] [--restart]");
-    Console.Error.WriteLine("       dotnet run -- wallpapers/elden-ring.json");
-    Console.Error.WriteLine("       dotnet run -- wallpapers/elden-ring.json --output-dir ~/.config --restart");
+    Console.Error.WriteLine("Usage: dotnet run -- <theme.json> [--output-dir <dir>]");
+    Console.Error.WriteLine("       dotnet run -- themes/elden-ring.json");
+    Console.Error.WriteLine("       dotnet run -- themes/elden-ring.json --output-dir ~/.config");
     return 1;
 }
 
@@ -23,7 +23,6 @@ var outputDir = Path.GetFullPath(
     args.SkipWhile(a => a != "--output-dir").Skip(1).FirstOrDefault()
     ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))
 );
-var restart = args.Contains("--restart");
 
 // Wallpapers dir is the directory containing the theme JSON
 var wallpapersDir = Path.GetDirectoryName(themeFile)!;
@@ -99,53 +98,73 @@ var execMode = UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.Use
 foreach (var script in Directory.GetFiles(Path.Combine(outputDir, ".config/hypr/scripts"), "*.sh"))
     File.SetUnixFileMode(script, execMode);
 
-Console.WriteLine();
-
-if (restart)
+static void Run(string cmd)
 {
-    Console.WriteLine("Restarting services...");
-
-    // Show a progress popup via wofi (fixed size, no resize)
-    var wofiPsi = new System.Diagnostics.ProcessStartInfo("bash",
-        "-c \"echo '  Applying theme...' | wofi -d -j -W 600 -H 40 -k /dev/null -s ~/.config/wofi/style.css -D dynamic_lines=false 2>/dev/null\"")
+    var parts = cmd.Split(' ', 2);
+    var psi = new System.Diagnostics.ProcessStartInfo(parts[0], parts.Length > 1 ? parts[1] : "")
     {
         RedirectStandardOutput = true,
         RedirectStandardError = true,
         UseShellExecute = false,
     };
-    var wofiProc = System.Diagnostics.Process.Start(wofiPsi);
+    System.Diagnostics.Process.Start(psi)?.WaitForExit(5000);
+}
 
-    static void Run(string cmd)
+static void RunDetached(string cmd)
+{
+    var psi = new System.Diagnostics.ProcessStartInfo("bash", $"-c \"{cmd}\"")
     {
-        var parts = cmd.Split(' ', 2);
-        var psi = new System.Diagnostics.ProcessStartInfo(parts[0], parts.Length > 1 ? parts[1] : "")
+        RedirectStandardOutput = true,
+        RedirectStandardError = true,
+        UseShellExecute = false,
+    };
+    System.Diagnostics.Process.Start(psi);
+}
+
+// Always kill and restart the wallpaper cycler (picks up new image list)
+{
+    var killPsi = new System.Diagnostics.ProcessStartInfo("bash", "-c \"pkill -f wallpaper-cycler\"")
+    {
+        RedirectStandardOutput = true,
+        RedirectStandardError = true,
+        UseShellExecute = false,
+    };
+    System.Diagnostics.Process.Start(killPsi)?.WaitForExit(3000);
+    Thread.Sleep(300);
+    RunDetached("~/.config/hypr/scripts/wallpaper-cycler.sh &");
+}
+
+// Live-reload kitty theme in all windows via socket
+{
+    var sockets = Directory.GetFiles("/tmp", "kitty-socket-*");
+    foreach (var sock in sockets)
+    {
+        var kittyPsi = new System.Diagnostics.ProcessStartInfo("kitten",
+            $"@ --to unix:{sock} set-colors --all --configured ~/.config/kitty/kitty.conf")
         {
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,
         };
-        System.Diagnostics.Process.Start(psi)?.WaitForExit(5000);
+        try { System.Diagnostics.Process.Start(kittyPsi)?.WaitForExit(3000); } catch { }
     }
-
-    Run("killall hyprpaper");
-    Run("killall waybar");
-    Run("killall dunst");
-    Run("killall hyprlauncher");
-    Thread.Sleep(500);
-
-    Run("hyprpaper");
-    Run("waybar");
-    Run("dunst");
-
-    // Apply GTK theme to running session
-    Run($"gsettings set org.gnome.desktop.interface color-scheme '{theme.Gtk.ColorScheme}'");
-    Run($"gsettings set org.gnome.desktop.interface gtk-theme '{theme.Gtk.Theme}'");
-
-    // Close the progress popup
-    try { wofiProc?.Kill(); } catch { }
-    try { wofiProc?.WaitForExit(1000); } catch { }
-    Run("killall wofi");
 }
+
+Console.WriteLine();
+
+// Live-reload all services
+Run("hyprctl reload");
+Run("killall -SIGUSR2 waybar");
+Run("killall dunst");
+Run($"gsettings set org.gnome.desktop.interface color-scheme '{theme.Gtk.ColorScheme}'");
+Run($"gsettings set org.gnome.desktop.interface gtk-theme '{theme.Gtk.Theme}'");
+
+// Hyprpaper doesn't support full config reload; kill it and let hyprctl reload respawn it
+Run("killall hyprpaper");
+RunDetached("hyprpaper");
+
+// Hyprlauncher needs reloading; kill it and let hyprctl reload it on demand
+Run("killall hyprlauncher");
 
 if (errors.Count > 0)
 {

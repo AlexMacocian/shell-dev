@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Power menu using wofi
 
-entries="⏻  Shutdown\n󰜉  Reboot\n⏾  Suspend\n󰌾  Lock\n󰏘  Change Theme\n󰗼  Logout"
+entries="⏻\tShutdown\n󰜉\tReboot\n⏾\tSuspend\n󰌾\tLock\n󰏘\tChange Theme\n󰗼\tLogout"
 
-selected=$(echo -e "$entries" | wofi --dmenu --prompt "Power" --width 600 --height 300 --cache-file /dev/null --style ~/.config/wofi/style.css)
+selected=$(echo -e "$entries" | wofi --dmenu --prompt "Power" --width 600 --height 350 --cache-file /dev/null --style ~/.config/wofi/style.css)
 
 case "$selected" in
     *Shutdown*) systemctl poweroff ;;

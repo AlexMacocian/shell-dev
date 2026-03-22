@@ -1,0 +1,79 @@
+{
+  "name": "Aeonia",
+  "colors": {
+    "bg0": "#0F0808",
+    "bg1": "#1C1210",
+    "bg2": "#2D1F1A",
+    "bg3": "#3E2C25",
+    "border": "#C23A22",
+    "accent1": "#D4391E",
+    "accent2": "#E07A30",
+    "text": "#E8CFC0",
+    "text_dim": "#A08070",
+    "red": "#9B1B1B",
+    "green": "#6A7548",
+    "blue": "#4A6878",
+    "inactive": "#4A3530"
+  },
+  "hyprland": {
+    "border_size": 2,
+    "rounding": 4,
+    "gaps_in": 4,
+    "gaps_out": 16,
+    "shadow_range": 8,
+    "shadow_render_power": 3,
+    "blur_size": 5,
+    "blur_passes": 2,
+    "blur_vibrancy": 0.2,
+    "active_opacity": 1.0,
+    "inactive_opacity": 0.93,
+    "animation_speed_global": 12,
+    "animation_speed_border": 6,
+    "animation_speed_windows": 5.5,
+    "animation_speed_windows_in": 5,
+    "animation_speed_windows_out": 2,
+    "animation_speed_fade_in": 2.5,
+    "animation_speed_fade_out": 2,
+    "animation_speed_workspaces": 3
+  },
+  "font": {
+    "family": "JetBrainsMono Nerd Font",
+    "fallback": [
+      "FontAwesome",
+      "Roboto",
+      "sans-serif"
+    ],
+    "size": 12
+  },
+  "gtk": {
+    "color_scheme": "prefer-dark",
+    "theme": "Adwaita-dark"
+  },
+  "waybar": {
+    "height": 34,
+    "separator": "❋",
+    "opacity": 0.82,
+    "border_width": 2,
+    "workspace_labels": [
+      "I",
+      "II",
+      "III",
+      "IV",
+      "V",
+      "VI",
+      "VII",
+      "VIII",
+      "IX",
+      "X"
+    ]
+  },
+  "wallpapers": {
+    "fit_mode": "cover",
+    "images": [
+      "elden-ring/aeonia-01.jpg",
+      "elden-ring/aeonia-02.png"
+    ],
+    "videos": [],
+    "cycle_interval": 300
+  }
+}

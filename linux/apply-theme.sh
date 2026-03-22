@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-# Apply a theme from the wallpapers directory
-# Usage: apply-theme.sh <theme-display-name> [--restart]
-# Example: apply-theme.sh "Elden Ring" --restart
+# Apply a theme from the themes directory
+# Usage: apply-theme.sh <theme-display-name>
+# Example: apply-theme.sh "Elden Ring"
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-WALLPAPERS_DIR="$REPO_ROOT/wallpapers"
+THEMES_DIR="$REPO_ROOT/themes"
 ENGINE_DIR="$REPO_ROOT/theme-engine"
 
 # Find theme file by display name
 find_theme() {
     local search="$1"
-    for f in "$WALLPAPERS_DIR"/*.json; do
+    for f in "$THEMES_DIR"/*.json; do
         [[ ! -f "$f" ]] && continue
         display=$(grep -o '"name": *"[^"]*"' "$f" | head -1 | sed 's/"name": *"//' | sed 's/"//')
         if [[ "${display,,}" == "${search,,}" ]]; then
@@ -25,7 +25,7 @@ find_theme() {
 
 list_themes() {
     echo "Available themes:"
-    for f in "$WALLPAPERS_DIR"/*.json; do
+    for f in "$THEMES_DIR"/*.json; do
         [[ ! -f "$f" ]] && continue
         display=$(grep -o '"name": *"[^"]*"' "$f" | head -1 | sed 's/"name": *"//' | sed 's/"//')
         echo "  $display"
@@ -33,7 +33,7 @@ list_themes() {
 }
 
 if [[ $# -lt 1 ]]; then
-    echo "Usage: apply-theme.sh <theme-name> [--restart]"
+    echo "Usage: apply-theme.sh <theme-name>"
     echo ""
     list_themes
     exit 1

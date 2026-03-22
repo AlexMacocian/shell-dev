@@ -41,6 +41,10 @@ window_margin_width 0
 hide_window_decorations yes
 confirm_os_window_close 0
 
+# Remote control (needed for live theme reload)
+allow_remote_control yes
+listen_on unix:/tmp/kitty-socket
+
 # Tab bar
 active_tab_foreground {{c.Accent1}}
 active_tab_background {{c.Bg1}}

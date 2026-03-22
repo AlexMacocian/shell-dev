@@ -1,0 +1,78 @@
+{
+  "name": "Mountaintops",
+  "colors": {
+    "bg0": "#F0F4F8",
+    "bg1": "#E4EAF0",
+    "bg2": "#D5DEE8",
+    "bg3": "#C5D0DD",
+    "border": "#5A9EC8",
+    "accent1": "#4A90C0",
+    "accent2": "#6EB5D8",
+    "text": "#1A2430",
+    "text_dim": "#607080",
+    "red": "#B84848",
+    "green": "#5A8A60",
+    "blue": "#3A7AAA",
+    "inactive": "#A0AABA"
+  },
+  "hyprland": {
+    "border_size": 2,
+    "rounding": 4,
+    "gaps_in": 4,
+    "gaps_out": 16,
+    "shadow_range": 8,
+    "shadow_render_power": 3,
+    "blur_size": 5,
+    "blur_passes": 2,
+    "blur_vibrancy": 0.2,
+    "active_opacity": 1.0,
+    "inactive_opacity": 0.93,
+    "animation_speed_global": 12,
+    "animation_speed_border": 6,
+    "animation_speed_windows": 5.5,
+    "animation_speed_windows_in": 5,
+    "animation_speed_windows_out": 2,
+    "animation_speed_fade_in": 2.5,
+    "animation_speed_fade_out": 2,
+    "animation_speed_workspaces": 3
+  },
+  "font": {
+    "family": "JetBrainsMono Nerd Font",
+    "fallback": [
+      "FontAwesome",
+      "Roboto",
+      "sans-serif"
+    ],
+    "size": 12
+  },
+  "gtk": {
+    "color_scheme": "prefer-light",
+    "theme": "Adwaita"
+  },
+  "waybar": {
+    "height": 34,
+    "separator": "❄",
+    "opacity": 0.85,
+    "border_width": 2,
+    "workspace_labels": [
+      "I",
+      "II",
+      "III",
+      "IV",
+      "V",
+      "VI",
+      "VII",
+      "VIII",
+      "IX",
+      "X"
+    ]
+  },
+  "wallpapers": {
+    "fit_mode": "cover",
+    "images": [
+      "elden-ring/mountaintops-01.jpeg"
+    ],
+    "videos": [],
+    "cycle_interval": 300
+  }
+}

@@ -16,12 +16,12 @@ public class WallpaperCyclerGenerator : IGenerator
 # Theme: {{theme.Name}}
 # Cycles wallpapers from the theme's image list
 # Usage: wallpaper-cycler.sh [interval_seconds]
-# Default interval: 300 (5 minutes)
+# Default interval: {{theme.Wallpapers.CycleInterval}} seconds
 
 set -euo pipefail
 
 WALLPAPER_DIR="$HOME/.config/hypr/wallpapers"
-INTERVAL="${1:-300}"
+INTERVAL="${1:-{{theme.Wallpapers.CycleInterval}}}"
 
 IMAGES=(
 {{imageEntries}}

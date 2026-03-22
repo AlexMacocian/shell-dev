@@ -67,7 +67,8 @@ public record WaybarSettings(
 public record WallpaperSettings(
     [property: JsonPropertyName("fit_mode")] string FitMode,
     string[] Images,
-    string[] Videos
+    string[] Videos,
+    [property: JsonPropertyName("cycle_interval")] int CycleInterval
 );
 
 public record GtkSettings(

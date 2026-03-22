@@ -1,0 +1,78 @@
+{
+  "name": "Cantha",
+  "colors": {
+    "bg0": "#F5EFF5",
+    "bg1": "#EBE3ED",
+    "bg2": "#DED5E2",
+    "bg3": "#D0C5D5",
+    "border": "#D04890",
+    "accent1": "#C84098",
+    "accent2": "#2E9E60",
+    "text": "#1A1428",
+    "text_dim": "#6A5E78",
+    "red": "#B83030",
+    "green": "#3A8E55",
+    "blue": "#3888A0",
+    "inactive": "#9088A0"
+  },
+  "hyprland": {
+    "border_size": 2,
+    "rounding": 6,
+    "gaps_in": 4,
+    "gaps_out": 16,
+    "shadow_range": 10,
+    "shadow_render_power": 3,
+    "blur_size": 6,
+    "blur_passes": 2,
+    "blur_vibrancy": 0.25,
+    "active_opacity": 1.0,
+    "inactive_opacity": 0.95,
+    "animation_speed_global": 10,
+    "animation_speed_border": 5,
+    "animation_speed_windows": 5,
+    "animation_speed_windows_in": 4.5,
+    "animation_speed_windows_out": 2,
+    "animation_speed_fade_in": 2.5,
+    "animation_speed_fade_out": 2,
+    "animation_speed_workspaces": 3
+  },
+  "font": {
+    "family": "JetBrainsMono Nerd Font",
+    "fallback": [
+      "FontAwesome",
+      "Roboto",
+      "sans-serif"
+    ],
+    "size": 12
+  },
+  "gtk": {
+    "color_scheme": "prefer-light",
+    "theme": "Adwaita"
+  },
+  "waybar": {
+    "height": 34,
+    "separator": "✿",
+    "opacity": 0.88,
+    "border_width": 2,
+    "workspace_labels": [
+      "I",
+      "II",
+      "III",
+      "IV",
+      "V",
+      "VI",
+      "VII",
+      "VIII",
+      "IX",
+      "X"
+    ]
+  },
+  "wallpapers": {
+    "fit_mode": "cover",
+    "images": [
+      "guild-wars/cantha-01.jpg"
+    ],
+    "videos": [],
+    "cycle_interval": 300
+  }
+}
