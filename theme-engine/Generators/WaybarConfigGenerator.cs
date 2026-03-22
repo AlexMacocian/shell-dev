@@ -85,7 +85,7 @@ public class WaybarConfigGenerator : IGenerator
               },
 
               "clock": {
-                "format": "\uf017 {:%H:%M  \u25c6  %a, %b %d}",
+                "format": "\uf017 {:%H:%M  {{w.Separator}}  %a, %b %d}",
                 "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
                 "format-alt": "\uf017 {:%Y-%m-%d  %H:%M:%S}"
               },

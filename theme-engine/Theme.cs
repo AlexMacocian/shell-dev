@@ -52,12 +52,12 @@ public record HyprlandSettings(
 
 public record FontSettings(
     string Family,
-    string[] Fallback
+    string[] Fallback,
+    int Size
 );
 
 public record WaybarSettings(
     int Height,
-    [property: JsonPropertyName("font_size")] int FontSize,
     string Separator,
     double Opacity,
     [property: JsonPropertyName("border_width")] int BorderWidth,

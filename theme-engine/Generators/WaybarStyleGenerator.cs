@@ -24,7 +24,7 @@ public class WaybarStyleGenerator : IGenerator
 
             * {
                 font-family: {{fontFamily}};
-                font-size: {{w.FontSize}}px;
+                font-size: {{f.Size}}px;
             }
 
             window#waybar {
@@ -137,7 +137,7 @@ public class WaybarStyleGenerator : IGenerator
 
             #clock {
                 font-weight: bold;
-                font-size: {{w.FontSize}}px;
+                font-size: {{f.Size}}px;
                 color: {{c.TextDim}};
                 padding: 0 16px;
             }

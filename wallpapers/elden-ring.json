@@ -38,7 +38,8 @@
   },
   "font": {
     "family": "JetBrainsMono Nerd Font",
-    "fallback": ["FontAwesome", "Roboto", "sans-serif"]
+    "fallback": ["FontAwesome", "Roboto", "sans-serif"],
+    "size": 12
   },
   "gtk": {
     "color_scheme": "prefer-dark",
@@ -46,7 +47,6 @@
   },
   "waybar": {
     "height": 34,
-    "font_size": 12,
     "separator": "◆",
     "opacity": 0.82,
     "border_width": 2,
