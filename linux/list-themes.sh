@@ -12,12 +12,9 @@ echo ""
 
 for f in "$WALLPAPERS_DIR"/*.json; do
     [[ ! -f "$f" ]] && continue
-    name=$(basename "$f" .json)
-    display=$(grep -o '"name": *"[^"]*"' "$f" | head -1 | sed 's/"name": *"//' | sed 's/"//')
-    images=$(grep -c '"images"' "$f" 2>/dev/null || echo 0)
-    videos=$(grep -c '"videos"' "$f" 2>/dev/null || echo 0)
+    name=$(grep -o '"name": *"[^"]*"' "$f" | head -1 | sed 's/"name": *"//' | sed 's/"//')
+    filename=$(basename "$f" .json)
     echo "  $name"
-    echo "    Name: $display"
-    echo "    File: $f"
+    echo "    File: $filename.json"
     echo ""
 done
