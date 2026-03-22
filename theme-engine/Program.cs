@@ -65,6 +65,20 @@ foreach (var gen in generators)
     {
         var outPath = Path.Combine(outputDir, gen.OutputPath);
         var outDir = Path.GetDirectoryName(outPath)!;
+
+        // Remove any files that block directory creation (e.g. a flat config file
+        // at ~/.config/dunst where we need a ~/.config/dunst/ directory)
+        var pathToCheck = outDir;
+        while (!string.IsNullOrEmpty(pathToCheck) && pathToCheck.StartsWith(outputDir) && pathToCheck != outputDir)
+        {
+            if (!Directory.Exists(pathToCheck) && File.Exists(pathToCheck))
+            {
+                File.Delete(pathToCheck);
+                break;
+            }
+            pathToCheck = Path.GetDirectoryName(pathToCheck)!;
+        }
+
         Directory.CreateDirectory(outDir);
 
         var content = gen.Generate(theme, wallpapersDir);
@@ -106,6 +120,7 @@ if (restart)
     Run("killall hyprpaper");
     Run("killall waybar");
     Run("killall dunst");
+    Run("killall hyprlauncher");
     Thread.Sleep(500);
     Run("hyprpaper");
     Run("waybar");

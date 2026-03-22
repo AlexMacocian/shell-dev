@@ -16,9 +16,10 @@ for cfg in "${CONFIGS[@]}"; do
   SOURCE="$REPO_ROOT/.config/$cfg"
   TARGET="$HOME/.config/$cfg"
 
+  # Create the directory in the repo if it doesn't exist yet
   if [[ ! -d "$SOURCE" ]]; then
-    echo "Skipping $cfg: not found in repo at $SOURCE"
-    continue
+    echo "Creating $cfg directory in repo at $SOURCE"
+    mkdir -p "$SOURCE"
   fi
 
   # If target exists and is not a symlink, back it up
@@ -50,17 +51,21 @@ fi
 # Symlink VS Code settings.json (file-level, not the whole User dir)
 VSCODE_SOURCE="$REPO_ROOT/.config/Code/User/settings.json"
 VSCODE_TARGET="$HOME/.config/Code/User/settings.json"
-if [[ -f "$VSCODE_SOURCE" ]]; then
-  mkdir -p "$HOME/.config/Code/User"
-  if [[ -e "$VSCODE_TARGET" && ! -L "$VSCODE_TARGET" ]]; then
-    BACKUP="$VSCODE_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
-    echo "Backing up existing VS Code settings: $VSCODE_TARGET -> $BACKUP"
-    mv "$VSCODE_TARGET" "$BACKUP"
-  fi
-  echo "Linking VS Code settings.json:"
-  echo "  $VSCODE_SOURCE -> $VSCODE_TARGET"
-  ln -sfn "$VSCODE_SOURCE" "$VSCODE_TARGET"
+mkdir -p "$(dirname "$VSCODE_SOURCE")"
+# Create an empty settings.json in the repo if it doesn't exist yet
+if [[ ! -f "$VSCODE_SOURCE" ]]; then
+  echo '{}' > "$VSCODE_SOURCE"
+  echo "Created empty VS Code settings.json in repo"
 fi
+mkdir -p "$HOME/.config/Code/User"
+if [[ -e "$VSCODE_TARGET" && ! -L "$VSCODE_TARGET" ]]; then
+  BACKUP="$VSCODE_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
+  echo "Backing up existing VS Code settings: $VSCODE_TARGET -> $BACKUP"
+  mv "$VSCODE_TARGET" "$BACKUP"
+fi
+echo "Linking VS Code settings.json:"
+echo "  $VSCODE_SOURCE -> $VSCODE_TARGET"
+ln -sfn "$VSCODE_SOURCE" "$VSCODE_TARGET"
 
 # Create a default monitors.conf if it doesn't exist (machine-specific, not tracked in git)
 MONITORS_CONF="$REPO_ROOT/.config/hypr/monitors.conf"
