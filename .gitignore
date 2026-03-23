@@ -24,6 +24,7 @@ obj/
 .config/firefox-theme/userChrome.css
 .config/firefox-theme/userContent.css
 .config/firefox-theme/user-prefs.js
+.config/firefox-theme/theme-colors.json
 .config/kitty/kitty.conf
 .config/nvim/lua/plugins/colorscheme.lua
 .config/Code/User/settings.json
