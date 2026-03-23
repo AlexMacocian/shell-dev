@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "Shell-Dev Theme Engine",
+  "version": "1.2.0",
+  "description": "Live theme updates from the shell-dev theme engine",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "theme-engine@shell-dev",
+      "strict_min_version": "63.0"
+    }
+  },
+  "permissions": [
+    "theme",
+    "nativeMessaging",
+    "tabs"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  }
+}

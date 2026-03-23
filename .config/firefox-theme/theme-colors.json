@@ -1,0 +1,42 @@
+{
+    "colors": {
+        "frame": "#F5EBE8",
+        "frame_inactive": "#F5EBE8",
+        "tab_background_text": "#2A1818",
+        "tab_selected": "#ECDDD8",
+        "tab_line": "#C87888",
+        "tab_loading": "#C87888",
+        "toolbar": "#F5EBE8",
+        "toolbar_text": "#2A1818",
+        "toolbar_field": "#ECDDD8",
+        "toolbar_field_text": "#2A1818",
+        "toolbar_field_border": "#B0A098",
+        "toolbar_field_border_focus": "#C87888",
+        "toolbar_field_highlight": "#C87888",
+        "toolbar_field_highlight_text": "#F5EBE8",
+        "toolbar_bottom_separator": "#E0CEC8",
+        "toolbar_top_separator": "#E0CEC8",
+        "toolbar_vertical_separator": "#E0CEC8",
+        "popup": "#ECDDD8",
+        "popup_text": "#2A1818",
+        "popup_border": "#E0CEC8",
+        "popup_highlight": "#E0CEC8",
+        "popup_highlight_text": "#2A1818",
+        "sidebar": "#F5EBE8",
+        "sidebar_text": "#2A1818",
+        "sidebar_border": "#E0CEC8",
+        "sidebar_highlight": "#E0CEC8",
+        "sidebar_highlight_text": "#2A1818",
+        "ntp_background": "#F5EBE8",
+        "ntp_card_background": "#ECDDD8",
+        "ntp_text": "#2A1818",
+        "button_background_hover": "#ECDDD8",
+        "button_background_active": "#E0CEC8",
+        "icons": "#785058",
+        "icons_attention": "#C87888"
+    },
+    "properties": {
+        "color_scheme": "light",
+        "content_color_scheme": "light"
+    }
+}

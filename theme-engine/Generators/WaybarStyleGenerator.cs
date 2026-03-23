@@ -277,6 +277,27 @@ public class WaybarStyleGenerator : IGenerator
                 color: {{c.Red}};
             }
 
+            /* ---- Recording indicator ---- */
+
+            #custom-recording {
+                color: {{c.Red}};
+                font-weight: bold;
+                padding: 0 6px;
+                animation: blink-recording 1s steps(2) infinite;
+            }
+
+            #custom-recording.off {
+                color: transparent;
+                animation: none;
+                padding: 0;
+                margin: 0;
+                min-width: 0;
+            }
+
+            @keyframes blink-recording {
+                50% { opacity: 0.3; }
+            }
+
             /* ---- Idle inhibitor ---- */
 
             #idle_inhibitor { color: {{c.Inactive}}; }

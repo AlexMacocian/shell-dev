@@ -1,5 +1,5 @@
 {
-  "name": "Shadow of the Erd Tree",
+  "name": "Erdtree",
   "colors": {
     "bg0": "#0B0B0F",
     "bg1": "#1A1610",
@@ -71,7 +71,8 @@
     "fit_mode": "cover",
     "images": [
       "elden-ring/sote-*.*",
-      "elden-ring/gateofdivinity-*.*"
+      "elden-ring/gateofdivinity-*.*",
+      "elden-ring/leyndell-*.*"
     ],
     "videos": [],
     "cycle_interval": 300

@@ -44,3 +44,37 @@ public class MyAppGenerator : IGenerator
 ```
 
 No registration needed — it's discovered automatically. Add the output path to `.gitignore`.
+
+## Firefox Live Theming
+
+Firefox themes update at runtime without restarting the browser, powered by a
+signed WebExtension and a native messaging host.
+
+### Setup
+
+Run once after installing Firefox and creating a profile:
+
+```bash
+bash linux/init-firefox.sh
+```
+
+This sets up:
+
+- Chrome directory symlink (`userChrome.css`, `userContent.css`)
+- `user.js` symlink for Firefox preferences
+- The signed theme extension (`.xpi`) in the profile
+- The native messaging host manifest
+
+Restart Firefox after running the script and approve the extension when prompted.
+
+### Extension Source
+
+The extension lives in `theme-engine/firefox-extension/`. If you modify it, re-sign
+with `web-ext sign` and re-run `init-firefox.sh`.
+
+### Known Limitation
+
+Switching between light and dark themes requires a Firefox restart for hover
+states and tooltips to update. Firefox's design system uses `light-dark()` CSS
+functions tied to `color-scheme`, which only re-evaluates on startup. Switching
+between themes of the same mode (e.g. dark → dark) works fully at runtime.

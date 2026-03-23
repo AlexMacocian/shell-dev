@@ -187,6 +187,28 @@ static void RunDetached(string cmd)
     }
 }
 
+// Live-reload neovim colorscheme in all running instances
+{
+    var uid = Environment.GetEnvironmentVariable("UID")
+        ?? File.ReadAllText("/proc/self/loginuid").Trim();
+    var nvimDir = $"/run/user/{uid}";
+    if (Directory.Exists(nvimDir))
+    {
+        var sockets = Directory.GetFiles(nvimDir, "nvim.*");
+        foreach (var sock in sockets)
+        {
+            var nvimPsi = new System.Diagnostics.ProcessStartInfo("nvim",
+                $"--server {sock} --remote-send \":lua package.loaded['plugins.colorscheme'] = nil; require('catppuccin').setup(require('plugins.colorscheme')[1].opts); vim.cmd.colorscheme('catppuccin')<CR>\"")
+            {
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+            };
+            try { System.Diagnostics.Process.Start(nvimPsi)?.WaitForExit(3000); } catch { }
+        }
+    }
+}
+
 Console.WriteLine();
 
 // Live-reload all services

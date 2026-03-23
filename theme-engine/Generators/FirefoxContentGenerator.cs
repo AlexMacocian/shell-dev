@@ -47,12 +47,8 @@ public class FirefoxContentGenerator : IGenerator
 }
 
 /* ---- Firefox new tab / home page ---- */
+/* Background and text are handled by the Theme API (ntp_background, ntp_text) */
 @-moz-document url("about:home"), url("about:newtab"), url("about:privatebrowsing") {
-    body {
-        background-color: {{c.Bg0}} !important;
-        color: {{c.Text}} !important;
-    }
-
     .search-wrapper input {
         background-color: {{c.Bg1}} !important;
         color: {{c.Text}} !important;

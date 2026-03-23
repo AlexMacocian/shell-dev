@@ -19,8 +19,11 @@
 # Install packages (pacman + AUR + dotnet tools)
 bash linux/init-deps.sh
 
-# Symlinks, SDDM autologin, Firefox profile
+# Symlinks, SDDM autologin
 bash linux/init-symlinks.sh
+
+# Firefox: chrome symlinks, theme extension, native messaging host
+bash linux/init-firefox.sh
 
 # Apply a theme
 bash linux/apply-theme.sh "Scarlet Rot" --restart

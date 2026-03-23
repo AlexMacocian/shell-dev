@@ -33,3 +33,6 @@ obj/
 
 # VS Code backups
 .config/Code/User/*.bak
+
+# Firefox extension
+.amo-upload-uuid

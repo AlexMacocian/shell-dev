@@ -51,6 +51,7 @@ public class WaybarConfigGenerator : IGenerator
               ],
 
               "modules-right": [
+                "custom/recording",
                 "pulseaudio",
                 "network",
                 "custom/bluetooth",
@@ -163,6 +164,14 @@ public class WaybarConfigGenerator : IGenerator
               "tray": {
                 "icon-size": 16,
                 "spacing": 8
+              },
+
+              "custom/recording": {
+                "exec": "~/.config/hypr/scripts/recording-status.sh",
+                "return-type": "json",
+                "interval": "once",
+                "signal": 9,
+                "tooltip": true
               },
 
               "custom/power": {

@@ -13,7 +13,8 @@ See [docs/setup.md](docs/setup.md).
 ## Theming (Linux)
 
 The theme engine generates configs for the entire desktop from one JSON theme file.
-Switch themes instantly from the power menu or command line.
+Switch themes instantly from the power menu or command line. Firefox themes
+update live via a signed WebExtension and native messaging - no restart needed.
 
 - [Theme Engine](docs/theme-engine.md) — how it works, how to extend it
 - [Theme JSON](docs/theme-json.md) — how to create themes

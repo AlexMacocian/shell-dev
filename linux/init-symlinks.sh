@@ -88,46 +88,5 @@ User=$USER
 Session=hyprland
 EOF
 
-# Symlink Firefox userChrome.css to the active profile's chrome/ dir
-FIREFOX_THEME_SOURCE="$REPO_ROOT/.config/firefox-theme"
-FIREFOX_PROFILES_DIR=""
-for dir in "$HOME/.config/mozilla/firefox" "$HOME/.mozilla/firefox"; do
-  if [[ -f "$dir/profiles.ini" ]]; then
-    FIREFOX_PROFILES_DIR="$dir"
-    break
-  fi
-done
-
-if [[ -n "$FIREFOX_PROFILES_DIR" ]]; then
-  PROFILE_PATH=$(grep -A2 'Name=default-release' "$FIREFOX_PROFILES_DIR/profiles.ini" | grep 'Path=' | cut -d= -f2)
-  if [[ -n "$PROFILE_PATH" ]]; then
-    CHROME_TARGET="$FIREFOX_PROFILES_DIR/$PROFILE_PATH/chrome"
-    if [[ -e "$CHROME_TARGET" && ! -L "$CHROME_TARGET" ]]; then
-      BACKUP="$CHROME_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
-      echo "Backing up existing Firefox chrome dir: $CHROME_TARGET -> $BACKUP"
-      mv "$CHROME_TARGET" "$BACKUP"
-    fi
-    echo "Linking Firefox chrome:"
-    echo "  $FIREFOX_THEME_SOURCE -> $CHROME_TARGET"
-    ln -sfn "$FIREFOX_THEME_SOURCE" "$CHROME_TARGET"
-
-    # Symlink generated user-prefs.js as Firefox's user.js
-    PREFS_SOURCE="$FIREFOX_THEME_SOURCE/user-prefs.js"
-    PREFS_TARGET="$FIREFOX_PROFILES_DIR/$PROFILE_PATH/user.js"
-    if [[ -e "$PREFS_TARGET" && ! -L "$PREFS_TARGET" ]]; then
-      BACKUP="$PREFS_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
-      echo "Backing up existing Firefox user.js: $PREFS_TARGET -> $BACKUP"
-      mv "$PREFS_TARGET" "$BACKUP"
-    fi
-    echo "Linking Firefox user.js:"
-    echo "  $PREFS_SOURCE -> $PREFS_TARGET"
-    ln -sfn "$PREFS_SOURCE" "$PREFS_TARGET"
-  else
-    echo "Skipping Firefox: could not find default-release profile"
-  fi
-else
-  echo "Skipping Firefox: no profiles.ini found"
-fi
-
 echo
 echo "Setup complete!"

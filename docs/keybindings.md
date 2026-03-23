@@ -14,6 +14,7 @@
 | `SUPER + F` | Fullscreen |
 | `SUPER + V` | Toggle floating |
 | `SUPER + SHIFT + S` | Screenshot region |
+| `SUPER + SHIFT + R` | Record region |
 | `SUPER + SHIFT + W` | Toggle animated wallpaper |
 
 ## Waybar Clicks
