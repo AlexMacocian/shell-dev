@@ -70,9 +70,7 @@
   "wallpapers": {
     "fit_mode": "cover",
     "images": [
-      "elden-ring/churchbud-01.jpeg",
-      "elden-ring/churchbud-02.jpeg",
-      "elden-ring/churchbud-03.jpg"
+      "elden-ring/churchbud-*.*"
     ],
     "videos": [],
     "cycle_interval": 300

@@ -70,8 +70,7 @@
   "wallpapers": {
     "fit_mode": "cover",
     "images": [
-      "elden-ring/sttrina-01.png",
-      "elden-ring/sttrina-02.png"
+      "elden-ring/sttrina-*.*"
     ],
     "videos": [],
     "cycle_interval": 300

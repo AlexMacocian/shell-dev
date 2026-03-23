@@ -70,10 +70,8 @@
   "wallpapers": {
     "fit_mode": "cover",
     "images": [
-      "elden-ring/sote-01.png",
-      "elden-ring/sote-02.jpg",
-      "elden-ring/sote-03.jpg",
-      "elden-ring/sote-04.png"
+      "elden-ring/sote-*.*",
+      "elden-ring/gateofdivinity-*.*"
     ],
     "videos": [],
     "cycle_interval": 300

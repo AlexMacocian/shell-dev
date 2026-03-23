@@ -70,8 +70,7 @@
   "wallpapers": {
     "fit_mode": "cover",
     "images": [
-      "elden-ring/aeonia-01.jpg",
-      "elden-ring/aeonia-02.png"
+      "elden-ring/aeonia-*.*"
     ],
     "videos": [],
     "cycle_interval": 300

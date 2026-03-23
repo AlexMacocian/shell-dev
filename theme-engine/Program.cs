@@ -45,6 +45,16 @@ catch (Exception ex)
     return 1;
 }
 
+// Expand glob patterns (e.g. "elden-ring/aeonia-*.*") in wallpaper lists
+theme = theme with
+{
+    Wallpapers = theme.Wallpapers with
+    {
+        Images = ExpandGlobs(theme.Wallpapers.Images, wallpapersDir),
+        Videos = ExpandGlobs(theme.Wallpapers.Videos, wallpapersDir),
+    }
+};
+
 Console.WriteLine($"Applying theme: {theme.Name}");
 Console.WriteLine($"Output directory: {outputDir}");
 Console.WriteLine();
@@ -97,6 +107,33 @@ var execMode = UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.Use
     | UnixFileMode.GroupRead | UnixFileMode.GroupExecute | UnixFileMode.OtherRead | UnixFileMode.OtherExecute;
 foreach (var script in Directory.GetFiles(Path.Combine(outputDir, ".config/hypr/scripts"), "*.sh"))
     File.SetUnixFileMode(script, execMode);
+
+static string[] ExpandGlobs(string[] patterns, string baseDir)
+{
+    var results = new List<string>();
+    foreach (var pattern in patterns)
+    {
+        if (pattern.Contains('*') || pattern.Contains('?'))
+        {
+            var dir = Path.GetDirectoryName(pattern);
+            var filePattern = Path.GetFileName(pattern);
+            var searchDir = string.IsNullOrEmpty(dir) ? baseDir : Path.Combine(baseDir, dir);
+
+            if (Directory.Exists(searchDir))
+            {
+                var files = Directory.GetFiles(searchDir, filePattern)
+                    .Order()
+                    .Select(f => Path.GetRelativePath(baseDir, f));
+                results.AddRange(files);
+            }
+        }
+        else
+        {
+            results.Add(pattern);
+        }
+    }
+    return [.. results];
+}
 
 static void Run(string cmd)
 {
