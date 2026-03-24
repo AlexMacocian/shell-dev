@@ -15,6 +15,7 @@ obj/
 .config/hypr/scripts/gpu-usage.sh
 .config/hypr/scripts/mpvpaper-toggle.sh
 .config/hypr/scripts/wallpaper-cycler.sh
+.config/hypr/scripts/wallpaper-switch.sh
 .config/waybar/config.jsonc
 .config/waybar/style.css
 .config/wofi/style.css

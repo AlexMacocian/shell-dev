@@ -1,0 +1,79 @@
+{
+  "name": "Spacer",
+  "colors": {
+    "bg0": "#080E18",
+    "bg1": "#0F1520",
+    "bg2": "#1B3050",
+    "bg3": "#2A3448",
+    "border": "#C0CCE0",
+    "accent1": "#A0B0C8",
+    "accent2": "#B8D4F0",
+    "text": "#E4E8F0",
+    "text_dim": "#6880A0",
+    "red": "#B38D97",
+    "green": "#AFBC88",
+    "blue": "#6BA0C0",
+    "inactive": "#182230"
+  },
+  "hyprland": {
+    "border_size": 2,
+    "rounding": 4,
+    "gaps_in": 4,
+    "gaps_out": 16,
+    "shadow_range": 8,
+    "shadow_render_power": 3,
+    "blur_size": 5,
+    "blur_passes": 2,
+    "blur_vibrancy": 0.2,
+    "active_opacity": 1.0,
+    "inactive_opacity": 0.93,
+    "animation_speed_global": 12,
+    "animation_speed_border": 6,
+    "animation_speed_windows": 5.5,
+    "animation_speed_windows_in": 5,
+    "animation_speed_windows_out": 2,
+    "animation_speed_fade_in": 2.5,
+    "animation_speed_fade_out": 2,
+    "animation_speed_workspaces": 3
+  },
+  "font": {
+    "family": "JetBrainsMono Nerd Font",
+    "fallback": [
+      "FontAwesome",
+      "Roboto",
+      "sans-serif"
+    ],
+    "size": 12
+  },
+  "gtk": {
+    "color_scheme": "prefer-dark",
+    "theme": "Adwaita-dark"
+  },
+  "waybar": {
+    "height": 34,
+    "separator": "\uef4b",
+    "opacity": 0.82,
+    "border_width": 2,
+    "workspace_labels": [
+      "I",
+      "II",
+      "III",
+      "IV",
+      "V",
+      "VI",
+      "VII",
+      "VIII",
+      "IX",
+      "X"
+    ]
+  },
+  "wallpapers": {
+    "fit_mode": "cover",
+    "images": [
+      "rimworld/rimworld-*.*",
+      "mass-effect/masseffect-*.*"
+    ],
+    "videos": [],
+    "cycle_interval": 300
+  }
+}
