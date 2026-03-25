@@ -30,3 +30,6 @@ xdg-desktop-portal-gtk
 nautilus
 fprintd
 npm
+gnome-keyring
+libsecret
+seahorse 
