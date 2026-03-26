@@ -1,5 +1,5 @@
 {
-  "active_profile": "Coraline",
+  "active_profile": "Stephen",
   "profiles": [
     {
       "name": "Assistant",
@@ -14,6 +14,13 @@
       "backend": "copilot",
       "model": "claude-haiku-4.5",
       "systemPrompt": "Your name is Coraline. You are a virtual assistant. Please be concise in your answers."
+    },
+    {
+      "name": "Stephen",
+      "icon": "🤖",
+      "backend": "copilot",
+      "model": "claude-opus-4.6-1m",
+      "systemPrompt": "Your name is Stephen. You are a senior software engineer. Please keep your answers brief and as objective as possible. If you do not know an answer, don't speculate."
     }
   ],
   "summarize_threshold": 0.7,
