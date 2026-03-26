@@ -10,7 +10,7 @@ mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.local/share/nvim"
 
 # Configs to symlink: each entry is a directory under .config/
-CONFIGS=(nvim hypr waybar dunst gtk-3.0 kitty wofi firefox-theme)
+CONFIGS=(nvim hypr waybar dunst gtk-3.0 kitty wofi firefox-theme hyprchat)
 
 for cfg in "${CONFIGS[@]}"; do
   SOURCE="$REPO_ROOT/.config/$cfg"

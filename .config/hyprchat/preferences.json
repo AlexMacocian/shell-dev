@@ -1,0 +1,27 @@
+{
+  "active_profile": "Coraline",
+  "profiles": [
+    {
+      "name": "Assistant",
+      "icon": "🤖",
+      "backend": "copilot",
+      "model": "gpt-4o",
+      "systemPrompt": "You are a helpful assistant. Be concise."
+    },
+    {
+      "name": "Coraline",
+      "icon": "🤖",
+      "backend": "copilot",
+      "model": "claude-haiku-4.5",
+      "systemPrompt": "Your name is Coraline. You are a virtual assistant. Please be concise in your answers."
+    }
+  ],
+  "summarize_threshold": 0.7,
+  "keep_recent_messages": 4,
+  "memory_enabled": true,
+  "memory_split_threshold": 200,
+  "web_search_enabled": true,
+  "shell_enabled": true,
+  "file_access_enabled": true,
+  "file_access_root": "/"
+}
