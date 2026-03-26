@@ -32,4 +32,4 @@ fprintd
 npm
 gnome-keyring
 libsecret
-seahorse 
+seahorse

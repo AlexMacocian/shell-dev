@@ -3,17 +3,17 @@
   "colors": {
     "bg0": "#080E18",
     "bg1": "#0F1520",
-    "bg2": "#1B3050",
-    "bg3": "#2A3448",
+    "bg2": "#2A497C",
+    "bg3": "#0D1726",
     "border": "#C0CCE0",
-    "accent1": "#A0B0C8",
-    "accent2": "#B8D4F0",
+    "accent1": "#B5D2F0",
+    "accent2": "#4C93DA",
     "text": "#E4E8F0",
-    "text_dim": "#6880A0",
+    "text_dim": "#D8DEE6",
     "red": "#B38D97",
     "green": "#AFBC88",
     "blue": "#6BA0C0",
-    "inactive": "#182230"
+    "inactive": "#5172A2"
   },
   "hyprland": {
     "border_size": 2,

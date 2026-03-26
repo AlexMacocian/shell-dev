@@ -13,7 +13,7 @@ sudo pacman -Sy --needed --noconfirm archlinux-keyring >/dev/null 2>&1 || true
 sudo pacman -Syu --noconfirm
 
 # Read deps, ignore blank lines and comments
-mapfile -t DEPS < <(grep -vE '^\s*($|#)' "$DEPS_FILE" | sed 's/\r$//')
+mapfile -t DEPS < <(grep -vE '^\s*($|#)' "$DEPS_FILE" | sed 's/\r$//;s/[[:space:]]*$//')
 
 echo "Installing dependencies via pacman..."
 sudo pacman -S --needed "${DEPS[@]}"

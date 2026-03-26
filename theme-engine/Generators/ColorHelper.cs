@@ -24,4 +24,17 @@ public static class ColorHelper
         var b = int.Parse(clean[4..6], NumberStyles.HexNumber);
         return $"rgba({r}, {g}, {b}, {opacity.ToString(CultureInfo.InvariantCulture)})";
     }
+
+    /// <summary>
+    /// Mixes two "#RRGGBB" colors. Amount 0.0 = all color1, 1.0 = all color2.
+    /// </summary>
+    public static string MixColors(string hex1, string hex2, double amount)
+    {
+        var c1 = hex1.TrimStart('#');
+        var c2 = hex2.TrimStart('#');
+        var r = (int)(int.Parse(c1[..2], NumberStyles.HexNumber) * (1 - amount) + int.Parse(c2[..2], NumberStyles.HexNumber) * amount);
+        var g = (int)(int.Parse(c1[2..4], NumberStyles.HexNumber) * (1 - amount) + int.Parse(c2[2..4], NumberStyles.HexNumber) * amount);
+        var b = (int)(int.Parse(c1[4..6], NumberStyles.HexNumber) * (1 - amount) + int.Parse(c2[4..6], NumberStyles.HexNumber) * amount);
+        return $"#{r:X2}{g:X2}{b:X2}";
+    }
 }
