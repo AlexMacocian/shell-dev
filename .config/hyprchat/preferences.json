@@ -30,5 +30,6 @@
   "web_search_enabled": true,
   "shell_enabled": true,
   "file_access_enabled": true,
-  "file_access_root": "/"
+  "file_access_root": "/",
+  "date_enabled": true
 }
