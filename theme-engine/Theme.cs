@@ -25,8 +25,16 @@ public record ThemeColors(
     string Red,
     string Green,
     string Blue,
-    string Inactive
-);
+    string Inactive,
+    double? Saturation = null
+)
+{
+    /// <summary>
+    /// Saturation boost applied to derived syntax/terminal colors.
+    /// Defaults to 0.10 if not specified in the theme JSON.
+    /// </summary>
+    public double SaturationBoost => Saturation ?? 0.10;
+}
 
 public record HyprlandSettings(
     [property: JsonPropertyName("border_size")] int BorderSize,

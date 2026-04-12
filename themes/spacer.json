@@ -13,7 +13,8 @@
     "red": "#B38D97",
     "green": "#AFBC88",
     "blue": "#6BA0C0",
-    "inactive": "#5172A2"
+    "inactive": "#5172A2",
+    "saturation": 0.0
   },
   "hyprland": {
     "border_size": 2,

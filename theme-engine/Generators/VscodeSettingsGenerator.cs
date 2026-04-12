@@ -13,6 +13,42 @@ public class VscodeSettingsGenerator : IGenerator
         var isLight = theme.Gtk.ColorScheme.Contains("light");
         var baseTheme = isLight ? "Default Light Modern" : "Monokai";
 
+        var sat = c.SaturationBoost;
+
+        // Derive terminal colors: proper cyan and distinct bright variants
+        var cyan = ColorHelper.MixColors(c.Blue, c.Green, 0.40);
+        var ansiRed = ColorHelper.AdjustSaturation(c.Red, sat);
+        var ansiGreen = ColorHelper.AdjustSaturation(c.Green, sat);
+        var ansiBlue = ColorHelper.AdjustSaturation(c.Blue, sat);
+        var ansiMagenta = ColorHelper.AdjustSaturation(c.Accent2, sat);
+        var ansiCyan = ColorHelper.AdjustSaturation(cyan, sat);
+
+        // Adjust lightness for contrast: darken on light bg, lighten on dark bg
+        if (isLight)
+        {
+            const double d = 0.20;
+            ansiRed = ColorHelper.Darken(ansiRed, d);
+            ansiGreen = ColorHelper.Darken(ansiGreen, d);
+            ansiBlue = ColorHelper.Darken(ansiBlue, d);
+            ansiMagenta = ColorHelper.Darken(ansiMagenta, d);
+            ansiCyan = ColorHelper.Darken(ansiCyan, d);
+        }
+        else
+        {
+            const double l = 0.10;
+            ansiRed = ColorHelper.Lighten(ansiRed, l);
+            ansiGreen = ColorHelper.Lighten(ansiGreen, l);
+            ansiBlue = ColorHelper.Lighten(ansiBlue, l);
+            ansiMagenta = ColorHelper.Lighten(ansiMagenta, l);
+            ansiCyan = ColorHelper.Lighten(ansiCyan, l);
+        }
+
+        var brightRed = isLight ? ColorHelper.Darken(ansiRed, 0.12) : ColorHelper.Lighten(ansiRed, 0.12);
+        var brightGreen = isLight ? ColorHelper.Darken(ansiGreen, 0.12) : ColorHelper.Lighten(ansiGreen, 0.12);
+        var brightBlue = isLight ? ColorHelper.Darken(ansiBlue, 0.12) : ColorHelper.Lighten(ansiBlue, 0.12);
+        var brightMagenta = isLight ? ColorHelper.Darken(ansiMagenta, 0.12) : ColorHelper.Lighten(ansiMagenta, 0.12);
+        var brightCyan = isLight ? ColorHelper.Darken(ansiCyan, 0.12) : ColorHelper.Lighten(ansiCyan, 0.12);
+
         var settings = new Dictionary<string, object>
         {
             ["github.copilot.nextEditSuggestions.enabled"] = true,
@@ -92,20 +128,20 @@ public class VscodeSettingsGenerator : IGenerator
                 ["terminal.background"] = c.Bg0,
                 ["terminal.foreground"] = c.Text,
                 ["terminal.ansiBlack"] = c.Bg0,
-                ["terminal.ansiRed"] = c.Red,
-                ["terminal.ansiGreen"] = c.Green,
+                ["terminal.ansiRed"] = ansiRed,
+                ["terminal.ansiGreen"] = ansiGreen,
                 ["terminal.ansiYellow"] = c.Accent1,
-                ["terminal.ansiBlue"] = c.Blue,
-                ["terminal.ansiMagenta"] = c.Accent2,
-                ["terminal.ansiCyan"] = c.Blue,
+                ["terminal.ansiBlue"] = ansiBlue,
+                ["terminal.ansiMagenta"] = ansiMagenta,
+                ["terminal.ansiCyan"] = ansiCyan,
                 ["terminal.ansiWhite"] = c.Text,
                 ["terminal.ansiBrightBlack"] = isLight ? c.TextDim : c.Inactive,
-                ["terminal.ansiBrightRed"] = c.Red,
-                ["terminal.ansiBrightGreen"] = c.Green,
+                ["terminal.ansiBrightRed"] = brightRed,
+                ["terminal.ansiBrightGreen"] = brightGreen,
                 ["terminal.ansiBrightYellow"] = c.Border,
-                ["terminal.ansiBrightBlue"] = c.Blue,
-                ["terminal.ansiBrightMagenta"] = c.Accent2,
-                ["terminal.ansiBrightCyan"] = c.Blue,
+                ["terminal.ansiBrightBlue"] = brightBlue,
+                ["terminal.ansiBrightMagenta"] = brightMagenta,
+                ["terminal.ansiBrightCyan"] = brightCyan,
                 ["terminal.ansiBrightWhite"] = isLight ? c.Bg3 : c.Bg1,
 
                 // Panels
