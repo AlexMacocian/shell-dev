@@ -32,6 +32,9 @@ obj/
 .config/hyprchat/theme.jsonc
 .config/hyprchat/memory/*
 
+# Neovim packages
+.config/nvim/lazy-lock.json
+
 # Waybar backups
 .config/waybar/*.bak
 
@@ -40,3 +43,6 @@ obj/
 
 # Firefox extension
 .amo-upload-uuid
+
+# Bookmarks are machine-specific
+.config/gtk-3.0/bookmarks
