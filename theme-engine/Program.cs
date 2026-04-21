@@ -222,9 +222,6 @@ Run($"gsettings set org.gnome.desktop.interface gtk-theme '{theme.Gtk.Theme}'");
 Run("killall hyprpaper");
 RunDetached("hyprpaper");
 
-// Hyprlauncher needs reloading; kill it and let hyprctl reload it on demand
-Run("killall hyprlauncher");
-
 if (errors.Count > 0)
 {
     NotificationService.Error("Theme Engine", $"Theme '{theme.Name}' applied with {errors.Count} error(s).");
