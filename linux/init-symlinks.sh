@@ -67,6 +67,18 @@ echo "Linking VS Code settings.json:"
 echo "  $VSCODE_SOURCE -> $VSCODE_TARGET"
 ln -sfn "$VSCODE_SOURCE" "$VSCODE_TARGET"
 
+# Symlink Microsoft Edge flags config (Wayland fixes)
+EDGE_FLAGS_SOURCE="$REPO_ROOT/.config/microsoft-edge-stable-flags.conf"
+EDGE_FLAGS_TARGET="$HOME/.config/microsoft-edge-stable-flags.conf"
+if [[ -e "$EDGE_FLAGS_TARGET" && ! -L "$EDGE_FLAGS_TARGET" ]]; then
+  BACKUP="$EDGE_FLAGS_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
+  echo "Backing up existing Edge flags: $EDGE_FLAGS_TARGET -> $BACKUP"
+  mv "$EDGE_FLAGS_TARGET" "$BACKUP"
+fi
+echo "Linking Microsoft Edge flags:"
+echo "  $EDGE_FLAGS_SOURCE -> $EDGE_FLAGS_TARGET"
+ln -sfn "$EDGE_FLAGS_SOURCE" "$EDGE_FLAGS_TARGET"
+
 # Create a default monitors.conf if it doesn't exist (machine-specific, not tracked in git)
 MONITORS_CONF="$REPO_ROOT/.config/hypr/monitors.conf"
 if [[ ! -f "$MONITORS_CONF" ]]; then
