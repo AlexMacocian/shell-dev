@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=[WORK] Microsoft Outlook
+Comment=Microsoft Outlook (PWA)
+Exec=microsoft-edge-stable --app=https://outlook.office.com
+Icon=outlook
+Terminal=false
+Categories=Network;Email;Work;
+StartupWMClass=outlook.office.com

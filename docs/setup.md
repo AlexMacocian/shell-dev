@@ -22,8 +22,14 @@ bash linux/init-deps.sh
 # Symlinks, SDDM autologin
 bash linux/init-symlinks.sh
 
+# Custom desktop entries (work apps, etc.)
+bash linux/init-desktop-entries.sh
+
 # Firefox: chrome symlinks, theme extension, native messaging host
 bash linux/init-firefox.sh
+
+# Microsoft Intune enrollment (optional, for work devices)
+bash linux/init-intune.sh
 
 # Apply a theme
 bash linux/apply-theme.sh "Scarlet Rot" --restart

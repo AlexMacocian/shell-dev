@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=[WORK] Microsoft Teams
+Comment=Microsoft Teams (PWA)
+Exec=microsoft-edge-stable --app=https://teams.microsoft.com
+Icon=teams
+Terminal=false
+Categories=Network;Chat;Work;
+StartupWMClass=teams.microsoft.com
