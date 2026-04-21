@@ -65,6 +65,18 @@ git config --global user.signingkey "$HOME/.ssh/yubikey-touch.pub"
 git config --global commit.gpgsign true
 git config --global tag.gpgsign true
 
+# --- Git Credential Manager ---
+echo ""
+echo "Configuring Git Credential Manager..."
+if command -v git-credential-manager &>/dev/null; then
+  git config --global credential.helper /usr/bin/git-credential-manager
+  git config --global credential.https://github.com.useHttpPath true
+  git config --global credential.credentialStore secretservice
+  echo "GCM configured with secretservice backend"
+else
+  echo "WARNING: git-credential-manager not found — install git-credential-manager-bin from AUR"
+fi
+
 # --- Add keys to ssh-agent ---
 echo ""
 echo "Adding keys to ssh-agent..."
