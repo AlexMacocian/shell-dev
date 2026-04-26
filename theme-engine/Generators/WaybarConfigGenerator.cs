@@ -59,7 +59,7 @@ public class WaybarConfigGenerator : IGenerator
                 "memory",
                 "custom/gpu",
                 "disk",
-                "temperature",
+                "custom/temperature",
                 "backlight",
                 "battery",
                 "power-profiles-daemon",
@@ -115,10 +115,11 @@ public class WaybarConfigGenerator : IGenerator
                 "interval": 30
               },
 
-              "temperature": {
-                "critical-threshold": 80,
-                "format": "\uf2c9 {temperatureC}\u00b0C <span color='{{c.Accent1}}'>{{w.Separator}}</span>",
-                "format-critical": "\uf2c7 {temperatureC}\u00b0C <span color='{{c.Accent1}}'>{{w.Separator}}</span>"
+              "custom/temperature": {
+                "exec": "~/.config/hypr/scripts/temperature.sh",
+                "return-type": "json",
+                "interval": 5,
+                "tooltip": true
               },
 
               "backlight": {
