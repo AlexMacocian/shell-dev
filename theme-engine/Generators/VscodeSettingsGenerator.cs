@@ -10,44 +10,9 @@ public class VscodeSettingsGenerator : IGenerator
     public string Generate(Theme theme, string wallpapersDir)
     {
         var c = theme.Colors;
-        var isLight = theme.Gtk.ColorScheme.Contains("light");
+        var p = PaletteResolver.Resolve(theme);
+        var isLight = p.IsLight;
         var baseTheme = isLight ? "Default Light Modern" : "Monokai";
-
-        var sat = c.SaturationBoost;
-
-        // Derive terminal colors: proper cyan and distinct bright variants
-        var cyan = ColorHelper.MixColors(c.Blue, c.Green, 0.40);
-        var ansiRed = ColorHelper.AdjustSaturation(c.Red, sat);
-        var ansiGreen = ColorHelper.AdjustSaturation(c.Green, sat);
-        var ansiBlue = ColorHelper.AdjustSaturation(c.Blue, sat);
-        var ansiMagenta = ColorHelper.AdjustSaturation(c.Accent2, sat);
-        var ansiCyan = ColorHelper.AdjustSaturation(cyan, sat);
-
-        // Adjust lightness for contrast: darken on light bg, lighten on dark bg
-        if (isLight)
-        {
-            const double d = 0.20;
-            ansiRed = ColorHelper.Darken(ansiRed, d);
-            ansiGreen = ColorHelper.Darken(ansiGreen, d);
-            ansiBlue = ColorHelper.Darken(ansiBlue, d);
-            ansiMagenta = ColorHelper.Darken(ansiMagenta, d);
-            ansiCyan = ColorHelper.Darken(ansiCyan, d);
-        }
-        else
-        {
-            const double l = 0.10;
-            ansiRed = ColorHelper.Lighten(ansiRed, l);
-            ansiGreen = ColorHelper.Lighten(ansiGreen, l);
-            ansiBlue = ColorHelper.Lighten(ansiBlue, l);
-            ansiMagenta = ColorHelper.Lighten(ansiMagenta, l);
-            ansiCyan = ColorHelper.Lighten(ansiCyan, l);
-        }
-
-        var brightRed = isLight ? ColorHelper.Darken(ansiRed, 0.12) : ColorHelper.Lighten(ansiRed, 0.12);
-        var brightGreen = isLight ? ColorHelper.Darken(ansiGreen, 0.12) : ColorHelper.Lighten(ansiGreen, 0.12);
-        var brightBlue = isLight ? ColorHelper.Darken(ansiBlue, 0.12) : ColorHelper.Lighten(ansiBlue, 0.12);
-        var brightMagenta = isLight ? ColorHelper.Darken(ansiMagenta, 0.12) : ColorHelper.Lighten(ansiMagenta, 0.12);
-        var brightCyan = isLight ? ColorHelper.Darken(ansiCyan, 0.12) : ColorHelper.Lighten(ansiCyan, 0.12);
 
         var settings = new Dictionary<string, object>
         {
@@ -62,147 +27,151 @@ public class VscodeSettingsGenerator : IGenerator
             ["workbench.colorCustomizations"] = new Dictionary<string, string>
             {
                 // Global defaults
-                ["foreground"] = c.Text,
-                ["descriptionForeground"] = c.TextDim,
-                ["disabledForeground"] = c.Inactive,
-                ["icon.foreground"] = c.TextDim,
-                ["textLink.foreground"] = c.Blue,
-                ["textLink.activeForeground"] = c.Accent1,
+                ["foreground"] = p.Text,
+                ["descriptionForeground"] = p.TextDim,
+                ["disabledForeground"] = p.Inactive,
+                ["icon.foreground"] = p.TextDim,
+                ["textLink.foreground"] = p.Blue,
+                ["textLink.activeForeground"] = p.Accent1,
 
                 // Title bar
                 ["titleBar.activeBackground"] = c.Bg0,
-                ["titleBar.activeForeground"] = c.Text,
+                ["titleBar.activeForeground"] = p.Text,
                 ["titleBar.inactiveBackground"] = c.Bg0,
-                ["titleBar.inactiveForeground"] = c.Inactive,
+                ["titleBar.inactiveForeground"] = p.Inactive,
 
                 // Activity bar
                 ["activityBar.background"] = c.Bg0,
-                ["activityBar.foreground"] = c.Border,
-                ["activityBar.inactiveForeground"] = c.Inactive,
-                ["activityBarBadge.background"] = c.Accent2,
-                ["activityBarBadge.foreground"] = c.Text,
+                ["activityBar.foreground"] = p.Border,
+                ["activityBar.inactiveForeground"] = p.Inactive,
+                ["activityBarBadge.background"] = p.Accent2,
+                ["activityBarBadge.foreground"] = p.Text,
 
                 // Sidebar
                 ["sideBar.background"] = c.Bg1,
-                ["sideBar.foreground"] = c.Text,
+                ["sideBar.foreground"] = p.Text,
                 ["sideBar.border"] = c.Bg2,
-                ["sideBarTitle.foreground"] = c.Border,
+                ["sideBarTitle.foreground"] = p.Border,
                 ["sideBarSectionHeader.background"] = c.Bg2,
-                ["sideBarSectionHeader.foreground"] = c.Accent1,
+                ["sideBarSectionHeader.foreground"] = p.Accent1,
 
-                // Editor
+                // Editor — selection uses the resolved high-contrast pair so
+                // it stays visible regardless of palette desaturation.
                 ["editor.background"] = c.Bg0,
-                ["editor.foreground"] = c.Text,
+                ["editor.foreground"] = p.Text,
                 ["editor.lineHighlightBackground"] = c.Bg1 + "80",
-                ["editor.selectionBackground"] = c.Border + "30",
-                ["editor.selectionHighlightBackground"] = c.Border + "18",
-                ["editor.wordHighlightBackground"] = c.Accent2 + "25",
-                ["editor.findMatchBackground"] = c.Border + "40",
-                ["editor.findMatchHighlightBackground"] = c.Border + "20",
+                ["editor.selectionBackground"] = p.SelectionBg + "80",
+                ["editor.selectionHighlightBackground"] = p.SelectionBg + "40",
+                ["editor.wordHighlightBackground"] = p.Accent2 + "40",
+                ["editor.findMatchBackground"] = p.SelectionBg + "60",
+                ["editor.findMatchHighlightBackground"] = p.SelectionBg + "30",
 
                 // Line numbers
-                ["editorLineNumber.foreground"] = c.Inactive,
-                ["editorLineNumber.activeForeground"] = c.Border,
+                ["editorLineNumber.foreground"] = p.Inactive,
+                ["editorLineNumber.activeForeground"] = p.Border,
                 ["editorGutter.background"] = c.Bg0,
 
                 // Tabs
                 ["editorGroupHeader.tabsBackground"] = c.Bg0,
                 ["tab.activeBackground"] = c.Bg1,
-                ["tab.activeForeground"] = c.Accent1,
+                ["tab.activeForeground"] = p.Accent1,
                 ["tab.inactiveBackground"] = c.Bg0,
-                ["tab.inactiveForeground"] = c.TextDim,
-                ["tab.unfocusedActiveForeground"] = c.TextDim,
-                ["tab.unfocusedInactiveForeground"] = c.Inactive,
+                ["tab.inactiveForeground"] = p.TextDim,
+                ["tab.unfocusedActiveForeground"] = p.TextDim,
+                ["tab.unfocusedInactiveForeground"] = p.Inactive,
                 ["tab.border"] = c.Bg2,
-                ["tab.activeBorderTop"] = c.Border,
+                ["tab.activeBorderTop"] = p.Border,
 
                 // Status bar
                 ["statusBar.background"] = c.Bg0,
-                ["statusBar.foreground"] = c.TextDim,
+                ["statusBar.foreground"] = p.TextDim,
                 ["statusBar.border"] = c.Bg2,
-                ["statusBar.debuggingBackground"] = c.Red,
-                ["statusBar.debuggingForeground"] = c.Text,
+                ["statusBar.debuggingBackground"] = p.Red,
+                ["statusBar.debuggingForeground"] = p.Text,
                 ["statusBar.noFolderBackground"] = c.Bg1,
 
-                // Terminal
+                // Terminal — same contrast-resolved palette as Kitty so the
+                // VS Code integrated terminal looks consistent with the
+                // standalone one.
                 ["terminal.background"] = c.Bg0,
-                ["terminal.foreground"] = c.Text,
-                ["terminal.ansiBlack"] = c.Bg0,
-                ["terminal.ansiRed"] = ansiRed,
-                ["terminal.ansiGreen"] = ansiGreen,
-                ["terminal.ansiYellow"] = c.Accent1,
-                ["terminal.ansiBlue"] = ansiBlue,
-                ["terminal.ansiMagenta"] = ansiMagenta,
-                ["terminal.ansiCyan"] = ansiCyan,
-                ["terminal.ansiWhite"] = c.Text,
-                ["terminal.ansiBrightBlack"] = isLight ? c.TextDim : c.Inactive,
-                ["terminal.ansiBrightRed"] = brightRed,
-                ["terminal.ansiBrightGreen"] = brightGreen,
-                ["terminal.ansiBrightYellow"] = c.Border,
-                ["terminal.ansiBrightBlue"] = brightBlue,
-                ["terminal.ansiBrightMagenta"] = brightMagenta,
-                ["terminal.ansiBrightCyan"] = brightCyan,
-                ["terminal.ansiBrightWhite"] = isLight ? c.Bg3 : c.Bg1,
+                ["terminal.foreground"] = p.Text,
+                ["terminal.selectionBackground"] = p.SelectionBg,
+                ["terminal.ansiBlack"] = p.AnsiBlack,
+                ["terminal.ansiRed"] = p.AnsiRed,
+                ["terminal.ansiGreen"] = p.AnsiGreen,
+                ["terminal.ansiYellow"] = p.AnsiYellow,
+                ["terminal.ansiBlue"] = p.AnsiBlue,
+                ["terminal.ansiMagenta"] = p.AnsiMagenta,
+                ["terminal.ansiCyan"] = p.AnsiCyan,
+                ["terminal.ansiWhite"] = p.AnsiWhite,
+                ["terminal.ansiBrightBlack"] = p.BrightBlack,
+                ["terminal.ansiBrightRed"] = p.BrightRed,
+                ["terminal.ansiBrightGreen"] = p.BrightGreen,
+                ["terminal.ansiBrightYellow"] = p.BrightYellow,
+                ["terminal.ansiBrightBlue"] = p.BrightBlue,
+                ["terminal.ansiBrightMagenta"] = p.BrightMagenta,
+                ["terminal.ansiBrightCyan"] = p.BrightCyan,
+                ["terminal.ansiBrightWhite"] = p.BrightWhite,
 
                 // Panels
                 ["panel.background"] = c.Bg0,
                 ["panel.border"] = c.Bg2,
-                ["panelTitle.activeForeground"] = c.Border,
-                ["panelTitle.inactiveForeground"] = c.Inactive,
-                ["panelTitle.activeBorder"] = c.Border,
+                ["panelTitle.activeForeground"] = p.Border,
+                ["panelTitle.inactiveForeground"] = p.Inactive,
+                ["panelTitle.activeBorder"] = p.Border,
 
                 // Lists
-                ["list.activeSelectionBackground"] = c.Border + "20",
-                ["list.activeSelectionForeground"] = c.Accent1,
+                ["list.activeSelectionBackground"] = p.SelectionBg + "60",
+                ["list.activeSelectionForeground"] = p.SelectionFg,
                 ["list.inactiveSelectionBackground"] = c.Bg2,
-                ["list.inactiveSelectionForeground"] = c.Text,
-                ["list.inactiveFocusOutline"] = c.Border + "40",
+                ["list.inactiveSelectionForeground"] = p.Text,
+                ["list.inactiveFocusOutline"] = p.Border + "40",
                 ["list.hoverBackground"] = c.Bg1,
-                ["list.highlightForeground"] = c.Accent1,
+                ["list.highlightForeground"] = p.Accent1,
 
                 // Tree
                 ["tree.indentGuidesStroke"] = c.Bg3,
 
                 // Input
                 ["input.background"] = c.Bg1,
-                ["input.foreground"] = c.Text,
-                ["input.border"] = c.Inactive,
-                ["input.placeholderForeground"] = c.Inactive,
-                ["focusBorder"] = c.Border,
+                ["input.foreground"] = p.Text,
+                ["input.border"] = p.Inactive,
+                ["input.placeholderForeground"] = p.Inactive,
+                ["focusBorder"] = p.Border,
 
                 // Dropdown
                 ["dropdown.background"] = c.Bg1,
-                ["dropdown.foreground"] = c.Text,
-                ["dropdown.border"] = c.Inactive,
+                ["dropdown.foreground"] = p.Text,
+                ["dropdown.border"] = p.Inactive,
 
                 // Buttons
-                ["button.background"] = c.Border,
+                ["button.background"] = p.Border,
                 ["button.foreground"] = c.Bg0,
-                ["button.hoverBackground"] = c.Accent1,
+                ["button.hoverBackground"] = p.Accent1,
 
                 // Scrollbar
-                ["scrollbarSlider.background"] = c.Inactive + "40",
-                ["scrollbarSlider.hoverBackground"] = c.Inactive + "80",
-                ["scrollbarSlider.activeBackground"] = c.Border + "60",
+                ["scrollbarSlider.background"] = p.Inactive + "40",
+                ["scrollbarSlider.hoverBackground"] = p.Inactive + "80",
+                ["scrollbarSlider.activeBackground"] = p.Border + "60",
 
                 // Breadcrumbs
-                ["breadcrumb.foreground"] = c.TextDim,
-                ["breadcrumb.focusForeground"] = c.Accent1,
-                ["breadcrumb.activeSelectionForeground"] = c.Border,
+                ["breadcrumb.foreground"] = p.TextDim,
+                ["breadcrumb.focusForeground"] = p.Accent1,
+                ["breadcrumb.activeSelectionForeground"] = p.Border,
 
                 // Widgets
                 ["editorWidget.background"] = c.Bg1,
-                ["editorWidget.foreground"] = c.Text,
-                ["editorWidget.border"] = c.Inactive,
+                ["editorWidget.foreground"] = p.Text,
+                ["editorWidget.border"] = p.Inactive,
 
                 // Badges
-                ["badge.background"] = c.Accent2,
+                ["badge.background"] = p.Accent2,
                 ["badge.foreground"] = c.Bg0,
 
                 // Notifications
-                ["notificationCenterHeader.foreground"] = c.Text,
+                ["notificationCenterHeader.foreground"] = p.Text,
                 ["notificationCenterHeader.background"] = c.Bg1,
-                ["notifications.foreground"] = c.Text,
+                ["notifications.foreground"] = p.Text,
                 ["notifications.background"] = c.Bg1,
                 ["notifications.border"] = c.Bg2,
 
@@ -210,61 +179,61 @@ public class VscodeSettingsGenerator : IGenerator
                 ["minimap.background"] = c.Bg0,
 
                 // Peek view
-                ["peekView.border"] = c.Border,
+                ["peekView.border"] = p.Border,
                 ["peekViewEditor.background"] = c.Bg1,
                 ["peekViewResult.background"] = c.Bg0,
                 ["peekViewTitle.background"] = c.Bg1,
-                ["peekViewTitleLabel.foreground"] = c.Accent1,
+                ["peekViewTitleLabel.foreground"] = p.Accent1,
 
                 // Git
-                ["gitDecoration.modifiedResourceForeground"] = c.Border,
-                ["gitDecoration.untrackedResourceForeground"] = c.Green,
-                ["gitDecoration.deletedResourceForeground"] = c.Red,
-                ["gitDecoration.conflictingResourceForeground"] = c.Accent2,
-                ["gitDecoration.ignoredResourceForeground"] = c.Inactive,
-                ["gitDecoration.submoduleResourceForeground"] = c.Blue,
+                ["gitDecoration.modifiedResourceForeground"] = p.Border,
+                ["gitDecoration.untrackedResourceForeground"] = p.Green,
+                ["gitDecoration.deletedResourceForeground"] = p.Red,
+                ["gitDecoration.conflictingResourceForeground"] = p.Accent2,
+                ["gitDecoration.ignoredResourceForeground"] = p.Inactive,
+                ["gitDecoration.submoduleResourceForeground"] = p.Blue,
 
                 // Command palette / quick input
                 ["quickInput.background"] = c.Bg1,
-                ["quickInput.foreground"] = c.Text,
+                ["quickInput.foreground"] = p.Text,
                 ["quickInputTitle.background"] = c.Bg2,
-                ["quickInputList.focusBackground"] = c.Border + "20",
-                ["quickInputList.focusForeground"] = c.Text,
+                ["quickInputList.focusBackground"] = p.SelectionBg + "60",
+                ["quickInputList.focusForeground"] = p.SelectionFg,
 
                 // Keybinding labels
-                ["keybindingLabel.foreground"] = c.Text,
+                ["keybindingLabel.foreground"] = p.Text,
                 ["keybindingLabel.background"] = c.Bg2,
                 ["keybindingLabel.border"] = c.Bg3,
 
                 // Settings
-                ["settings.headerForeground"] = c.Accent1,
-                ["settings.modifiedItemIndicator"] = c.Border,
+                ["settings.headerForeground"] = p.Accent1,
+                ["settings.modifiedItemIndicator"] = p.Border,
                 ["settings.focusedRowBackground"] = c.Bg1,
 
                 // Context menus
                 ["menu.background"] = c.Bg1,
-                ["menu.foreground"] = c.Text,
-                ["menu.selectionBackground"] = c.Border + "20",
-                ["menu.selectionForeground"] = c.Text,
+                ["menu.foreground"] = p.Text,
+                ["menu.selectionBackground"] = p.SelectionBg + "60",
+                ["menu.selectionForeground"] = p.SelectionFg,
                 ["menu.separatorBackground"] = c.Bg2,
                 ["menu.border"] = c.Bg2,
 
                 // Menu bar
-                ["menubar.selectionBackground"] = c.Border + "20",
-                ["menubar.selectionForeground"] = c.Text,
+                ["menubar.selectionBackground"] = p.SelectionBg + "60",
+                ["menubar.selectionForeground"] = p.SelectionFg,
 
                 // CodeLens
-                ["editorCodeLens.foreground"] = c.TextDim,
+                ["editorCodeLens.foreground"] = p.TextDim,
 
                 // Inlay hints (references, type hints, etc.)
-                ["editorInlayHint.foreground"] = c.TextDim,
+                ["editorInlayHint.foreground"] = p.TextDim,
                 ["editorInlayHint.background"] = c.Bg2 + "80",
-                ["editorInlayHint.typeForeground"] = c.Blue,
-                ["editorInlayHint.parameterForeground"] = c.TextDim,
+                ["editorInlayHint.typeForeground"] = p.Blue,
+                ["editorInlayHint.parameterForeground"] = p.TextDim,
 
                 // Bracket match
-                ["editorBracketMatch.background"] = c.Border + "20",
-                ["editorBracketMatch.border"] = c.Border,
+                ["editorBracketMatch.background"] = p.Border + "20",
+                ["editorBracketMatch.border"] = p.Border,
 
                 // Widget shadows
                 ["widget.shadow"] = c.Bg0 + "40",

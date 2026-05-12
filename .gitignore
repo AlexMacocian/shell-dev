@@ -46,3 +46,8 @@ obj/
 
 # Bookmarks are machine-specific
 .config/gtk-3.0/bookmarks
+
+# Keyring auto-unlock password file (defensive: real path is ~/.config/.keyring-pwd
+# outside the synced tree, but ignore any accidental copy inside the repo).
+.config/hypr/.keyring-pwd
+.keyring-pwd

@@ -18,9 +18,17 @@ dotnet run --project theme-engine -- themes/elden-ring.json
 ## How It Works
 
 1. Deserializes the theme JSON into typed C# records (`Theme.cs`)
-2. Auto-discovers all `IGenerator` implementations via reflection
-3. Each generator produces one config file from the theme data
-4. Writes files, sets script permissions
+2. Resolves the source palette into a contrast-guaranteed
+   `ResolvedPalette` via `PaletteResolver` — every foreground slot
+   (text, ANSI 0–15, selection) is pushed to meet WCAG AAA (7:1) against
+   the background, with hue-derivation for the missing ANSI slots
+   (yellow, magenta, cyan) so they land near their canonical color-wheel
+   positions regardless of the source palette
+3. Auto-discovers all `IGenerator` implementations via reflection
+4. Each generator produces one config file from the theme data, sourcing
+   its colors from the resolved palette so contrast guarantees stay
+   consistent across the desktop
+5. Writes files, sets script permissions
 
 ## Adding a Generator
 
@@ -34,10 +42,15 @@ public class MyAppGenerator : IGenerator
 
     public string Generate(Theme theme, string wallpapersDir)
     {
-        var c = theme.Colors;
+        // Use the resolver — never read theme.Colors.X directly for
+        // foreground/selection use, or your output won't honor the AAA
+        // contrast guarantee.
+        var p = PaletteResolver.Resolve(theme);
         return $$"""
-        background = {{c.Bg0}}
-        foreground = {{c.Text}}
+        background = {{theme.Colors.Bg0}}
+        foreground = {{p.Text}}
+        accent     = {{p.Border}}
+        selection  = {{p.SelectionBg}}
         """;
     }
 }

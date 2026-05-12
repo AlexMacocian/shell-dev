@@ -213,7 +213,15 @@ Console.WriteLine();
 
 // Live-reload all services
 Run("hyprctl reload");
+
+// Reload waybar via SIGUSR2 (its hot-reload signal). If no waybar is
+// currently running — or the reload kills it — respawn it so the user
+// never ends up with a missing bar after applying a theme.
 Run("killall -SIGUSR2 waybar");
+Thread.Sleep(300);
+if (!IsProcessRunning("waybar"))
+    RunDetached("waybar");
+
 Run("killall dunst");
 Run($"gsettings set org.gnome.desktop.interface color-scheme '{theme.Gtk.ColorScheme}'");
 Run($"gsettings set org.gnome.desktop.interface gtk-theme '{theme.Gtk.Theme}'");
@@ -232,3 +240,17 @@ else
 }
 
 return 0;
+
+static bool IsProcessRunning(string name)
+{
+    var psi = new System.Diagnostics.ProcessStartInfo("pgrep", $"-x {name}")
+    {
+        RedirectStandardOutput = true,
+        RedirectStandardError = true,
+        UseShellExecute = false,
+    };
+    var proc = System.Diagnostics.Process.Start(psi);
+    if (proc is null) return false;
+    proc.WaitForExit(2000);
+    return proc.ExitCode == 0;
+}

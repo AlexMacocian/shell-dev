@@ -162,9 +162,11 @@ public static class ColorHelper
     }
 
     /// <summary>
-    /// Adjusts the lightness of a foreground color until it meets the minimum
-    /// WCAG contrast ratio against the given background. Darkens on light
-    /// backgrounds and lightens on dark backgrounds.
+    /// Adjusts the lightness (and, if necessary, the saturation) of a
+    /// foreground color until it meets the minimum WCAG contrast ratio
+    /// against the given background. Darkens on light backgrounds and
+    /// lightens on dark backgrounds. Saturation is only reduced as a last
+    /// resort, so on-theme hues are preserved when possible.
     /// </summary>
     public static string EnsureContrast(string fg, string bg, double minRatio = 4.5)
     {
@@ -172,20 +174,37 @@ public static class ColorHelper
             return fg;
 
         var bgLum = RelativeLuminance(bg);
+        var fgLum = RelativeLuminance(fg);
         var (h, s, l) = HexToHsl(fg);
 
-        // Determine direction: darken if bg is light, lighten if bg is dark
-        var step = bgLum > 0.5 ? -0.02 : 0.02;
+        // Step 1: walk lightness in whichever direction widens the gap.
+        // Choosing direction by fg-vs-bg (rather than bg vs midpoint) handles
+        // mid-luminance backgrounds (e.g. selection rectangles) correctly.
+        var step = fgLum >= bgLum ? 0.02 : -0.02;
+        // If fg ≈ bg, prefer the direction with more headroom.
+        if (Math.Abs(fgLum - bgLum) < 0.01)
+            step = bgLum > 0.5 ? -0.02 : 0.02;
 
         for (var i = 0; i < 80; i++)
         {
-            l = Math.Clamp(l + step, 0.05, 0.95);
+            l = Math.Clamp(l + step, 0.02, 0.98);
             var candidate = HslToHex(h, s, l);
             if (ContrastRatio(candidate, bg) >= minRatio)
                 return candidate;
         }
 
-        // Fallback: return the most extreme lightness we reached
+        // Step 2: lightness alone wasn't enough (very saturated hue versus a
+        // very dark/light bg). Bleed saturation while continuing to push
+        // lightness; this is required for hues like deep red on near-black.
+        for (var i = 0; i < 40; i++)
+        {
+            s = Math.Max(0, s - 0.04);
+            l = Math.Clamp(l + step, 0.02, 0.98);
+            var candidate = HslToHex(h, s, l);
+            if (ContrastRatio(candidate, bg) >= minRatio)
+                return candidate;
+        }
+
         return HslToHex(h, s, l);
     }
 

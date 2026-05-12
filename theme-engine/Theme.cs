@@ -9,7 +9,8 @@ public record Theme(
     FontSettings Font,
     GtkSettings Gtk,
     WaybarSettings Waybar,
-    WallpaperSettings Wallpapers
+    WallpaperSettings Wallpapers,
+    TerminalSettings? Terminal = null
 );
 
 public record ThemeColors(
@@ -83,3 +84,26 @@ public record GtkSettings(
     [property: JsonPropertyName("color_scheme")] string ColorScheme,
     string Theme
 );
+
+/// <summary>
+/// Terminal-specific tuning. All fields optional; sensible defaults are used
+/// when omitted so existing themes don't have to declare this section.
+/// </summary>
+public record TerminalSettings(
+    double? Opacity = null,
+    [property: JsonPropertyName("min_contrast")] double? MinContrast = null
+)
+{
+    /// <summary>
+    /// Window background opacity for the terminal. Defaults to 1.0 (fully
+    /// opaque) so colors and selection highlights are not washed out by the
+    /// wallpaper bleeding through.
+    /// </summary>
+    public double EffectiveOpacity => Opacity ?? 1.0;
+
+    /// <summary>
+    /// Minimum WCAG contrast ratio enforced for foreground colors against the
+    /// terminal background. Defaults to 7.0 (WCAG AAA).
+    /// </summary>
+    public double EffectiveMinContrast => MinContrast ?? 7.0;
+}

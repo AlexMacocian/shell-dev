@@ -8,6 +8,7 @@ public class WofiStyleGenerator : IGenerator
     public string Generate(Theme theme, string wallpapersDir)
     {
         var c = theme.Colors;
+        var p = PaletteResolver.Resolve(theme);
         var f = theme.Font;
 
         return $$"""
@@ -16,7 +17,7 @@ public class WofiStyleGenerator : IGenerator
 
 window {
     margin: 0;
-    border: 2px solid {{c.Border}};
+    border: 2px solid {{p.Border}};
     border-radius: 8px;
     background-color: {{c.Bg0}};
     font-family: "{{f.Family}}";
@@ -30,12 +31,12 @@ window {
     border-bottom: 2px solid {{c.Bg2}};
     border-radius: 4px;
     background-color: {{c.Bg1}};
-    color: {{c.Text}};
+    color: {{p.Text}};
     font-size: 14px;
 }
 
 #input:focus {
-    border-bottom-color: {{c.Border}};
+    border-bottom-color: {{p.Border}};
 }
 
 #inner-box {
@@ -54,7 +55,7 @@ window {
 #text {
     margin: 0;
     padding: 6px 12px;
-    color: {{c.Text}};
+    color: {{p.Text}};
     background: transparent;
     min-width: 100%;
 }
@@ -72,17 +73,17 @@ window {
 
 #entry:selected,
 #entry:selected * {
-    background-color: {{c.Bg2}};
+    background-color: {{p.SelectionBg}};
 }
 
 #entry:selected:active,
 #entry:selected:active * {
-    background-color: {{ColorHelper.ToCssRgba(c.Border, 0.25)}};
+    background-color: {{p.SelectionBg}};
 }
 
 #entry:selected #text,
 #entry:selected:active #text {
-    color: {{c.Accent1}};
+    color: {{p.SelectionFg}};
     font-weight: bold;
 }
 """;

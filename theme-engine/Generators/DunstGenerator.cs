@@ -8,6 +8,7 @@ public class DunstGenerator : IGenerator
     public string Generate(Theme theme, string wallpapersDir)
     {
         var c = theme.Colors;
+        var p = PaletteResolver.Resolve(theme);
         var f = theme.Font;
 
         return $$"""
@@ -30,7 +31,7 @@ public class DunstGenerator : IGenerator
     horizontal_padding = 16
     text_icon_padding = 16
     frame_width = 2
-    frame_color = "{{c.Border}}"
+    frame_color = "{{p.Border}}"
     gap_size = 6
     separator_color = frame
     sort = yes
@@ -56,20 +57,20 @@ public class DunstGenerator : IGenerator
 
 [urgency_low]
     background = "{{c.Bg1}}"
-    foreground = "{{c.TextDim}}"
-    frame_color = "{{c.Inactive}}"
+    foreground = "{{p.TextDim}}"
+    frame_color = "{{p.Inactive}}"
     timeout = 5
 
 [urgency_normal]
     background = "{{c.Bg1}}"
-    foreground = "{{c.Text}}"
-    frame_color = "{{c.Border}}"
+    foreground = "{{p.Text}}"
+    frame_color = "{{p.Border}}"
     timeout = 10
 
 [urgency_critical]
     background = "{{c.Bg1}}"
-    foreground = "{{c.Text}}"
-    frame_color = "{{c.Red}}"
+    foreground = "{{p.Text}}"
+    frame_color = "{{p.Red}}"
     timeout = 0
 """;
     }

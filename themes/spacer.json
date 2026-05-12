@@ -5,16 +5,16 @@
     "bg1": "#0F1520",
     "bg2": "#2A497C",
     "bg3": "#0D1726",
-    "border": "#C0CCE0",
-    "accent1": "#B5D2F0",
+    "border": "#7AB8FF",
+    "accent1": "#A7CFFF",
     "accent2": "#4C93DA",
     "text": "#E4E8F0",
-    "text_dim": "#D8DEE6",
-    "red": "#B38D97",
-    "green": "#AFBC88",
-    "blue": "#6BA0C0",
+    "text_dim": "#B8C4D8",
+    "red": "#FF6B7A",
+    "green": "#7FD088",
+    "blue": "#4FA3FF",
     "inactive": "#5172A2",
-    "saturation": 0.0
+    "saturation": 0.10
   },
   "hyprland": {
     "border_size": 2,

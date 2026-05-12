@@ -10,6 +10,7 @@ public class HyprtoolkitGenerator : IGenerator
     public string Generate(Theme theme, string wallpapersDir)
     {
         var c = theme.Colors;
+        var p = PaletteResolver.Resolve(theme);
         var f = theme.Font;
         var h = theme.Hyprland;
 
@@ -19,11 +20,11 @@ public class HyprtoolkitGenerator : IGenerator
 
 background = 0xFF{{StripHash(c.Bg0)}}
 base = 0xFF{{StripHash(c.Bg1)}}
-text = 0xFF{{StripHash(c.Text)}}
+text = 0xFF{{StripHash(p.Text)}}
 alternate_base = 0xFF{{StripHash(c.Bg2)}}
-bright_text = 0xFF{{StripHash(c.Accent1)}}
-accent = 0xFF{{StripHash(c.Border)}}
-accent_secondary = 0xFF{{StripHash(c.Accent2)}}
+bright_text = 0xFF{{StripHash(p.Accent1)}}
+accent = 0xFF{{StripHash(p.Border)}}
+accent_secondary = 0xFF{{StripHash(p.Accent2)}}
 
 font_family = {{f.Family}}
 font_family_monospace = {{f.Family}}

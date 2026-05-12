@@ -32,10 +32,22 @@ See [church-bud.json](../themes/church-bud.json) for a complete example.
 
 ## Key Sections
 
-- **`colors`** — 13-color palette used across all generators
+- **`colors`** — 13-color palette used across all generators. The engine
+  guarantees WCAG AAA (7:1) contrast against `bg0` for every derived
+  foreground color (text, ANSI palette, selection), so themes can pick
+  evocative source colors without worrying about readability — the engine
+  will push lightness (and, as a last resort, saturation) until each color
+  meets the target.
 - **`gtk.color_scheme`** — `prefer-dark` or `prefer-light`,
 drives dark/light mode globally
 - **`wallpapers.images`** / **`videos`** — paths relative to `themes/`
 - **`waybar.separator`** — glyph between status bar modules
 - **`hyprland`** — border size, rounding, gaps, blur, animation speeds
 - **`font`** — family, fallback list, base size
+- **`terminal`** _(optional)_ — terminal-specific tuning. Fields:
+  - `opacity` _(default `1.0`)_ — Kitty window background opacity. The
+    default is fully opaque so colors and selection rectangles stay vivid;
+    set lower if you want wallpaper bleed-through.
+  - `min_contrast` _(default `7.0`)_ — WCAG ratio enforced for every
+    foreground-on-background pair. Lower it (e.g. `4.5`) to allow more
+    saturated source colors at the cost of readability.
