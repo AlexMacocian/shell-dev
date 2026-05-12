@@ -86,7 +86,7 @@ public class WaybarStyleGenerator : IGenerator
             #cpu,
             #memory,
             #disk,
-            #temperature,
+            #custom-temperature,
             #backlight,
             #network,
             #pulseaudio,
@@ -107,7 +107,7 @@ public class WaybarStyleGenerator : IGenerator
             #cpu,
             #memory,
             #disk,
-            #temperature,
+            #custom-temperature,
             #backlight,
             #network,
             #pulseaudio,
@@ -189,8 +189,8 @@ public class WaybarStyleGenerator : IGenerator
 
             #cpu { color: {{p.TextDim}}; }
             #memory { color: {{p.TextDim}}; }
-            #temperature { color: {{p.TextDim}}; }
-            #temperature.critical { color: {{p.Red}}; }
+            #custom-temperature { color: {{p.TextDim}}; }
+            #custom-temperature.critical { color: {{p.Red}}; }
             #backlight { color: {{p.TextDim}}; }
             #network { color: {{p.TextDim}}; }
             #network.disconnected { color: {{p.Red}}; }
@@ -202,7 +202,8 @@ public class WaybarStyleGenerator : IGenerator
             #cpu:hover,
             #memory:hover,
             #disk:hover,
-            #temperature:hover,
+            #custom-temperature:hover,
+            #custom-temperature:hover *,
             #backlight:hover,
             #battery:hover,
             #power-profiles-daemon:hover,
