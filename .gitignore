@@ -16,6 +16,7 @@ obj/
 .config/hypr/scripts/mpvpaper-toggle.sh
 .config/hypr/scripts/wallpaper-cycler.sh
 .config/hypr/scripts/wallpaper-switch.sh
+.config/hypr/scripts/temperature.sh
 .config/waybar/config.jsonc
 .config/waybar/style.css
 .config/wofi/style.css
