@@ -2,6 +2,10 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 
+-- Auto-source project-local .nvim.lua / .nvimrc / .exrc when nvim starts in a
+-- trusted directory. Neovim prompts to trust each new file on first encounter.
+vim.o.exrc = true
+
 if vim.fn.has("win32") == 1 then
   -- Prefer PowerShell 7 if available, otherwise fall back to Windows PowerShell
   local pwsh = vim.fn.executable("pwsh") == 1 and "pwsh"
