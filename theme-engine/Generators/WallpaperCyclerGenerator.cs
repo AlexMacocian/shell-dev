@@ -45,8 +45,8 @@ if command -v mpvpaper &>/dev/null; then
     done
 fi
 
-# Only cycle if there are multiple entries
-if [[ ${#ENTRIES[@]} -le 1 ]]; then
+# Nothing to do if no usable entries
+if [[ ${#ENTRIES[@]} -eq 0 ]]; then
     exit 0
 fi
 
@@ -91,6 +91,12 @@ HYPR
 while true; do
     PICK="${ENTRIES[$((RANDOM % ${#ENTRIES[@]}))]}"
     apply_wallpaper "$PICK"
+    # Single-entry themes (e.g. a lone Lottie/video wallpaper) still need
+    # one apply to start mpvpaper/hyprpaper; after that there's nothing to
+    # cycle to, so exit cleanly.
+    if [[ ${#ENTRIES[@]} -le 1 ]]; then
+        exit 0
+    fi
     sleep "$INTERVAL"
 done
 """;

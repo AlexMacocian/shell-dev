@@ -52,8 +52,30 @@ theme = theme with
     {
         Images = ExpandGlobs(theme.Wallpapers.Images, wallpapersDir),
         Videos = ExpandGlobs(theme.Wallpapers.Videos, wallpapersDir),
+        Lotties = ExpandGlobs(theme.Wallpapers.Lotties ?? [], wallpapersDir),
     }
 };
+
+// Render Lottie sources to GIFs and merge the results into Videos so the
+// existing mpvpaper-based cycler picks them up without any further changes.
+if (theme.Wallpapers.Lotties is { Length: > 0 } lotties)
+{
+    var renderedGifs = ThemeEngine.LottieConverter.Convert(
+        lotties,
+        wallpapersDir,
+        theme.Colors.Bg0,
+        theme.Colors.Border);
+    if (renderedGifs.Length > 0)
+    {
+        theme = theme with
+        {
+            Wallpapers = theme.Wallpapers with
+            {
+                Videos = [.. theme.Wallpapers.Videos, .. renderedGifs],
+            }
+        };
+    }
+}
 
 Console.WriteLine($"Applying theme: {theme.Name}");
 Console.WriteLine($"Output directory: {outputDir}");
@@ -194,11 +216,29 @@ static void RunDetached(string cmd)
     var nvimDir = $"/run/user/{uid}";
     if (Directory.Exists(nvimDir))
     {
+        // Static themes just switch colorscheme. Dynamic (no Nvim section)
+        // re-runs catppuccin's setup with the freshly-generated palette
+        // before switching to it, so palette overrides actually take effect.
+        string cmd;
+        if (theme.Nvim is null)
+        {
+            cmd = ":lua package.loaded['plugins.colorscheme'] = nil; "
+                + "require('catppuccin').setup(require('plugins.colorscheme')[1].opts); "
+                + "vim.cmd.colorscheme('catppuccin')<CR>";
+        }
+        else
+        {
+            // `silent!` prevents an error modal when the requested
+            // colorscheme's plugin isn't yet installed in this running
+            // instance (that case requires a restart anyway).
+            cmd = $":silent! colorscheme {theme.Nvim.Colorscheme}<CR>";
+        }
+
         var sockets = Directory.GetFiles(nvimDir, "nvim.*");
         foreach (var sock in sockets)
         {
             var nvimPsi = new System.Diagnostics.ProcessStartInfo("nvim",
-                $"--server {sock} --remote-send \":lua package.loaded['plugins.colorscheme'] = nil; require('catppuccin').setup(require('plugins.colorscheme')[1].opts); vim.cmd.colorscheme('catppuccin')<CR>\"")
+                $"--server {sock} --remote-send \"{cmd}\"")
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,

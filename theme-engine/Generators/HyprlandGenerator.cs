@@ -80,6 +80,7 @@ animations {
 misc {
     force_default_wallpaper = 0
     disable_hyprland_logo = true
+    background_color = rgb({{theme.Colors.Bg0.TrimStart('#')}})
     vrr = 0
 }
 

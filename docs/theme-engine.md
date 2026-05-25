@@ -58,6 +58,26 @@ public class MyAppGenerator : IGenerator
 
 No registration needed — it's discovered automatically. Add the output path to `.gitignore`.
 
+## Wallpapers
+
+Themes can declare three wallpaper sources under `wallpapers`:
+
+- `images` — static images, played by `hyprpaper`.
+- `videos` — videos and GIFs, played by `mpvpaper`.
+- `lotties` — Lottie JSON animations. Rendered to GIF on theme apply via
+  `lottie2gif` (Samsung's `rlottie` + the `lottieconv` CLI) and cached under
+  `themes/.lottie-cache/<hash>.gif`. Cached outputs are appended to `videos`
+  internally so they flow through the existing `mpvpaper` cycler unchanged.
+
+  Install once on Arch:
+
+  ```bash
+  paru -S rlottie lottieconv
+  ```
+
+  If `lottie2gif` is missing, the theme apply prints a warning and skips the
+  Lottie sources rather than failing.
+
 ## Firefox Live Theming
 
 Firefox themes update at runtime without restarting the browser, powered by a

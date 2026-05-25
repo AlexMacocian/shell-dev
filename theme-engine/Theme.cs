@@ -10,7 +10,8 @@ public record Theme(
     GtkSettings Gtk,
     WaybarSettings Waybar,
     WallpaperSettings Wallpapers,
-    TerminalSettings? Terminal = null
+    TerminalSettings? Terminal = null,
+    NvimSettings? Nvim = null
 );
 
 public record ThemeColors(
@@ -77,7 +78,11 @@ public record WallpaperSettings(
     [property: JsonPropertyName("fit_mode")] string FitMode,
     string[] Images,
     string[] Videos,
-    [property: JsonPropertyName("cycle_interval")] int CycleInterval
+    [property: JsonPropertyName("cycle_interval")] int CycleInterval,
+    // Lottie source files (JSON). Converted to GIF at theme-apply time and
+    // fed into the existing video pipeline via mpvpaper. Cached on-disk by
+    // source-content hash so unchanged files are not re-rendered.
+    string[]? Lotties = null
 );
 
 public record GtkSettings(
@@ -107,3 +112,22 @@ public record TerminalSettings(
     /// </summary>
     public double EffectiveMinContrast => MinContrast ?? 7.0;
 }
+
+/// <summary>
+/// Per-theme Neovim colorscheme selection. Each theme picks a real, hand-tuned
+/// nvim colorscheme rather than trying to dynamically rewrite catppuccin's
+/// palette — dynamic palette overrides interact poorly with treesitter/LSP
+/// highlight groups and looked off in practice.
+///
+/// <para><c>Colorscheme</c>: name passed to <c>:colorscheme</c>, e.g. <c>"catppuccin-mocha"</c>,
+/// <c>"slate"</c>, or <c>"modus_vivendi"</c>.</para>
+/// <para><c>Plugin</c>: optional lazy.nvim spec (owner/repo). Omit for nvim's
+/// built-in colorschemes (slate, koehler, peachpuff, modus_operandi, etc.).</para>
+/// <para><c>Name</c>: optional override for lazy.nvim's <c>name</c> field
+/// (e.g. <c>"catppuccin"</c> for <c>"catppuccin/nvim"</c>).</para>
+/// </summary>
+public record NvimSettings(
+    string Colorscheme,
+    string? Plugin = null,
+    string? Name = null
+);
