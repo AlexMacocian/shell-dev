@@ -1,6 +1,6 @@
 mpvpaper
 bluetuith
 hyprchat
-git-credential-manager-bin
+git-credential-manager
 rlottie
 lottieconv

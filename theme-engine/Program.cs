@@ -56,7 +56,7 @@ theme = theme with
     }
 };
 
-// Render Lottie sources to GIFs and merge the results into Videos so the
+// Render Lottie sources to MP4s and merge the results into Videos so the
 // existing mpvpaper-based cycler picks them up without any further changes.
 if (theme.Wallpapers.Lotties is { Length: > 0 } lotties)
 {

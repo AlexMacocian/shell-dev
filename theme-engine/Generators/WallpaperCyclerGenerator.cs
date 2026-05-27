@@ -8,7 +8,10 @@ public class WallpaperCyclerGenerator : IGenerator
     public string Generate(Theme theme, string wallpapersDir)
     {
         var imageEntries = string.Join("\n", theme.Wallpapers.Images.Select(i => $"  \"$WALLPAPER_DIR/{i}\""));
-        var videoEntries = string.Join("\n", theme.Wallpapers.Videos.Select(v => $"  \"$WALLPAPER_DIR/{v}\""));
+        // Videos may be absolute (e.g. rendered Lottie MP4s cached under
+        // ~/.cache/shell-dev/) or relative to the wallpapers dir.
+        var videoEntries = string.Join("\n", theme.Wallpapers.Videos.Select(v =>
+            Path.IsPathRooted(v) ? $"  \"{v}\"" : $"  \"$WALLPAPER_DIR/{v}\""));
 
         return $$"""
 #!/usr/bin/env bash

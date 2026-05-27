@@ -26,5 +26,19 @@ return {
         },
       })
     end,
+    config = function(_, opts)
+      require("roslyn").setup(opts)
+      -- Mason installs the shim as `roslyn`, but roslyn.nvim searches for
+      -- `roslyn-language-server`. Pin the cmd explicitly so discovery is
+      -- not needed. See checkpoint 013.
+      vim.lsp.config("roslyn", {
+        cmd = {
+          vim.fn.stdpath("data") .. "/mason/bin/roslyn",
+          "--logLevel=Information",
+          "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+          "--stdio",
+        },
+      })
+    end,
   },
 }
