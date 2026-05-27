@@ -4,3 +4,4 @@ hyprchat
 git-credential-manager
 rlottie
 lottieconv
+glslviewer

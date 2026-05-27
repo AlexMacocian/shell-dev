@@ -58,7 +58,7 @@ public sealed class ProgressNotification : IDisposable
     private const int FrameIntervalMs = 150;
 
     private readonly string title;
-    private readonly string baseMessage;
+    private string baseMessage;
     private readonly string icon;
     private readonly CancellationTokenSource cts = new();
     private readonly Task loop;
@@ -80,6 +80,16 @@ public sealed class ProgressNotification : IDisposable
 
     public static ProgressNotification Start(string title, string message, string icon = "dialog-information")
         => new(title, message, icon);
+
+    /// <summary>
+    /// Replace the message body shown next to the spinner. Safe to call from
+    /// any thread; the next animation tick (within FrameIntervalMs) will pick
+    /// up the new text. Useful for streaming progress (e.g. "Rendering ... 42%").
+    /// </summary>
+    public void UpdateMessage(string newMessage)
+    {
+        Interlocked.Exchange(ref baseMessage, newMessage);
+    }
 
     private async Task AnimateAsync()
     {

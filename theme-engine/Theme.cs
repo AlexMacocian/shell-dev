@@ -79,10 +79,30 @@ public record WallpaperSettings(
     string[] Images,
     string[] Videos,
     [property: JsonPropertyName("cycle_interval")] int CycleInterval,
-    // Lottie source files (JSON). Converted to GIF at theme-apply time and
+    // Lottie source files (JSON). Converted to MP4 at theme-apply time and
     // fed into the existing video pipeline via mpvpaper. Cached on-disk by
     // source-content hash so unchanged files are not re-rendered.
-    string[]? Lotties = null
+    string[]? Lotties = null,
+    // GLSL fragment shaders (.frag/.glsl). Rendered to MP4 via glslViewer
+    // headless on theme apply. The theme's bg/line colors are passed as
+    // preprocessor defines U_BG / U_LINE (vec3) so shaders can match the
+    // active palette. Cached by source filename + bg/line + render
+    // parameters.
+    [property: JsonPropertyName("shaders")] ShaderEntry[]? Shaders = null
+);
+
+/// <summary>
+/// A single GLSL fragment shader wallpaper. <see cref="DurationSeconds"/>,
+/// <see cref="Fps"/>, <see cref="Width"/> and <see cref="Height"/> are
+/// optional with sensible defaults. The cache key includes all of them so
+/// tweaking any param re-renders cleanly.
+/// </summary>
+public record ShaderEntry(
+    string Path,
+    [property: JsonPropertyName("duration_seconds")] int DurationSeconds = 20,
+    int Fps = 60,
+    int Width = 1920,
+    int Height = 1080
 );
 
 public record GtkSettings(

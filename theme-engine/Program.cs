@@ -77,6 +77,26 @@ if (theme.Wallpapers.Lotties is { Length: > 0 } lotties)
     }
 }
 
+// Render GLSL shader sources to MP4s the same way Lotties are handled.
+if (theme.Wallpapers.Shaders is { Length: > 0 } shaders)
+{
+    var renderedShaders = ThemeEngine.GlslConverter.Convert(
+        shaders,
+        wallpapersDir,
+        theme.Colors.Bg0,
+        theme.Colors.Border);
+    if (renderedShaders.Length > 0)
+    {
+        theme = theme with
+        {
+            Wallpapers = theme.Wallpapers with
+            {
+                Videos = [.. theme.Wallpapers.Videos, .. renderedShaders],
+            }
+        };
+    }
+}
+
 Console.WriteLine($"Applying theme: {theme.Name}");
 Console.WriteLine($"Output directory: {outputDir}");
 Console.WriteLine();
