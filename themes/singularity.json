@@ -1,0 +1,86 @@
+{
+  "name": "Singularity",
+  "colors": {
+    "bg0": "#080E18",
+    "bg1": "#0F1520",
+    "bg2": "#2A497C",
+    "bg3": "#0D1726",
+    "border": "#7AB8FF",
+    "accent1": "#A7CFFF",
+    "accent2": "#4C93DA",
+    "text": "#E4E8F0",
+    "text_dim": "#B8C4D8",
+    "red": "#FF6B7A",
+    "green": "#7FD088",
+    "blue": "#4FA3FF",
+    "inactive": "#5172A2",
+    "saturation": 0.10
+  },
+  "hyprland": {
+    "border_size": 2,
+    "rounding": 4,
+    "gaps_in": 4,
+    "gaps_out": 16,
+    "shadow_range": 8,
+    "shadow_render_power": 3,
+    "blur_size": 5,
+    "blur_passes": 2,
+    "blur_vibrancy": 0.2,
+    "active_opacity": 1.0,
+    "inactive_opacity": 0.93,
+    "animation_speed_global": 12,
+    "animation_speed_border": 6,
+    "animation_speed_windows": 5.5,
+    "animation_speed_windows_in": 5,
+    "animation_speed_windows_out": 2,
+    "animation_speed_fade_in": 2.5,
+    "animation_speed_fade_out": 2,
+    "animation_speed_workspaces": 3
+  },
+  "font": {
+    "family": "JetBrainsMono Nerd Font",
+    "fallback": [
+      "FontAwesome",
+      "Roboto",
+      "sans-serif"
+    ],
+    "size": 12
+  },
+  "gtk": {
+    "color_scheme": "prefer-dark",
+    "theme": "Adwaita-dark"
+  },
+  "waybar": {
+    "height": 34,
+    "separator": "𐲕",
+    "opacity": 0.82,
+    "border_width": 2,
+    "workspace_labels": [
+      "𝍠",
+      "𝍡",
+      "𝍢",
+      "𝍣",
+      "𝍤",
+      "𝍥",
+      "𝍦",
+      "𝍧",
+      "𝍨",
+      "𝍩"
+    ]
+  },
+  "wallpapers": {
+    "fit_mode": "cover",
+    "images": [],
+    "videos": [],
+    "shaders": [
+      {
+        "path": "space/singularity.frag",
+        "duration_seconds": 20,
+        "fps": 30,
+        "width": 1920,
+        "height": 1080
+      }
+    ],
+    "cycle_interval": 300
+  }
+}
