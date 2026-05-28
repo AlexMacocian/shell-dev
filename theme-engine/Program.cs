@@ -231,6 +231,20 @@ static void RunDetached(string cmd)
 
 // Live-reload neovim colorscheme in all running instances
 {
+    // catppuccin precompiles the merged palette+highlights (color_overrides,
+    // custom_highlights) to ~/.cache/nvim/catppuccin/<flavour> and loads
+    // that blob on every `:colorscheme catppuccin` without re-running
+    // setup(). When we regenerate plugins/colorscheme.lua with a new
+    // palette, that stale blob keeps applying to freshly-started nvim
+    // instances until the user runs `:Catppuccin compile`. Wipe it so
+    // the next startup compiles a fresh palette from the new overrides.
+    var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+    var catppuccinCache = Path.Combine(home, ".cache", "nvim", "catppuccin");
+    if (Directory.Exists(catppuccinCache))
+    {
+        try { Directory.Delete(catppuccinCache, recursive: true); } catch { }
+    }
+
     var uid = Environment.GetEnvironmentVariable("UID")
         ?? File.ReadAllText("/proc/self/loginuid").Trim();
     var nvimDir = $"/run/user/{uid}";

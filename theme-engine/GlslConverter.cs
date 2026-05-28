@@ -82,9 +82,7 @@ public static class GlslConverter
       var hasPlaceholders = Placeholders.Any(source.Contains);
 
       var stem = Path.GetFileNameWithoutExtension(entry.Path);
-      var cacheName = hasPlaceholders
-          ? $"{stem}-{bg}-{accent}-{entry.Width}x{entry.Height}-{entry.Fps}-{entry.DurationSeconds}s.mp4"
-          : $"{stem}-{entry.Width}x{entry.Height}-{entry.Fps}-{entry.DurationSeconds}s.mp4";
+      var cacheName = $"{stem}-{bg}-{accent}-{entry.Width}x{entry.Height}-{entry.Fps}-{entry.DurationSeconds}s.mp4";
       var mp4Abs = Path.Combine(cacheDir, cacheName);
 
       if (File.Exists(mp4Abs))

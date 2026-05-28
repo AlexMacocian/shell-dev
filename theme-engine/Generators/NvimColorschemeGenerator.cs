@@ -128,6 +128,15 @@ public class NvimColorschemeGenerator : IGenerator
                 name = "catppuccin",
                 lazy = false,
                 priority = 1000,
+                -- Apply colorscheme from `config` (not via LazyVim's
+                -- `colorscheme` option) so it runs AFTER setup() merges
+                -- our color_overrides. Otherwise nvim starts with the
+                -- stock catppuccin palette and only picks up the
+                -- overrides on a subsequent `:colorscheme catppuccin`.
+                config = function(_, opts)
+                  require("catppuccin").setup(opts)
+                  vim.cmd.colorscheme("catppuccin")
+                end,
                 opts = {
                   flavour = "mocha",
                   integrations = { lsp = true, treesitter = true },

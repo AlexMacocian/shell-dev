@@ -13,6 +13,33 @@ uniform float u_time;
 #define iResolution u_resolution
 #define iTime       u_time
 
+// =============================================================================
+// Seamless-loop rate constants.
+//
+// The scene is animated by sin()/SmoothTriangleWave() of `spatial + rate*iTime`.
+// For the recorded mp4 to loop cleanly the temporal term must complete an
+// integer number of cycles per LOOP_SECS:
+//
+//   sin (period 2π):                rate = N * 2π / LOOP_SECS
+//   SmoothTriangleWave (period 1):  rate = N / LOOP_SECS
+//
+// We fix N (cycles per loop) — chosen to land near each Shadertoy original at
+// the default 20s loop — and let the actual rate derive from LOOP_SECS. So
+// bumping duration_seconds in the theme json automatically re-snaps every
+// rate without touching this file.
+// =============================================================================
+#define LOOP_SECS ${LOOP_SECONDS}
+const float _LOOP_TWO_PI = 6.2831853;
+
+// sin rates. Original Shadertoy values shown in comments.
+const float SIN_RATE_1   = 3.0 * _LOOP_TWO_PI / LOOP_SECS; // ~1.0
+const float SIN_WIND_X   = 6.0 * _LOOP_TWO_PI / LOOP_SECS; // ~2.0  (_WindSpeed.x)
+const float SIN_WIND_Y   = 2.0 * _LOOP_TWO_PI / LOOP_SECS; // ~0.6  (_WindSpeed.y)
+
+// SmoothTriangleWave rates.
+const float TRI_RATE_1   = 20.0 / LOOP_SECS; // ~1.0
+const float TRI_RATE_01  = 2.0  / LOOP_SECS; // ~0.1
+
 /*
 	Before you continue reading, feast your eyes on these beautiful Color Schemes (0,1,2)
 */
@@ -417,7 +444,7 @@ const float _PrismEyeWidth = 5.86000 ;
 const float _TerrainMaxDistance = 30.04000 ;
 const float _SmallDetailStrength = 0.00600 ;
 const vec3 _SmallWaveDetail = vec3(3.19, 16, 6.05) ;
-const vec2 _WindSpeed = vec2(2, 0.6) ;
+const vec2 _WindSpeed = vec2(SIN_WIND_X, SIN_WIND_Y) ;
 const float _MediumDetailStrength = 0.05000 ;
 const vec2 _MediumWaveDetail = vec2(2, 50) ;
 const vec3 _MediumWaveOffset = vec3(0.3, -2, 0.1) ;
@@ -686,7 +713,7 @@ float sdHeadScarf(vec3 pos)
     headScarfPos.z += (sin( 2.0 + headScarfPos.y * 50.0 ) * 0.03 * midBend);
 
     // Apply wind to head Scarf    
-    headScarfPos += SmoothTriangleWave(vec4(pos.xyz * 5.0+ iTime,1.0) ).xyz * 0.05 * distanceToTop;
+    headScarfPos += SmoothTriangleWave(vec4(pos.xyz * 5.0+ TRI_RATE_1 * iTime,1.0) ).xyz * 0.05 * distanceToTop;
 
     // Scarf shape    
     float headScarf = sdScarfCone(headScarfPos, _HeadScarfScale.x, _HeadScarfScale.y, _HeadScarfScale.z );
@@ -727,7 +754,7 @@ float sdMainCloak(vec3 pos)
     rX( cloakPos, _MainClothRotation );
     
     // Apply detailing
-    cloakPos += SmoothTriangleWave(vec4(pos.xyz * _MainClothDetail.x + iTime,1.0) ).xyz * _MainClothDetail.y * q;
+    cloakPos += SmoothTriangleWave(vec4(pos.xyz * _MainClothDetail.x + TRI_RATE_1 * iTime,1.0) ).xyz * _MainClothDetail.y * q;
     
     // Add main Wind direction
     Bend(cloakPos, _WindDirection.xy, _MainClothDetail.z);
@@ -783,11 +810,11 @@ float sdScarf(vec3 pos)
 
 
     float distanceToPoint = max(0.0,length(scarfPos) - 0.04);
-    scarfPos.x += (sin( scarfPos.z * _LongScarfWindStrength.x + iTime ) * 0.1 * distanceToPoint);
-    scarfPos.y += (sin( scarfPos.z * _LongScarfWindStrength.y + iTime ) * 0.1 * distanceToPoint);
+    scarfPos.x += (sin( scarfPos.z * _LongScarfWindStrength.x + SIN_RATE_1 * iTime ) * 0.1 * distanceToPoint);
+    scarfPos.y += (sin( scarfPos.z * _LongScarfWindStrength.y + SIN_RATE_1 * iTime ) * 0.1 * distanceToPoint);
 
     // Apply detailing
-    scarfPos += SmoothTriangleWave(vec4(pos.xyz * _LongScarfWindStrength.z + iTime,1.0) ).xyz * _LongScarfWindStrength.w * distanceToPoint;
+    scarfPos += SmoothTriangleWave(vec4(pos.xyz * _LongScarfWindStrength.z + TRI_RATE_1 * iTime,1.0) ).xyz * _LongScarfWindStrength.w * distanceToPoint;
 
     // Essentially a box pivoted at a specific point
     vec3 scarfOffset = vec3(0.0, 0.0, -scale.y);
@@ -951,7 +978,7 @@ float sdHelperScarf(vec3 pos, vec3 scarfOffset, vec3 originalPos )
     float distanceToPoint = length(scarfPos );
 
     // Apply some motion
-    scarfPos += SmoothTriangleWave(vec4(pos.xyz * _FlyingHelperScarfWindDetailParams.x + iTime,1.0) ).xyz * _FlyingHelperScarfWindDetailParams.y * distanceToPoint;
+    scarfPos += SmoothTriangleWave(vec4(pos.xyz * _FlyingHelperScarfWindDetailParams.x + TRI_RATE_1 * iTime,1.0) ).xyz * _FlyingHelperScarfWindDetailParams.y * distanceToPoint;
 
     vec2 wave;
     wave.x = SmoothTriangleWave( scarfPos.z * _FlyingHelperScarfWindParams.x  );
@@ -1073,8 +1100,8 @@ float sdSmallWaves( in vec3 pos )
 
     // movement to give feel of wind blowing
     float detailNoise = noised(pos.xz).x * _SmallWaveDetail.z; 
-	float smallWaves = sin(pos.z * _SmallWaveDetail.y + detailNoise + iTime * _WindSpeed.y ) * 
-					   sin(pos.x * _SmallWaveDetail.x + detailNoise + iTime * _WindSpeed.x ) * _SmallDetailStrength;// * min(1.0, distanceToCharacter);
+	float smallWaves = sin(pos.z * _SmallWaveDetail.y + detailNoise + _WindSpeed.y * iTime ) * 
+					   sin(pos.x * _SmallWaveDetail.x + detailNoise + _WindSpeed.x * iTime ) * _SmallDetailStrength;// * min(1.0, distanceToCharacter);
 	
 	return smallWaves * 0.9;
 }
@@ -1138,11 +1165,11 @@ float sdTombScarf(vec3 pos, vec3 scarfOffset, float t )
     scale.x += distanceToPoint * 0.04;
 
     // Apply some motion
-    scarfPos.x += (sin( pos.z * _TombScarfWindParams.x + iTime) * _TombScarfWindParams.z * distanceToPoint);
-    scarfPos.y += (sin( pos.z * _TombScarfWindParams.y + iTime) * _TombScarfWindParams.z * distanceToPoint);
+    scarfPos.x += (sin( pos.z * _TombScarfWindParams.x + SIN_RATE_1 * iTime) * _TombScarfWindParams.z * distanceToPoint);
+    scarfPos.y += (sin( pos.z * _TombScarfWindParams.y + SIN_RATE_1 * iTime) * _TombScarfWindParams.z * distanceToPoint);
 
      vec3 pivotOffset = vec3(0.0, 0.0, scale.z);
-    rX(scarfPos, _TombScarfRot + ((t - 0.5)* 0.15) + SmoothTriangleWave((iTime + 1.45) * 0.1) * 0.3 );
+    rX(scarfPos, _TombScarfRot + ((t - 0.5)* 0.15) + SmoothTriangleWave(TRI_RATE_01 * iTime + 0.145) * 0.3 );
 
     float scarf = sdBox(scarfPos - pivotOffset , scale);
     return scarf;

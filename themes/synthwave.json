@@ -1,19 +1,19 @@
 {
-  "name": "Journey",
+  "name": "Synthwave",
   "colors": {
-    "bg0": "#f3c37a",
-    "bg1": "#edab5f",
-    "bg2": "#e69a48",
-    "bg3": "#f7d39a",
-    "border": "#72180e",
-    "accent1": "#8f1b0a",
-    "accent2": "#f16314",
-    "text": "#72180e",
-    "text_dim": "#8f1b0a",
-    "red": "#72180e",
-    "green": "#8f1b0a",
-    "blue": "#f16314",
-    "inactive": "#edab5f",
+    "bg0": "#1a0b2e",
+    "bg1": "#241040",
+    "bg2": "#2e1654",
+    "bg3": "#0f0720",
+    "border": "#ff2a93",
+    "accent1": "#cc18eb",
+    "accent2": "#ffcc66",
+    "text": "#ffd1f5",
+    "text_dim": "#b06bd6",
+    "red": "#ff2a93",
+    "green": "#36e0d4",
+    "blue": "#6619b3",
+    "inactive": "#241040",
     "saturation": 0.15
   },
   "hyprland": {
@@ -47,25 +47,25 @@
     "size": 12
   },
   "gtk": {
-    "color_scheme": "prefer-light",
-    "theme": "Adwaita"
+    "color_scheme": "prefer-dark",
+    "theme": "Adwaita-dark"
   },
   "waybar": {
     "height": 34,
-    "separator": "\u06b6",
+    "separator": "\u039B",
     "opacity": 0.82,
     "border_width": 2,
     "workspace_labels": [
-      "۱",
-      "۲",
-      "۳",
-      "۴",
-      "۵",
-      "۶",
-      "۷",
-      "۸",
-      "۹",
-      "۱۰"
+      "I",
+      "II",
+      "III",
+      "IV",
+      "V",
+      "VI",
+      "VII",
+      "VIII",
+      "IX",
+      "X"
     ]
   },
   "wallpapers": {
@@ -74,7 +74,7 @@
     "videos": [],
     "shaders": [
       {
-        "path": "journey/journey.frag",
+        "path": "synthwave/sunset.frag",
         "duration_seconds": 20,
         "fps": 30,
         "width": 1920,
