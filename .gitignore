@@ -20,6 +20,7 @@ themes/.lottie-cache/
 .config/hypr/scripts/wallpaper-cycler.sh
 .config/hypr/scripts/wallpaper-switch.sh
 .config/hypr/scripts/temperature.sh
+.config/hypr/monitors.lua
 .config/waybar/config.jsonc
 .config/waybar/style.css
 .config/wofi/style.css
