@@ -1,0 +1,86 @@
+{
+  "name": "Dune",
+  "colors": {
+    "bg0": "#FCF7F2",
+    "bg1": "#F5EAE0",
+    "bg2": "#EBD9C7",
+    "bg3": "#D9BFA6",
+    "border": "#6E3818",
+    "accent1": "#874A24",
+    "accent2": "#673115",
+    "text": "#1A0A04",
+    "text_dim": "#5C2A10",
+    "red": "#962614",
+    "green": "#3D5C2C",
+    "blue": "#2A4868",
+    "inactive": "#B59A82",
+    "saturation": 0.30
+  },
+  "hyprland": {
+    "border_size": 2,
+    "rounding": 4,
+    "gaps_in": 4,
+    "gaps_out": 16,
+    "shadow_range": 8,
+    "shadow_render_power": 3,
+    "blur_size": 5,
+    "blur_passes": 2,
+    "blur_vibrancy": 0.2,
+    "active_opacity": 1.0,
+    "inactive_opacity": 0.93,
+    "animation_speed_global": 12,
+    "animation_speed_border": 6,
+    "animation_speed_windows": 5.5,
+    "animation_speed_windows_in": 5,
+    "animation_speed_windows_out": 2,
+    "animation_speed_fade_in": 2.5,
+    "animation_speed_fade_out": 2,
+    "animation_speed_workspaces": 3
+  },
+  "font": {
+    "family": "JetBrainsMono Nerd Font",
+    "fallback": [
+      "FontAwesome",
+      "Roboto",
+      "sans-serif"
+    ],
+    "size": 12
+  },
+  "gtk": {
+    "color_scheme": "prefer-light",
+    "theme": "Adwaita"
+  },
+  "waybar": {
+    "height": 34,
+    "separator": "\u2638",
+    "opacity": 0.82,
+    "border_width": 2,
+    "workspace_labels": [
+      "I",
+      "II",
+      "III",
+      "IV",
+      "V",
+      "VI",
+      "VII",
+      "VIII",
+      "IX",
+      "X"
+    ]
+  },
+  "wallpapers": {
+    "fit_mode": "cover",
+    "images": [],
+    "videos": [],
+    "shaders": [
+      {
+        "path": "dune/arrakeen.frag",
+        "duration_seconds": 20,
+        "fps": 30,
+        "width": 1920,
+        "height": 1080
+      }
+    ],
+    "cycle_interval": 300
+  }
+}
