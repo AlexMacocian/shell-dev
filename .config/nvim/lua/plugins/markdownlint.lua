@@ -11,23 +11,21 @@ return {
     "mason-org/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      add_unique(opts.ensure_installed, "prettier")
+      add_unique(opts.ensure_installed, "mdformat")
     end,
   },
   {
     "stevearc/conform.nvim",
     opts = function(_, opts)
       opts.formatters = opts.formatters or {}
+      opts.formatters_by_ft = opts.formatters_by_ft or {}
 
-      -- markdownlint can fix rules like heading spacing, but MD013 is not fixable;
-      -- Prettier wraps Markdown prose before markdownlint handles its fixable rules.
-      opts.formatters.prettier = vim.tbl_deep_extend("force", opts.formatters.prettier or {}, {
-        append_args = function(_, ctx)
-          if vim.tbl_contains({ "markdown", "markdown.mdx" }, vim.bo[ctx.buf].filetype) then
-            return { "--prose-wrap", "always", "--print-width", "80" }
-          end
-          return {}
-        end,
+      opts.formatters_by_ft.markdown = { "mdformat", "markdownlint-cli2", "markdown-toc" }
+
+      -- markdownlint can report MD013, but cannot fix line length.
+      -- mdformat wraps prose while leaving link-only TOCs, tables, and code blocks stable.
+      opts.formatters.mdformat = vim.tbl_deep_extend("force", opts.formatters.mdformat or {}, {
+        args = { "--wrap", "80", "--number", "--extensions", "gfm", "-" },
       })
 
       opts.formatters["markdownlint-cli2"] =

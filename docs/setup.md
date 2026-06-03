@@ -22,6 +22,9 @@ bash linux/init-deps.sh
 # Symlinks, SDDM autologin
 bash linux/init-symlinks.sh
 
+# Neovim formatter plugins after Mason installs mdformat
+bash linux/init-nvim-tools.sh
+
 # Custom desktop entries (work apps, etc.)
 bash linux/init-desktop-entries.sh
 
