@@ -12,6 +12,7 @@ public class OmniLauncherConfigGenerator : IGenerator
         var c = theme.Colors;
         var p = PaletteResolver.Resolve(theme);
         var f = theme.Font;
+        var selectedBg = ColorHelper.MixColors(p.Accent1, c.Bg0, 0.72);
 
         var config = new
         {
@@ -29,7 +30,7 @@ public class OmniLauncherConfigGenerator : IGenerator
                 foreground = p.Text,
                 idle = p.TextDim,
                 accent = p.Accent1,
-                overlayStrong = p.SelectionBg,
+                overlayStrong = selectedBg,
                 overlayWeak = c.Bg2,
                 border = p.Border,
             },

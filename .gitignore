@@ -34,6 +34,7 @@ themes/.lottie-cache/
 .config/kitty/kitty.conf
 .config/nvim/lua/plugins/colorscheme.lua
 .config/Code/User/settings.json
+.config/omni-launcher/config.json
 .config/hyprchat/theme.jsonc
 .config/quick-visor/theme.jsonc
 .config/hyprchat/memory/*
