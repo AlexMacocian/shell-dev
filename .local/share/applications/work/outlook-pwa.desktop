@@ -2,8 +2,8 @@
 Type=Application
 Name=[WORK] Microsoft Outlook
 Comment=Microsoft Outlook (PWA)
-Exec=microsoft-edge-stable --app=https://outlook.office.com
+Exec=/bin/sh -lc "exec \\$HOME/.config/hypr/scripts/edge-auto-scale.sh --app=https://outlook.office.com"
 Icon=outlook
 Terminal=false
-Categories=Network;Email;Work;
+Categories=Network;Email;Office;
 StartupWMClass=outlook.office.com

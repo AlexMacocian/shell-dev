@@ -1,7 +1,7 @@
 # Theme Engine
 
 A .NET console app that reads a theme JSON and generates configs for Hyprland,
-waybar, kitty, neovim, VS Code, Firefox, dunst, wofi, GTK, and hyprlock.
+waybar, kitty, neovim, VS Code, Firefox, dunst, wofi, omni-launcher, GTK, and hyprlock.
 
 ## Usage
 

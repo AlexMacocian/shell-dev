@@ -38,6 +38,10 @@ bash linux/init-intune.sh
 bash linux/apply-theme.sh "Scarlet Rot" --restart
 ```
 
+The app launcher is `omni-launcher` from the AUR. `init-deps.sh` installs it
+through `linux/deps-aur.txt`, `init-symlinks.sh` links
+`.config/omni-launcher`, and Hyprland starts its daemon once per session.
+
 ### Machine-specific
 
 After running `init-symlinks.sh`, edit `~/.config/hypr/monitors.conf` for your

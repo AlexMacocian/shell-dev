@@ -2,8 +2,8 @@
 Type=Application
 Name=[WORK] Microsoft Teams
 Comment=Microsoft Teams (PWA)
-Exec=microsoft-edge-stable --app=https://teams.microsoft.com
+Exec=/bin/sh -lc "exec \\$HOME/.config/hypr/scripts/edge-auto-scale.sh --app=https://teams.microsoft.com"
 Icon=teams
 Terminal=false
-Categories=Network;Chat;Work;
+Categories=Network;Chat;Office;
 StartupWMClass=teams.microsoft.com

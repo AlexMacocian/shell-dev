@@ -1,0 +1,19 @@
+{
+  "fontFamily": "JetBrainsMono Nerd Font",
+  "fontSize": 16,
+  "giphyApiKey": "",
+  "panelWidth": 720,
+  "panelHeight": 520,
+  "padding": 5,
+  "spacing": 5,
+  "radius": 8,
+  "colors": {
+    "background": "#1c1c1c",
+    "foreground": "#ebdbb2",
+    "idle": "#a89984",
+    "accent": "#b8bb26",
+    "overlayStrong": "#FCD374",
+    "overlayWeak": "#303030",
+    "border": "#fabd2f"
+  }
+}

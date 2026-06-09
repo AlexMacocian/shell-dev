@@ -2,7 +2,7 @@
 Type=Application
 Name=[WORK] Microsoft Edge
 Comment=Microsoft Edge with work profile
-Exec=microsoft-edge-stable --profile-directory="Default"
+Exec=/bin/sh -lc "exec \\$HOME/.config/hypr/scripts/edge-auto-scale.sh --profile-directory=Default"
 Icon=microsoft-edge
 Terminal=false
-Categories=Network;WebBrowser;Work;
+Categories=Network;WebBrowser;Office;
