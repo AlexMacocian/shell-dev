@@ -6,3 +6,4 @@ omni-launcher
 rlottie
 lottieconv
 glslviewer
+quick-visor

@@ -35,6 +35,7 @@ themes/.lottie-cache/
 .config/nvim/lua/plugins/colorscheme.lua
 .config/Code/User/settings.json
 .config/hyprchat/theme.jsonc
+.config/quick-visor/theme.jsonc
 .config/hyprchat/memory/*
 
 # Neovim packages

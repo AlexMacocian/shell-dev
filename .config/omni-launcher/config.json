@@ -8,12 +8,12 @@
   "spacing": 5,
   "radius": 8,
   "colors": {
-    "background": "#1c1c1c",
-    "foreground": "#ebdbb2",
-    "idle": "#a89984",
-    "accent": "#b8bb26",
-    "overlayStrong": "#FCD374",
-    "overlayWeak": "#303030",
-    "border": "#fabd2f"
+    "background": "#080E18",
+    "foreground": "#E4E8F0",
+    "idle": "#B8C4D8",
+    "accent": "#A7CFFF",
+    "overlayStrong": "#70B3FF",
+    "overlayWeak": "#2A497C",
+    "border": "#7AB8FF"
   }
 }

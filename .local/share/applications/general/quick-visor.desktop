@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Quick-Visor
+Comment=Display manager based on Quickshell with Hyprland support
+Exec=quick-visor
+Terminal=false
+Categories=Settings;System;
