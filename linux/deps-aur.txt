@@ -7,3 +7,4 @@ rlottie
 lottieconv
 glslviewer
 quick-visor
+rainbeau
