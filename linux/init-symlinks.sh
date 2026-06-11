@@ -48,6 +48,21 @@ if [[ -d "$WALL_SOURCE" ]]; then
   ln -sfn "$WALL_SOURCE" "$WALL_TARGET"
 fi
 
+# Symlink themes into rainbeau config dir so `rainbeau select --themes-dir ~/.config/rainbeau/themes/` works
+THEMES_SOURCE="$REPO_ROOT/themes"
+THEMES_TARGET="$HOME/.config/rainbeau/themes"
+if [[ -d "$THEMES_SOURCE" ]]; then
+  mkdir -p "$HOME/.config/rainbeau"
+  if [[ -e "$THEMES_TARGET" && ! -L "$THEMES_TARGET" ]]; then
+    BACKUP="$THEMES_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
+    echo "Backing up existing themes dir: $THEMES_TARGET -> $BACKUP"
+    mv "$THEMES_TARGET" "$BACKUP"
+  fi
+  echo "Linking themes:"
+  echo "  $THEMES_SOURCE -> $THEMES_TARGET"
+  ln -sfn "$THEMES_SOURCE" "$THEMES_TARGET"
+fi
+
 # Symlink VS Code settings.json (file-level, not the whole User dir)
 VSCODE_SOURCE="$REPO_ROOT/.config/Code/User/settings.json"
 VSCODE_TARGET="$HOME/.config/Code/User/settings.json"

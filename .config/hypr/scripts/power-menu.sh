@@ -10,6 +10,6 @@ case "$selected" in
     *Reboot*) systemctl reboot ;;
     *Suspend*) systemctl suspend ;;
     *Lock*) hyprctl dispatch exec hyprlock ;;
-    *Change\ Theme*) ~/.config/hypr/scripts/theme-picker.sh ;;
+    *Change\ Theme*) rainbeau select --themes-dir ~/.config/rainbeau/themes/ ;;
     *Logout*) hyprctl dispatch exit ;;
 esac

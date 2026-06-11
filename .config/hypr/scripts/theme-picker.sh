@@ -54,4 +54,4 @@ if [[ -z "$theme_file" ]]; then
 fi
 
 # Apply the theme with restart
-rainbeau "$theme_file"
+rainbeau select "$theme_file"
