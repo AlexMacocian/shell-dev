@@ -9,8 +9,8 @@ if [[ ! -f "$DEPS_FILE" ]]; then
 fi
 
 echo "Updating package database..."
-sudo pacman -Sy --needed --noconfirm archlinux-keyring >/dev/null 2>&1 || true
-sudo pacman -Syu --noconfirm
+sudo pacman -Sy --needed archlinux-keyring >/dev/null 2>&1 || true
+sudo pacman -Syu
 
 # Read deps, ignore blank lines and comments
 mapfile -t DEPS < <(grep -vE '^\s*($|#)' "$DEPS_FILE" | sed 's/\r$//;s/[[:space:]]*$//')
@@ -33,7 +33,7 @@ if [[ -f "$AUR_DEPS_FILE" ]]; then
     if [[ ${#AUR_DEPS[@]} -gt 0 ]]; then
       echo
       echo "Installing AUR packages via $AUR_HELPER..."
-      "$AUR_HELPER" -S --needed --noconfirm "${AUR_DEPS[@]}"
+      "$AUR_HELPER" -S --needed "${AUR_DEPS[@]}"
     fi
   else
     echo "WARNING: No AUR helper found (paru/yay). Skipping AUR packages." >&2
@@ -52,7 +52,7 @@ if [[ -f "$DOTNET_DEPS_FILE" ]]; then
     if [[ -f "$FISH_CONFIG" ]]; then
       if ! grep -q "fish_add_path.*\.dotnet/tools" "$FISH_CONFIG"; then
         echo "Adding ~/.dotnet/tools to fish PATH..."
-        echo 'fish_add_path ~/.dotnet/tools' >> "$FISH_CONFIG"
+        echo 'fish_add_path ~/.dotnet/tools' >>"$FISH_CONFIG"
       fi
     fi
 
@@ -60,7 +60,7 @@ if [[ -f "$DOTNET_DEPS_FILE" ]]; then
     for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
       if [[ -f "$rc" ]] && ! grep -q '\.dotnet/tools' "$rc"; then
         echo "Adding ~/.dotnet/tools to PATH in $rc..."
-        echo 'export PATH="$HOME/.dotnet/tools:$PATH"' >> "$rc"
+        echo 'export PATH="$HOME/.dotnet/tools:$PATH"' >>"$rc"
       fi
     done
     while IFS= read -r tool || [[ -n "$tool" ]]; do
@@ -73,7 +73,7 @@ if [[ -f "$DOTNET_DEPS_FILE" ]]; then
         echo "Installing $tool..."
         dotnet tool install -g "$tool"
       fi
-    done < "$DOTNET_DEPS_FILE"
+    done <"$DOTNET_DEPS_FILE"
   else
     echo "WARNING: dotnet not found. Skipping .NET global tool installs." >&2
   fi
