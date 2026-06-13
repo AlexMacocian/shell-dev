@@ -10,7 +10,7 @@ mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.local/share/nvim"
 
 # Configs to symlink: each entry is a directory under .config/
-CONFIGS=(nvim hypr waybar dunst gtk-3.0 kitty wofi firefox-theme hyprchat omni-launcher quick-visor)
+CONFIGS=(nvim hypr waybar dunst gtk-3.0 kitty wofi firefox-theme hyprchat omni-launcher quick-visor fish)
 
 for cfg in "${CONFIGS[@]}"; do
   SOURCE="$REPO_ROOT/.config/$cfg"
@@ -69,7 +69,7 @@ VSCODE_TARGET="$HOME/.config/Code/User/settings.json"
 mkdir -p "$(dirname "$VSCODE_SOURCE")"
 # Create an empty settings.json in the repo if it doesn't exist yet
 if [[ ! -f "$VSCODE_SOURCE" ]]; then
-  echo '{}' > "$VSCODE_SOURCE"
+  echo '{}' >"$VSCODE_SOURCE"
   echo "Created empty VS Code settings.json in repo"
 fi
 mkdir -p "$HOME/.config/Code/User"
@@ -98,7 +98,7 @@ ln -sfn "$EDGE_FLAGS_SOURCE" "$EDGE_FLAGS_TARGET"
 MONITORS_CONF="$REPO_ROOT/.config/hypr/monitors.conf"
 if [[ ! -f "$MONITORS_CONF" ]]; then
   echo "Creating default monitors.conf — edit this for your machine's displays"
-  cat > "$MONITORS_CONF" << 'EOF'
+  cat >"$MONITORS_CONF" <<'EOF'
 # Machine-specific monitor configuration
 # This file is not tracked in git — edit per machine
 # See https://wiki.hypr.land/Configuring/Monitors/
@@ -109,7 +109,7 @@ fi
 
 # Configure SDDM autologin for current user (machine-specific)
 echo "Configuring SDDM autologin for user: $USER"
-sudo tee /etc/sddm.conf > /dev/null <<EOF
+sudo tee /etc/sddm.conf >/dev/null <<EOF
 [Autologin]
 User=$USER
 Session=hyprland
