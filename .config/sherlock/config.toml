@@ -1,0 +1,16 @@
+[providers.sherlock-cli]
+issuer = "https://id.alexandru.macocian.me/application/o/sherlock-cli/"
+client_id = "1FN3B6EsTXwlN0qALiCoaKJLM23yuru80bHp5WfS"
+
+[services.gitea]
+issuer = "https://gitea.alexandru.macocian.me"
+client_id = "6d3de919-2f58-4981-8e68-c41bc97c6df5"
+base_url = "https://gitea.alexandru.macocian.me"
+
+[services.grafana]
+provider = "sherlock-cli"
+base_url = "https://grafana.alexandru.macocian.me"
+
+[services.gssh]
+provider = "sherlock-cli"
+base_url = "https://terminal.alexandru.macocian.me"

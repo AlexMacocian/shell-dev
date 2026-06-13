@@ -1,5 +1,5 @@
 # fish completion for sherlock.
-# Installed by install.sh into $__fish_config_dir/completions/sherlock.fish
+# Installed by the installer into $__fish_config_dir/completions/sherlock.fish
 # when a fish config directory is present. Hand-maintained: keep in sync
 # with cmd/sherlock/main.go (subcommands) and internal/agent (agents).
 
@@ -7,6 +7,7 @@
 complete -c sherlock -n '__fish_use_subcommand' -f -a 'status'  -d 'Show wallet contents (one entry per service)'
 complete -c sherlock -n '__fish_use_subcommand' -f -a 'logout'  -d "Forget all stored tokens, or just one service's"
 complete -c sherlock -n '__fish_use_subcommand' -f -a 'run'     -d 'Spawn an agent (run <agent> [args...])'
+complete -c sherlock -n '__fish_use_subcommand' -f -a 'update'  -d 'Update sherlock + MCPs to the latest release'
 complete -c sherlock -n '__fish_use_subcommand' -f -a 'version' -d 'Print the sherlock version and exit'
 complete -c sherlock -n '__fish_use_subcommand' -f -a 'help'    -d 'Show usage'
 
@@ -25,6 +26,9 @@ complete -c sherlock -n '__fish_seen_subcommand_from run' -f -a 'claude'  -d 'An
 complete -c sherlock -n '__fish_seen_subcommand_from logout' -f -a 'gitea'   -d 'Forget the gitea session'
 complete -c sherlock -n '__fish_seen_subcommand_from logout' -f -a 'grafana' -d 'Forget the grafana session'
 complete -c sherlock -n '__fish_seen_subcommand_from logout' -f -a 'gssh'    -d 'Forget the gssh session'
+
+# ── `sherlock update [--force]` ──────────────────────────────────────
+complete -c sherlock -n '__fish_seen_subcommand_from update' -l force -s f -f -d 'Reinstall the latest release even if not newer'
 
 # ── Top-level flags ──────────────────────────────────────────────────
 complete -c sherlock -n '__fish_use_subcommand' -l version -s v -f -d 'Print the sherlock version and exit'

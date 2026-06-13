@@ -1,6 +1,7 @@
 # Machine-specific configs (not shared across machines)
 .config/hypr/monitors.conf
 .config/hypr/wallpapers
+.config/fish/fish_variables
 
 # .NET build output
 bin/

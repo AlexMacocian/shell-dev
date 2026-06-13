@@ -10,7 +10,7 @@ mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.local/share/nvim"
 
 # Configs to symlink: each entry is a directory under .config/
-CONFIGS=(nvim hypr waybar dunst gtk-3.0 kitty wofi firefox-theme hyprchat omni-launcher quick-visor fish)
+CONFIGS=(nvim hypr waybar dunst gtk-3.0 kitty wofi firefox-theme hyprchat omni-launcher quick-visor sherlock)
 
 for cfg in "${CONFIGS[@]}"; do
   SOURCE="$REPO_ROOT/.config/$cfg"
@@ -33,6 +33,45 @@ for cfg in "${CONFIGS[@]}"; do
   echo "  $SOURCE -> $TARGET"
   ln -sfn "$SOURCE" "$TARGET"
 done
+
+# Fish writes universal variables to fish_variables, so link config entries individually
+# instead of symlinking the whole ~/.config/fish directory.
+FISH_SOURCE="$REPO_ROOT/.config/fish"
+FISH_TARGET="$HOME/.config/fish"
+
+if [[ ! -d "$FISH_SOURCE" ]]; then
+  echo "Creating fish directory in repo at $FISH_SOURCE"
+  mkdir -p "$FISH_SOURCE"
+fi
+
+if [[ -L "$FISH_TARGET" ]]; then
+  echo "Replacing existing fish config symlink with a real directory: $FISH_TARGET"
+  rm "$FISH_TARGET"
+elif [[ -e "$FISH_TARGET" && ! -d "$FISH_TARGET" ]]; then
+  BACKUP="$FISH_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
+  echo "Backing up existing fish config path: $FISH_TARGET -> $BACKUP"
+  mv "$FISH_TARGET" "$BACKUP"
+fi
+
+mkdir -p "$FISH_TARGET"
+
+shopt -s nullglob dotglob
+for SOURCE in "$FISH_SOURCE"/*; do
+  NAME="$(basename "$SOURCE")"
+  [[ "$NAME" == "fish_variables" ]] && continue
+
+  TARGET="$FISH_TARGET/$NAME"
+  if [[ -e "$TARGET" && ! -L "$TARGET" ]]; then
+    BACKUP="$TARGET.backup.$(date +%Y%m%d_%H%M%S)"
+    echo "Backing up existing fish config entry: $TARGET -> $BACKUP"
+    mv "$TARGET" "$BACKUP"
+  fi
+
+  echo "Linking fish/$NAME:"
+  echo "  $SOURCE -> $TARGET"
+  ln -sfn "$SOURCE" "$TARGET"
+done
+shopt -u nullglob dotglob
 
 # Symlink wallpapers into hypr config dir so hyprpaper can find them
 WALL_SOURCE="$REPO_ROOT/themes"
