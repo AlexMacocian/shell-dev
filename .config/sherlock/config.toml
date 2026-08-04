@@ -1,3 +1,10 @@
+[oauth]
+browser = "firefox"
+
+[agents.copilot-local]
+command = "copilot-local"
+backend = "copilot"
+
 [providers.sherlock-cli]
 issuer = "https://id.alexandru.macocian.me/application/o/sherlock-cli/"
 client_id = "1FN3B6EsTXwlN0qALiCoaKJLM23yuru80bHp5WfS"
@@ -14,3 +21,9 @@ base_url = "https://grafana.alexandru.macocian.me"
 [services.gssh]
 provider = "sherlock-cli"
 base_url = "https://terminal.alexandru.macocian.me"
+
+# Added by sherlock because this section was missing from config.toml.
+# Template copied from config.example.toml; fill placeholders before use.
+[services.searxng]
+provider = "sherlock-cli"
+base_url = "https://search.alexandru.macocian.me"

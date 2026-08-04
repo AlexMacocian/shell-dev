@@ -6,6 +6,7 @@ source /usr/share/cachyos-fish-config/cachyos-config.fish
 #    # smth smth
 #end
 fish_add_path ~/.dotnet/tools
+fish_add_path ~/go/bin
 
 # BEGIN Agency MANAGED BLOCK
 fish_add_path "~/.config/agency/CurrentVersion"
