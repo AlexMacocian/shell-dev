@@ -2,7 +2,7 @@ return {
   "kais-radwan/ascii-mermaid",
   ft = "markdown",
   opts = {
-    display_mode = "hybrid",
+    display_mode = "inline",
     use_ascii = false,
     auto = true,
     debounce_ms = 500,
