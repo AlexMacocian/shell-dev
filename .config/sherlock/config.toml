@@ -22,8 +22,6 @@ base_url = "https://grafana.alexandru.macocian.me"
 provider = "sherlock-cli"
 base_url = "https://terminal.alexandru.macocian.me"
 
-# Added by sherlock because this section was missing from config.toml.
-# Template copied from config.example.toml; fill placeholders before use.
 [services.searxng]
 provider = "sherlock-cli"
 base_url = "https://search.alexandru.macocian.me"
