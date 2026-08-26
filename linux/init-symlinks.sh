@@ -11,9 +11,11 @@ mkdir -p "$HOME/.local/share/nvim"
 
 # Configs to symlink: each entry is a directory under .config/
 # waybar, dunst and wofi are gone — omni-shell provides the bar, the
-# notification daemon and the power menu, and is configured by rainbeau into
-# ~/.config/omni-shell (generated, so not symlinked from this repo).
-CONFIGS=(nvim hypr gtk-3.0 kitty firefox-theme hyprchat omni-launcher quick-visor sherlock)
+# notification daemon and the power menu.
+# omni-shell holds both tracked Control Center extensions and the config.json
+# rainbeau generates; the latter is gitignored so the whole directory can be
+# linked.
+CONFIGS=(nvim hypr gtk-3.0 kitty firefox-theme hyprchat omni-launcher omni-shell quick-visor sherlock)
 
 for cfg in "${CONFIGS[@]}"; do
   SOURCE="$REPO_ROOT/.config/$cfg"

@@ -49,4 +49,4 @@ if [[ -z "$THEME_FILE" ]]; then
 fi
 
 shift
-rainbeau "$THEME_FILE" "$@"
+rainbeau select "$THEME_FILE" "$@"

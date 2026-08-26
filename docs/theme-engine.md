@@ -13,7 +13,7 @@ bash linux/apply-theme.sh "Elden Ring"
 Or directly:
 
 ```bash
-rainbeau themes/elden-ring.json
+rainbeau select themes/elden-ring.json
 ```
 
 ## Wallpapers

@@ -15,7 +15,7 @@
 | `SUPER + SHIFT + S` | Screenshot region |
 | `SUPER + SHIFT + R` | Record region |
 | `SUPER + SHIFT + W` | Toggle animated wallpaper |
-| `SUPER + SHIFT + T` | Theme picker |
+| `SUPER + SHIFT + T` | Theme picker (also `SUPER + X` → `T`) |
 
 ## Shell (omni-shell)
 
@@ -44,11 +44,18 @@ work as mnemonics. Arrows move, `Enter` activates, `Esc` closes.
 | `V` | Toggle VPN |
 | `D` | Toggle Do Not Disturb |
 | `E` | Cycle power profile |
+| `T` | Change theme (extension, see below) |
 | `A` | Audio output picker |
 
 Log off, restart and power off are two-step: the first press arms the action,
 the second confirms, and the arm expires after 5s. Disconnecting Wi-Fi and
 disconnecting or forgetting a Bluetooth device are guarded the same way.
+
+The Theme tile is not built into omni-shell — it is a Control Center extension
+in [`.config/omni-shell/extensions/theme.qml`](../.config/omni-shell/extensions/theme.qml),
+the glue between omni-shell and rainbeau. Both are standalone projects that know
+nothing about each other, so the integration lives here. Delete the file and the
+tile disappears; nothing else changes.
 
 ## Bar clicks
 
