@@ -1,0 +1,41 @@
+# Packages we explicitly do not want on our machines.
+#
+# init-deps.sh removes these (pacman -Rns) after the install passes, so the
+# replacement is always in place before the old package goes away. Entries are
+# ignored when not installed, and a package listed here must not also appear in
+# deps.txt or deps-aur.txt.
+#
+# One list covers both repo and AUR packages, unlike the install side which
+# needs deps.txt and deps-aur.txt. Installing differs by source; removing does
+# not — an AUR package is an ordinary entry in the local pacman database once
+# built (`pacman -Qi <pkg>` reports "Installed From: None"), and `paru -Rns` is
+# a passthrough to pacman. `bluetuith` below is an AUR package and is removed
+# by the same pacman call as the repo packages.
+#
+# Everything below was replaced by omni-shell, which owns the bar, the
+# notification daemon, the power menu and the Wi-Fi/Bluetooth/audio panels.
+
+# Bar — replaced by omni-shell's Bar.qml.
+# NOTE: rainbeau must demote waybar from depends to optdepends before this
+# removal can succeed (pactree -r waybar shows rainbeau as a dependant).
+waybar
+
+# Notification daemon — replaced by omni-shell's NotificationService, which
+# owns the org.freedesktop.Notifications D-Bus name itself. Two daemons cannot
+# both hold that name, so dunst has to go rather than merely be disabled.
+dunst
+
+# Launcher and power menu — replaced by omni-launcher and the omni-shell
+# Control Center power row (SUPER+ALT+P).
+wofi
+
+# Bluetooth TUI — replaced by the Control Center Bluetooth section. Devices
+# that demand a displayed passkey hand off to bluetui instead, which is the
+# package omni-shell actually optdepends on.
+bluetuith
+
+# Audio TUI — was only ever the waybar pulseaudio click target. The Control
+# Center audio section covers volume and output switching.
+# pavucontrol is deliberately kept: it still does per-app routing, input
+# devices and card profiles, none of which the Control Center exposes.
+pulsemixer

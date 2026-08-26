@@ -20,13 +20,11 @@ wl-clipboard
 wf-recorder
 hyprland
 hyprpaper
-waybar
 kitty
-dunst
 pavucontrol
-pulsemixer
-wofi
 hyprlock
+pacman-contrib
+power-profiles-daemon
 xdg-desktop-portal-gtk
 nautilus
 fprintd

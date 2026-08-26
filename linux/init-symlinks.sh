@@ -10,7 +10,10 @@ mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.local/share/nvim"
 
 # Configs to symlink: each entry is a directory under .config/
-CONFIGS=(nvim hypr waybar dunst gtk-3.0 kitty wofi firefox-theme hyprchat omni-launcher quick-visor sherlock)
+# waybar, dunst and wofi are gone — omni-shell provides the bar, the
+# notification daemon and the power menu, and is configured by rainbeau into
+# ~/.config/omni-shell (generated, so not symlinked from this repo).
+CONFIGS=(nvim hypr gtk-3.0 kitty firefox-theme hyprchat omni-launcher quick-visor sherlock)
 
 for cfg in "${CONFIGS[@]}"; do
   SOURCE="$REPO_ROOT/.config/$cfg"
@@ -32,6 +35,24 @@ for cfg in "${CONFIGS[@]}"; do
   echo "Linking $cfg:"
   echo "  $SOURCE -> $TARGET"
   ln -sfn "$SOURCE" "$TARGET"
+done
+
+# Configs this repo used to manage. Their symlinks point into the repo, so once
+# the directory is gone they dangle — and a dangling ~/.config/waybar is enough
+# for waybar to start with an empty config instead of not starting at all.
+# Only ever removes a symlink that resolves back into this repo; a real
+# directory (someone's own config) is left alone.
+STALE_CONFIGS=(waybar dunst wofi)
+
+for cfg in "${STALE_CONFIGS[@]}"; do
+  TARGET="$HOME/.config/$cfg"
+  [[ -L "$TARGET" ]] || continue
+
+  LINK_DEST="$(readlink "$TARGET")"
+  if [[ "$LINK_DEST" == "$REPO_ROOT"/* && ! -e "$TARGET" ]]; then
+    echo "Removing stale symlink for retired config: $TARGET -> $LINK_DEST"
+    rm "$TARGET"
+  fi
 done
 
 # Fish writes universal variables to fish_variables, so link config entries individually

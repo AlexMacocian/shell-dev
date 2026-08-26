@@ -1,8 +1,8 @@
 # Theme Engine
 
 A Go console app that reads a theme JSON and generates configs for Hyprland,
-waybar, kitty, neovim, VS Code, Firefox, dunst, wofi, omni-launcher,
-quick-visor, GTK, and hyprlock.
+omni-shell, kitty, neovim, VS Code, Firefox, omni-launcher, quick-visor, GTK,
+and hyprlock.
 
 ## Usage
 

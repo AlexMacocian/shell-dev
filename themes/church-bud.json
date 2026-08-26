@@ -68,6 +68,11 @@
       "X"
     ]
   },
+  "shell": {
+    "height": 34,
+    "opacity": 0.85,
+    "radius": 8
+  },
   "wallpapers": {
     "fit_mode": "cover",
     "images": [

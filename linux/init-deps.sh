@@ -79,5 +79,51 @@ if [[ -f "$DOTNET_DEPS_FILE" ]]; then
   fi
 fi
 
+# Remove packages we explicitly do not want (deps-uninstall.txt).
+# Runs last, so the replacements installed above are already in place before
+# anything is taken away.
+UNINSTALL_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/deps-uninstall.txt"
+if [[ -f "$UNINSTALL_FILE" ]]; then
+  mapfile -t UNWANTED < <(grep -vE '^\s*($|#)' "$UNINSTALL_FILE" | sed 's/\r$//;s/[[:space:]]*$//')
+
+  if [[ ${#UNWANTED[@]} -gt 0 ]]; then
+    # A package in both an install list and the removal list would be installed
+    # and uninstalled on every run. Fail loudly instead of flip-flopping.
+    INSTALL_LIST="$(cat "$DEPS_FILE" "$AUR_DEPS_FILE" 2>/dev/null | grep -vE '^\s*($|#)' | sed 's/\r$//;s/[[:space:]]*$//')"
+    CONFLICTS=()
+    for pkg in "${UNWANTED[@]}"; do
+      if printf '%s\n' "$INSTALL_LIST" | grep -qxF "$pkg"; then
+        CONFLICTS+=("$pkg")
+      fi
+    done
+    if [[ ${#CONFLICTS[@]} -gt 0 ]]; then
+      echo "ERROR: listed for both install and removal: ${CONFLICTS[*]}" >&2
+      echo "Remove them from deps.txt/deps-aur.txt or from deps-uninstall.txt." >&2
+      exit 1
+    fi
+
+    TO_REMOVE=()
+    for pkg in "${UNWANTED[@]}"; do
+      if pacman -Qq "$pkg" &>/dev/null; then
+        TO_REMOVE+=("$pkg")
+      fi
+    done
+
+    if [[ ${#TO_REMOVE[@]} -gt 0 ]]; then
+      echo
+      echo "Removing unwanted packages: ${TO_REMOVE[*]}"
+      # -Rns also drops now-orphaned dependencies and their config files.
+      # A failure here is not fatal: a package still required by something else
+      # should not abort the rest of the setup.
+      if ! sudo pacman -Rns "${TO_REMOVE[@]}"; then
+        echo "WARNING: could not remove some packages (still required?)." >&2
+      fi
+    else
+      echo
+      echo "No unwanted packages installed."
+    fi
+  fi
+fi
+
 echo
 echo "Dependency setup complete!"

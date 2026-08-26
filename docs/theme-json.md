@@ -42,6 +42,16 @@ See [church-bud.json](../themes/church-bud.json) for a complete example.
 drives dark/light mode globally
 - **`wallpapers.images`** / **`videos`** — paths relative to `themes/`
 - **`waybar.separator`** — glyph between status bar modules
+- **`shell`** _(optional)_ — omni-shell bar and panel surface. Each field
+  falls back to its Waybar equivalent, so themes that predate this section
+  still theme the shell correctly. Fields:
+  - `height` _(default: `waybar.height`)_ — bar height in pixels.
+  - `opacity` _(default: `waybar.opacity`)_ — opacity of the bar and every
+    panel. Sharing the Waybar value keeps the shell at the same translucency
+    as the rest of the desktop.
+  - `radius` _(default: `hyprland.rounding` × 2)_ — corner radius of the bar
+    sections and panels. Panels read as heavier than window corners at the
+    same radius, hence the doubling.
 - **`hyprland`** — border size, rounding, gaps, blur, animation speeds
 - **`font`** — family, fallback list, base size
 - **`terminal`** _(optional)_ — terminal-specific tuning. Fields:

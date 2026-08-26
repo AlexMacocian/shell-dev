@@ -3,6 +3,9 @@
 # First invocation starts recording; second invocation stops it.
 # Recordings are saved to ~/Documents/Recordings/.
 # Uses slurp for region selection on start.
+#
+# The /tmp/wf-recorder-running marker drives omni-shell's Recording module,
+# which polls for it (the old waybar module needed an RTMIN+9 signal here).
 
 RECORDINGS_DIR="$HOME/Documents/Recordings"
 
@@ -10,7 +13,6 @@ if pgrep -x wf-recorder > /dev/null; then
     # Stop recording
     pkill -INT -x wf-recorder
     rm -f /tmp/wf-recorder-running
-    pkill -RTMIN+9 waybar
     notify-send "Screen Recording" "Recording saved to $RECORDINGS_DIR"
 else
     # Select region with slurp (exits if user presses Escape)
@@ -39,10 +41,9 @@ else
     mkdir -p "$RECORDINGS_DIR"
     FILENAME="$RECORDINGS_DIR/recording-$(date +%Y%m%d-%H%M%S).mp4"
     touch /tmp/wf-recorder-running
-    pkill -RTMIN+9 waybar
     notify-send "Screen Recording" "Recording started..."
     # Run wf-recorder in a subshell so cleanup runs automatically when it exits
     (setsid wf-recorder -g "$GEOMETRY" -f "$FILENAME" > /dev/null 2>&1;
-     rm -f /tmp/wf-recorder-running; pkill -RTMIN+9 waybar) &
+     rm -f /tmp/wf-recorder-running) &
     disown
 fi
