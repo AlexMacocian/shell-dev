@@ -155,6 +155,7 @@ complete -c copilot -l remote -f -d 'Enable remote control of your session from 
 complete -c copilot -l no-remote -f -d 'Disable remote control of your session from GitHub web and mobile'
 complete -c copilot -l remote-export -f -d 'Export your session to GitHub web and mobile (read-only; does not enable remote control)'
 complete -c copilot -l no-remote-export -f -d 'Disable exporting your session to GitHub web and mobile (also disables remote control)'
+complete -c copilot -l no-eager-powershell-resolution -f -d 'Disable background PowerShell prompt resolution on Windows'
 complete -c copilot -l enable-mcp-server -r -d 'Enable an MCP server disabled in settings for this run only; nothing is persisted (can be used multiple times)'
 complete -c copilot -l max-ai-credits -r -d 'Set max AI credits for this session'
 complete -c copilot -l assisted-approval -f -d 'Review tool permission requests with the assisted-approval safety judge instead of approving them outright. Equivalent to the `assisted` mode of /permissions. Takes precedence over --allow-all-tools when the judge engages; requires --experimental or enabledFeatureFlags.AUTO_APPROVAL. (env: COPILOT_ASSISTED_APPROVAL)'
