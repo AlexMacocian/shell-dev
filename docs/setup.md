@@ -50,7 +50,7 @@ package is listed for both install and removal.
 
 ### Machine-specific
 
-After running `init-symlinks.sh`, edit `~/.config/hypr/monitors.conf` for your
+After running `init-symlinks.sh`, edit `~/.config/hypr/monitors.lua` for your
 display layout. This file is gitignored.
 
 ### Theming

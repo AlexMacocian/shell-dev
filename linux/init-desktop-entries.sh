@@ -64,24 +64,24 @@ echo
 echo "Updated $ENV_FILE:"
 cat "$ENV_FILE"
 
-# Also update hyprland.conf env line for Wayland session
-HYPR_CONF="$REPO_ROOT/.config/hypr/hyprland.conf"
+# Also update hyprland.lua env list for Wayland session
+HYPR_CONF="$REPO_ROOT/.config/hypr/hyprland.lua"
 if [[ -f "$HYPR_CONF" ]]; then
-  # Build the Hyprland env value using $HOME so it's portable
+  # hyprland.lua expands these names against $HOME itself, so only the bare
+  # directory names go in the list.
   HYPR_DIRS=""
   for d in "${EXTRA_DIRS[@]}"; do
     dir_name="$(basename "$d")"
-    HYPR_DIRS+="\$HOME/.local/share/$dir_name:"
+    [[ -n "$HYPR_DIRS" ]] && HYPR_DIRS+=", "
+    HYPR_DIRS+="\"$dir_name\""
   done
-  HYPR_DIRS+="\$HOME/.local/share:/usr/local/share:/usr/share"
-  HYPR_LINE="env = XDG_DATA_DIRS,$HYPR_DIRS"
+  HYPR_LINE="local repoDataDirs = { $HYPR_DIRS }"
 
-  if grep -q "^env = XDG_DATA_DIRS" "$HYPR_CONF"; then
-    sed -i "s|^env = XDG_DATA_DIRS,.*|$HYPR_LINE|" "$HYPR_CONF"
-    echo "Updated XDG_DATA_DIRS in hyprland.conf"
+  if grep -q "^local repoDataDirs = " "$HYPR_CONF"; then
+    sed -i "s|^local repoDataDirs = .*|$HYPR_LINE|" "$HYPR_CONF"
+    echo "Updated repoDataDirs in hyprland.lua"
   else
-    sed -i "/^env = HYPRCURSOR_SIZE/a\\\\n# Custom XDG data dirs for repo-managed desktop entries\n$HYPR_LINE" "$HYPR_CONF"
-    echo "Added XDG_DATA_DIRS to hyprland.conf"
+    echo "WARNING: no 'local repoDataDirs' line in hyprland.lua; XDG_DATA_DIRS not updated" >&2
   fi
 fi
 

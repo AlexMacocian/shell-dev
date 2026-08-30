@@ -1,6 +1,6 @@
 # Keybindings
 
-`SUPER` is the main modifier. Full config: [hyprland.conf](../.config/hypr/hyprland.conf).
+`SUPER` is the main modifier. Full config: [hyprland.lua](../.config/hypr/hyprland.lua).
 
 ## Core
 

@@ -156,16 +156,16 @@ echo "Linking Microsoft Edge flags:"
 echo "  $EDGE_FLAGS_SOURCE -> $EDGE_FLAGS_TARGET"
 ln -sfn "$EDGE_FLAGS_SOURCE" "$EDGE_FLAGS_TARGET"
 
-# Create a default monitors.conf if it doesn't exist (machine-specific, not tracked in git)
-MONITORS_CONF="$REPO_ROOT/.config/hypr/monitors.conf"
-if [[ ! -f "$MONITORS_CONF" ]]; then
-  echo "Creating default monitors.conf — edit this for your machine's displays"
-  cat >"$MONITORS_CONF" <<'EOF'
-# Machine-specific monitor configuration
-# This file is not tracked in git — edit per machine
-# See https://wiki.hypr.land/Configuring/Monitors/
+# Create a default monitors.lua if it doesn't exist (machine-specific, not tracked in git)
+MONITORS_LUA="$REPO_ROOT/.config/hypr/monitors.lua"
+if [[ ! -f "$MONITORS_LUA" ]]; then
+  echo "Creating default monitors.lua — edit this for your machine's displays"
+  cat >"$MONITORS_LUA" <<'EOF'
+-- Machine-specific monitor configuration
+-- This file is not tracked in git — edit per machine
+-- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 
-monitor = ,preferred,auto,1
+hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })
 EOF
 fi
 
