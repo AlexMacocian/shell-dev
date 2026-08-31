@@ -117,7 +117,6 @@ hl.config({
 	-- See https://wiki.hypr.land/Configuring/Layouts/Dwindle-Layout/ for more
 	dwindle = {
 		preserve_split = true,
-		smart_split = true,
 	},
 
 	-- See https://wiki.hypr.land/Configuring/Layouts/Master-Layout/ for more
