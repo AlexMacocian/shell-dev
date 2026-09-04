@@ -1,5 +1,4 @@
 mpvpaper
-hyprchat
 git-credential-manager
 omni-launcher
 omni-shell

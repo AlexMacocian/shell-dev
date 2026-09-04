@@ -12,6 +12,7 @@ p7zip
 cmake
 ninja
 dotnet-sdk
+go
 neovim
 imagemagick
 ffmpeg

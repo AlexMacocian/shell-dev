@@ -1,10 +1,19 @@
 -- Override LazyVim's Go extra: guard against nil textDocument capabilities.
 -- Fixes: lazyvim/plugins/extras/lang/go.lua:60
 --   "attempt to index field 'textDocument' (a nil value)"
+local has_go = vim.fn.executable("go") == 1
+
 return {
   {
     "neovim/nvim-lspconfig",
     opts = {
+      servers = {
+        -- nvim-lspconfig's gopls config shells out to `go env` from root_dir.
+        -- With no Go toolchain that spawn throws ENOENT from inside the
+        -- FileType autocmd, which breaks opening *any* file, not just Go ones.
+        -- gopls is useless without the toolchain anyway, so skip it entirely.
+        gopls = has_go and {} or { enabled = false },
+      },
       setup = {
         gopls = function(_, _)
           Snacks.util.lsp.on({ name = "gopls" }, function(_, client)
