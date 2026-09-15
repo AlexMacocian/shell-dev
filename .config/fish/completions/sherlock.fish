@@ -13,12 +13,18 @@ complete -c sherlock -n '__fish_use_subcommand' -f -a 'help'    -d 'Show usage'
 
 # Agent aliases are also top-level subcommands (`sherlock copilot` ==
 # `sherlock run copilot`).
-complete -c sherlock -n '__fish_use_subcommand' -f -a 'copilot' -d 'GitHub Copilot CLI (alias for run copilot)'
-complete -c sherlock -n '__fish_use_subcommand' -f -a 'claude'  -d 'Anthropic Claude Code CLI (alias for run claude)'
+complete -c sherlock -n '__fish_use_subcommand' -f -a 'copilot'  -d 'GitHub Copilot CLI (alias for run copilot)'
+complete -c sherlock -n '__fish_use_subcommand' -f -a 'claude'   -d 'Anthropic Claude Code CLI (alias for run claude)'
+complete -c sherlock -n '__fish_use_subcommand' -f -a 'codex'    -d 'OpenAI Codex CLI (alias for run codex)'
+complete -c sherlock -n '__fish_use_subcommand' -f -a 'opencode' -d 'opencode CLI (alias for run opencode)'
+complete -c sherlock -n '__fish_use_subcommand' -f -a 'goose'    -d 'Block Goose CLI (alias for run goose)'
 
 # ── `sherlock run <agent>` ───────────────────────────────────────────
-complete -c sherlock -n '__fish_seen_subcommand_from run' -f -a 'copilot' -d 'GitHub Copilot CLI'
-complete -c sherlock -n '__fish_seen_subcommand_from run' -f -a 'claude'  -d 'Anthropic Claude Code CLI'
+complete -c sherlock -n '__fish_seen_subcommand_from run' -f -a 'copilot'  -d 'GitHub Copilot CLI'
+complete -c sherlock -n '__fish_seen_subcommand_from run' -f -a 'claude'   -d 'Anthropic Claude Code CLI'
+complete -c sherlock -n '__fish_seen_subcommand_from run' -f -a 'codex'    -d 'OpenAI Codex CLI'
+complete -c sherlock -n '__fish_seen_subcommand_from run' -f -a 'opencode' -d 'opencode CLI'
+complete -c sherlock -n '__fish_seen_subcommand_from run' -f -a 'goose'    -d 'Block Goose CLI'
 
 # ── `sherlock logout [<service>]` ────────────────────────────────────
 # Offer the services sherlock ships MCPs for. logout also accepts no
