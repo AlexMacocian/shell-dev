@@ -46,7 +46,6 @@ gpt-5.4-mini\t''
 gpt-5.3-codex\t''
 gpt-5-mini\t''
 mai-code-1.1-flash\t''
-mai-code-1-flash-picker\t''
 gemini-3.8-flash\t''
 gemini-3.7-flash\t''
 gemini-3.6-flash\t''
@@ -96,7 +95,7 @@ complete -c copilot -n "__fish_copilot_needs_command" -l disable-mcp-server -d '
 complete -c copilot -n "__fish_copilot_needs_command" -l add-github-mcp-toolset -d 'Add a toolset to enable for the GitHub MCP server instead of the default CLI subset (can be used multiple times). Use "all" for all toolsets.' -r
 complete -c copilot -n "__fish_copilot_needs_command" -l add-github-mcp-tool -d 'Add a tool to enable for the GitHub MCP server instead of the default CLI subset (can be used multiple times). Use "*" for all tools.' -r
 complete -c copilot -n "__fish_copilot_needs_command" -l plugin-dir -d 'Load a plugin from a local directory (can be used multiple times). A relative path resolves against the session working directory (the --resume/--worktree/-C directory), whatever order the options appear in' -r
-complete -c copilot -n "__fish_copilot_needs_command" -l additional-mcp-config -d 'Additional MCP servers configuration as JSON string or file path (prefix with @) (can be used multiple times; augments config from ~/.copilot/mcp-config.json for this session)' -r
+complete -c copilot -n "__fish_copilot_needs_command" -l additional-mcp-config -d 'Additional MCP servers configuration as JSON string or file path (prefix with @) (can be used multiple times; augments config from ~/.copilot/mcp-config.json for this session). A relative @ path resolves against the session working directory (the --resume/--worktree/-C directory) and a leading ~/ expands to your home directory' -r
 complete -c copilot -n "__fish_copilot_needs_command" -l additional-content-exclusion-policies -d 'Additional content exclusion policies as JSON string or file path (prefix with @) (can be used multiple times)' -r
 complete -c copilot -n "__fish_copilot_needs_command" -l allow-tool -d 'Tools the CLI has permission to use; will not prompt for permission' -r
 complete -c copilot -n "__fish_copilot_needs_command" -l deny-tool -d 'Tools the CLI does not have permission to use; will not prompt for permission' -r
@@ -115,7 +114,7 @@ complete -c copilot -n "__fish_copilot_needs_command" -l host -d 'Host address t
 complete -c copilot -n "__fish_copilot_needs_command" -l port -d 'Port to listen on when in server mode (default: random available port)' -r
 complete -c copilot -n "__fish_copilot_needs_command" -l session-idle-timeout -d 'Session idle timeout in seconds (0 = disabled)' -r
 complete -c copilot -n "__fish_copilot_needs_command" -l auth-token-env -d 'Read auth token from specified environment variable (for SDK use)' -r
-complete -c copilot -n "__fish_copilot_needs_command" -l collect-debug-logs -d 'Collect debug logs for a session and save to a .tgz file (staff only)' -r
+complete -c copilot -n "__fish_copilot_needs_command" -l collect-debug-logs -d 'Collect debug logs for a session and save to a .tgz file' -r
 complete -c copilot -n "__fish_copilot_needs_command" -l collect-debug-logs-output -d 'Output path for --collect-debug-logs (default: copilot-debug-logs-<sessionId>.tgz in cwd)' -r
 complete -c copilot -n "__fish_copilot_needs_command" -l ahp -d 'Experimental: attach to an Agent Host Protocol host and run its sessions (default: ws://127.0.0.1:8765)' -r
 complete -c copilot -n "__fish_copilot_needs_command" -l environment-id -d 'Target environment id for --relay' -r
@@ -132,7 +131,7 @@ complete -c copilot -n "__fish_copilot_needs_command" -l enable-memory -d 'Enabl
 complete -c copilot -n "__fish_copilot_needs_command" -l enable-reasoning-summaries -d 'Deprecated compatibility flag (accepted but ignored)'
 complete -c copilot -n "__fish_copilot_needs_command" -l continue -d 'Resume the most recent session'
 complete -c copilot -n "__fish_copilot_needs_command" -l cloud -d 'Create a cloud sandbox session and connect to it'
-complete -c copilot -n "__fish_copilot_needs_command" -l allow-all-tools -d 'Allow all tools to run automatically without confirmation; required for non-interactive mode'
+complete -c copilot -n "__fish_copilot_needs_command" -l allow-all-tools -d 'Allow all tools to run automatically without confirmation; required for non-interactive mode. Run `copilot help environment` for what COPILOT_ALLOW_ALL accepts and what exact "true" grants'
 complete -c copilot -n "__fish_copilot_needs_command" -l allow-all-paths -d 'Disable file path verification and allow access to any path'
 complete -c copilot -n "__fish_copilot_needs_command" -l disallow-temp-dir -d 'Prevent automatic access to the system temporary directory'
 complete -c copilot -n "__fish_copilot_needs_command" -l banner -d 'Show the startup banner'
@@ -165,18 +164,18 @@ complete -c copilot -n "__fish_copilot_needs_command" -l ahp-host -d 'Experiment
 complete -c copilot -n "__fish_copilot_needs_command" -l sandbox -d 'Run this session\'s shell commands inside the OS-level sandbox for this run only (does not change your saved sandbox setting)'
 complete -c copilot -n "__fish_copilot_needs_command" -l assisted-approval -d 'Review tool permission requests with the assisted-approval safety judge instead of approving them outright. Equivalent to the `assisted` mode of /permissions. Takes precedence over --allow-all-tools when the judge engages; requires --experimental or enabledFeatureFlags.AUTO_APPROVAL. (env: COPILOT_ASSISTED_APPROVAL)'
 complete -c copilot -n "__fish_copilot_needs_command" -l embedded-host -d 'Run as an in-process FFI embedded host (Rust engine driven over the C ABI; no stdio/TCP transport)'
-complete -c copilot -n "__fish_copilot_needs_command" -l no-custom-instructions
-complete -c copilot -n "__fish_copilot_needs_command" -l no-auto-update
-complete -c copilot -n "__fish_copilot_needs_command" -l no-ask-user
-complete -c copilot -n "__fish_copilot_needs_command" -l no-color
-complete -c copilot -n "__fish_copilot_needs_command" -l no-experimental
-complete -c copilot -n "__fish_copilot_needs_command" -l no-bash-env
-complete -c copilot -n "__fish_copilot_needs_command" -l no-mouse
-complete -c copilot -n "__fish_copilot_needs_command" -l no-remote
-complete -c copilot -n "__fish_copilot_needs_command" -l no-remote-export
-complete -c copilot -n "__fish_copilot_needs_command" -l no-auto-login
-complete -c copilot -n "__fish_copilot_needs_command" -l no-sandbox
-complete -c copilot -n "__fish_copilot_needs_command" -l no-eager-powershell-resolution
+complete -c copilot -n "__fish_copilot_needs_command" -l no-custom-instructions -d 'Disable loading of custom instructions from AGENTS.md and related files'
+complete -c copilot -n "__fish_copilot_needs_command" -l no-auto-update -d 'Disable downloading CLI updates automatically. Copilot then runs the version bundled in the executable you launched rather than a newer previously downloaded one'
+complete -c copilot -n "__fish_copilot_needs_command" -l no-ask-user -d 'Disable the ask_user tool (agent works autonomously without asking questions)'
+complete -c copilot -n "__fish_copilot_needs_command" -l no-color -d 'Disable all color output'
+complete -c copilot -n "__fish_copilot_needs_command" -l no-experimental -d 'Disable experimental features'
+complete -c copilot -n "__fish_copilot_needs_command" -l no-bash-env -d 'Disable BASH_ENV support for bash shells'
+complete -c copilot -n "__fish_copilot_needs_command" -l no-mouse -d 'Disable mouse support in alt screen mode'
+complete -c copilot -n "__fish_copilot_needs_command" -l no-remote -d 'Disable remote control of your session from GitHub web and mobile'
+complete -c copilot -n "__fish_copilot_needs_command" -l no-remote-export -d 'Disable exporting your session to GitHub web and mobile (also disables remote control)'
+complete -c copilot -n "__fish_copilot_needs_command" -l no-auto-login -d 'Disable automatic login detection (stored OAuth tokens and gh CLI)'
+complete -c copilot -n "__fish_copilot_needs_command" -l no-sandbox -d 'Disable the OS-level sandbox for this run only (does not change your saved sandbox setting)'
+complete -c copilot -n "__fish_copilot_needs_command" -l no-eager-powershell-resolution -d 'Disable background PowerShell prompt resolution on Windows'
 complete -c copilot -n "__fish_copilot_needs_command" -s h -l help -d 'Print help'
 complete -c copilot -n "__fish_copilot_needs_command" -f -a "app" -d 'Open the GitHub Copilot app'
 complete -c copilot -n "__fish_copilot_needs_command" -f -a "login" -d 'Authenticate with Copilot'
@@ -203,9 +202,9 @@ complete -c copilot -n "__fish_copilot_using_subcommand login" -s h -l help -d '
 complete -c copilot -n "__fish_copilot_using_subcommand help" -s h -l help -d 'Print help (see more with \'--help\')'
 complete -c copilot -n "__fish_copilot_using_subcommand init" -l sandbox -d 'Run this session\'s shell commands inside the OS-level sandbox for this run only (does not change your saved sandbox setting)'
 complete -c copilot -n "__fish_copilot_using_subcommand init" -l experimental -d 'Enable experimental features'
-complete -c copilot -n "__fish_copilot_using_subcommand init" -l no-sandbox
-complete -c copilot -n "__fish_copilot_using_subcommand init" -l no-experimental
-complete -c copilot -n "__fish_copilot_using_subcommand init" -l no-eager-powershell-resolution
+complete -c copilot -n "__fish_copilot_using_subcommand init" -l no-sandbox -d 'Disable the OS-level sandbox for this run only (does not change your saved sandbox setting)'
+complete -c copilot -n "__fish_copilot_using_subcommand init" -l no-experimental -d 'Disable experimental features'
+complete -c copilot -n "__fish_copilot_using_subcommand init" -l no-eager-powershell-resolution -d 'Disable background PowerShell prompt resolution on Windows'
 complete -c copilot -n "__fish_copilot_using_subcommand init" -s h -l help -d 'Print help (see more with \'--help\')'
 complete -c copilot -n "__fish_copilot_using_subcommand update" -s h -l help -d 'Print help (see more with \'--help\')'
 complete -c copilot -n "__fish_copilot_using_subcommand version" -s h -l help -d 'Print help (see more with \'--help\')'
@@ -313,7 +312,7 @@ complete -c copilot -n "__fish_copilot_using_subcommand lsp; and __fish_seen_sub
 complete -c copilot -n "__fish_copilot_using_subcommand taskbar-selftest" -l strict -d 'Exit non-zero unless tasks.json was actually written'
 complete -c copilot -n "__fish_copilot_using_subcommand taskbar-selftest" -s h -l help -d 'Print help (see more with \'--help\')'
 complete -c copilot -n "__fish_copilot_using_subcommand completion" -s h -l help -d 'Print help (see more with \'--help\')'
-complete -c copilot -l model -r -f -a 'auto claude-sonnet-5 claude-fable-5.1 claude-fable-5 claude-opus-5 claude-opus-4.8 claude-opus-4.8-fast claude-opus-4.7 claude-sonnet-4.6 claude-haiku-4.5 gpt-6-astra gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-5.5 gpt-5.4 gpt-5.4-mini gpt-5.3-codex gpt-5-mini mai-code-1.1-flash mai-code-1-flash-picker gemini-3.8-flash gemini-3.7-flash gemini-3.6-flash gemini-3.5-flash grok-4.5 kimi-k3 kimi-k2.7-code'
+complete -c copilot -l model -r -f -a 'auto claude-sonnet-5 claude-fable-5.1 claude-fable-5 claude-opus-5 claude-opus-4.8 claude-opus-4.8-fast claude-opus-4.7 claude-sonnet-4.6 claude-haiku-4.5 gpt-6-astra gpt-5.6-sol gpt-5.6-terra gpt-5.6-luna gpt-5.5 gpt-5.4 gpt-5.4-mini gpt-5.3-codex gpt-5-mini mai-code-1.1-flash gemini-3.8-flash gemini-3.7-flash gemini-3.6-flash gemini-3.5-flash grok-4.5 kimi-k3 kimi-k2.7-code'
 complete -c copilot -l reasoning-effort -r -f -a 'none minimal low medium high xhigh max'
 complete -c copilot -l context -r -f -a 'default long_context'
 complete -c copilot -l auto-tier -r -f -a 'efficiency balance intelligence'
