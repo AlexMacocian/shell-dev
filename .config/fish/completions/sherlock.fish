@@ -10,6 +10,8 @@ complete -c sherlock -n '__fish_use_subcommand' -f -a 'run'     -d 'Spawn an age
 complete -c sherlock -n '__fish_use_subcommand' -f -a 'update'  -d 'Update sherlock + MCPs to the latest release'
 complete -c sherlock -n '__fish_use_subcommand' -f -a 'version' -d 'Print the sherlock version and exit'
 complete -c sherlock -n '__fish_use_subcommand' -f -a 'help'    -d 'Show usage'
+complete -c sherlock -n '__fish_use_subcommand' -f -a 'memory-mcp' -d 'Serve native OKF memory'
+complete -c sherlock -n '__fish_seen_subcommand_from memory-mcp' -l prepare -f -d 'Initialize memory storage and exit'
 
 # Agent aliases are also top-level subcommands (`sherlock copilot` ==
 # `sherlock run copilot`).
