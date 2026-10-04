@@ -1,0 +1,9 @@
+[oauth]
+browser = "firefox"
+
+[agents.copilot-local]
+command = "copilot-local"
+backend = "copilot"
+
+[services.memory]
+enabled = true
