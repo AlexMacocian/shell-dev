@@ -21,7 +21,7 @@
 
 ## Workspace Context
 
-- Agents MUST read [README.md](README.md) before changing the workspace's own
+- Agents MUST read [README.md](./README.md) before changing the workspace's own
   layout, configuration, or memory bundles.
 - VCS: every file here is tracked in the shell-dev repository. Writing a file is
   a change to that repository; it reaches other machines only once shell-dev is
@@ -52,7 +52,15 @@
 
 ## Memory Directives
 
+- Agents MUST load [okf-memory](./.github/skills/okf-memory/SKILL.md) at the
+  start of each conversation and before handling requests to remember, store,
+  or save information in OKF.
+- MUST use OKF memory, not copilot in-built memory.
+- On each conversation, agents MUST look up existing OKF memory, filtering for
+  information related to the current topic.
 - Agents MUST store durable user preferences and facts in OKF, never in built-in
+  Copilot memory.
+- Agents MUST store information on a user's request in OKF, never in built-in
   Copilot memory.
 - Before recording anything, agents MUST search the appropriate OKF scope for
   duplicates, and MUST update an existing concept rather than create a second
@@ -61,8 +69,8 @@
   from every sherlock project; `knowledge/` is the project scope and is readable
   only here. A fact general enough to outlive this workspace MUST be recorded in
   the user scope.
-- Agents MUST NOT record sensitive or transient information. Credentials,
-  tokens, and secrets MUST NOT be written to either bundle.
+- Agents MUST NOT record sensitive information. Credentials, tokens, and secrets
+  MUST NOT be written to either bundle.
 
 ## Language Review
 

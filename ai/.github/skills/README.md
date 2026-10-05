@@ -17,3 +17,7 @@ matches against to decide the skill is relevant, so write it as a trigger
 
 Skills are for multi-step procedures with supporting files. A single rule
 belongs in `AGENTS.md`.
+
+| Skill | Use |
+| ----- | --- |
+| [okf-memory](./okf-memory/SKILL.md) | At conversation startup and for requests to remember or save information: find the relevant OKF bundle, write or update a concept, and verify it. |
