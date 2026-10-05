@@ -15,7 +15,7 @@ mkdir -p "$HOME/.local/share/nvim"
 # omni-shell holds both tracked Control Center extensions and the config.json
 # rainbeau generates; the latter is gitignored so the whole directory can be
 # linked.
-CONFIGS=(nvim hypr gtk-3.0 kitty firefox-theme hyprchat omni-launcher omni-shell quick-visor sherlock)
+CONFIGS=(nvim hypr gtk-3.0 kitty firefox-theme hyprchat omni-launcher omni-shell quick-visor)
 
 for cfg in "${CONFIGS[@]}"; do
   SOURCE="$REPO_ROOT/.config/$cfg"
@@ -44,7 +44,12 @@ done
 # for waybar to start with an empty config instead of not starting at all.
 # Only ever removes a symlink that resolves back into this repo; a real
 # directory (someone's own config) is left alone.
-STALE_CONFIGS=(waybar dunst wofi)
+#
+# sherlock is here because this repo never shipped a ~/.config/sherlock/config.toml
+# to link to, so the entry only ever produced a dangling link. Sherlock's global
+# config is optional and its settings live in per-project sherlock.toml files
+# instead — see sherlock.toml and ai/README.md.
+STALE_CONFIGS=(waybar dunst wofi sherlock)
 
 for cfg in "${STALE_CONFIGS[@]}"; do
   TARGET="$HOME/.config/$cfg"
@@ -123,6 +128,44 @@ if [[ -d "$THEMES_SOURCE" ]]; then
   echo "Linking themes:"
   echo "  $THEMES_SOURCE -> $THEMES_TARGET"
   ln -sfn "$THEMES_SOURCE" "$THEMES_TARGET"
+fi
+
+# Symlink the general AI workspace (see ai/README.md).
+#
+# The directory lives in the repo so the agent's memory bundles are tracked
+# files that travel with a push; ~/.local/share/ai is only a door into it. The
+# omni-shell AI tile and `cd ~/.local/share/ai && sherlock copilot` both go
+# through this path, so they keep working if the repo ever moves.
+AI_SOURCE="$REPO_ROOT/ai"
+AI_TARGET="${XDG_DATA_HOME:-$HOME/.local/share}/ai"
+if [[ -d "$AI_SOURCE" ]]; then
+  mkdir -p "$(dirname "$AI_TARGET")"
+  if [[ -e "$AI_TARGET" && ! -L "$AI_TARGET" ]]; then
+    BACKUP="$AI_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
+    echo "Backing up existing AI workspace: $AI_TARGET -> $BACKUP"
+    mv "$AI_TARGET" "$BACKUP"
+  fi
+  echo "Linking AI workspace:"
+  echo "  $AI_SOURCE -> $AI_TARGET"
+  ln -sfn "$AI_SOURCE" "$AI_TARGET"
+
+  # OKF looks for the user memory scope in ~/.okf, and searches it alongside the
+  # project scope from *every* sherlock project. Pointing it at the repo makes
+  # general facts about the user readable everywhere while still being tracked
+  # here. OKF_USER_DIR would do the same, but only for processes that inherited
+  # the variable; a symlink needs no environment at all.
+  OKF_SOURCE="$AI_SOURCE/okf-user"
+  OKF_TARGET="$HOME/.okf"
+  if [[ -d "$OKF_SOURCE" ]]; then
+    if [[ -e "$OKF_TARGET" && ! -L "$OKF_TARGET" ]]; then
+      BACKUP="$OKF_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
+      echo "Backing up existing OKF user bundle: $OKF_TARGET -> $BACKUP"
+      mv "$OKF_TARGET" "$BACKUP"
+    fi
+    echo "Linking OKF user memory scope:"
+    echo "  $OKF_SOURCE -> $OKF_TARGET"
+    ln -sfn "$OKF_SOURCE" "$OKF_TARGET"
+  fi
 fi
 
 # Symlink VS Code settings.json (file-level, not the whole User dir)

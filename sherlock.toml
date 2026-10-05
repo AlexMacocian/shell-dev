@@ -1,9 +1,27 @@
+# Sherlock config, shared by this repo and the AI workspace.
+#
+# ai/sherlock.toml is a symlink to this file. Sherlock finds a project root by
+# walking up from the working directory to the first sherlock.toml, and derives
+# the root with filepath.Abs — which does not resolve symlinks — so each
+# directory stays its own project root and keeps its own knowledge/ bundle.
+# There is one file to maintain; replace the symlink with a real file if the two
+# ever need to differ.
+#
+# Entries replace same-named entries from the global ~/.config/sherlock/config.toml
+# wholesale — not field by field — so a service below must be spelled out in full.
+
 [oauth]
 browser = "firefox"
 
-[agents.copilot-local]
-command = "copilot-local"
-backend = "copilot"
+[providers.sherlock-cli]
+issuer = "https://id.alexandru.macocian.me/application/o/sherlock-cli/"
+client_id = "1FN3B6EsTXwlN0qALiCoaKJLM23yuru80bHp5WfS"
 
+[services.searxng]
+provider = "sherlock-cli"
+base_url = "https://search.alexandru.macocian.me"
+
+# Puts the OKF memory MCP in front of the agent. The bundle is always
+# <project root>/knowledge — the path is not configurable.
 [services.memory]
 enabled = true
