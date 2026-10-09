@@ -25,7 +25,7 @@ bash linux/init-symlinks.sh
 # Neovim formatter plugins after Mason installs mdformat
 bash linux/init-nvim-tools.sh
 
-# Custom desktop entries (work apps, etc.)
+# Custom desktop entries and default file associations
 bash linux/init-desktop-entries.sh
 
 # Firefox: chrome symlinks, theme extension, native messaging host
@@ -47,6 +47,34 @@ session — it provides the bar, notifications, control center and launcher.
 (waybar, dunst, wofi and other tools omni-shell replaced). That pass runs after
 the installs, so replacements are in place first, and it refuses to run if a
 package is listed for both install and removal.
+
+### File associations
+
+[`init-desktop-entries.sh`](../linux/init-desktop-entries.sh) also runs
+[`init-mime.sh`](../linux/init-mime.sh). To apply file associations independently:
+
+```bash
+bash linux/init-mime.sh
+```
+
+`xdg-mime` applies the defaults from [`mimeapps.list`](../.config/mimeapps.list)
+without replacing unrelated associations.
+
+| Files | Default application |
+| --- | --- |
+| `.tiled-project` | Tiled |
+| `.png`, `.aseprite` | Aseprite |
+| `.RPP` | REAPER |
+
+REAPER is installed by [`deps.txt`](../linux/deps.txt). Tiled and Aseprite must
+also be installed to open their associated files.
+`deps.txt` also installs `mimetype`, which lets `xdg-open` recognize file
+extensions on desktops such as Hyprland.
+The [Tiled MIME definition](../.local/share/mime/packages/shell-dev.xml) identifies
+project files separately from other JSON files.
+The [REAPER launcher](../.local/share/applications/shell-dev-reaper.desktop) uses
+`reaper` from PATH. These file associations also apply to `o` in the Snacks
+explorer; no Neovim configuration is needed.
 
 ### Machine-specific
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Toggle screen recording with wf-recorder.
+# Toggle screen recording with wf-recorder, including system audio.
 # First invocation starts recording; second invocation stops it.
 # Recordings are saved to ~/Documents/Recordings/.
 # Uses slurp for region selection on start.
@@ -17,6 +17,17 @@ if pgrep -x wf-recorder > /dev/null; then
 else
     # Select region with slurp (exits if user presses Escape)
     GEOMETRY=$(slurp 2>/dev/null) || exit 0
+
+    # Capture the monitor source for the current default output, not the microphone.
+    DEFAULT_SINK=$(pactl get-default-sink) || {
+        notify-send "Screen Recording" "Could not determine the default audio output"
+        exit 1
+    }
+    AUDIO_SOURCE="${DEFAULT_SINK}.monitor"
+    if ! pactl list short sources | awk -v source="$AUDIO_SOURCE" '$2 == source { found = 1 } END { exit !found }'; then
+        notify-send "Screen Recording" "Audio monitor source not found: $AUDIO_SOURCE"
+        exit 1
+    fi
 
     # Adjust geometry for fractional scaling.
     # wf-recorder fails with "Failed to copy frame" when dimensions × scale
@@ -43,7 +54,7 @@ else
     touch /tmp/wf-recorder-running
     notify-send "Screen Recording" "Recording started..."
     # Run wf-recorder in a subshell so cleanup runs automatically when it exits
-    (setsid wf-recorder -g "$GEOMETRY" -f "$FILENAME" > /dev/null 2>&1;
+    (setsid wf-recorder -g "$GEOMETRY" --audio="$AUDIO_SOURCE" -f "$FILENAME" > /dev/null 2>&1;
      rm -f /tmp/wf-recorder-running) &
     disown
 fi

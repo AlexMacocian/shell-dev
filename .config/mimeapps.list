@@ -1,0 +1,5 @@
+[Default Applications]
+application/x-tiled-project=org.mapeditor.Tiled.desktop
+image/png=aseprite.desktop
+image/x-aseprite=aseprite.desktop
+application/x-reaper-project=shell-dev-reaper.desktop

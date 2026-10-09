@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=REAPER
+Comment=Audio production
+Exec=reaper %F
+TryExec=reaper
+Icon=cockos-reaper
+Terminal=false
+Categories=AudioVideo;Audio;AudioVideoEditing;
+MimeType=application/x-reaper-project;
+StartupWMClass=REAPER

@@ -103,3 +103,5 @@ if [[ -d "$REPO_ICONS_DIR" ]]; then
   gtk-update-icon-cache -f "$HOME/.local/share/icons/hicolor" 2>/dev/null || true
   echo "Icon cache updated"
 fi
+
+bash "$REPO_ROOT/linux/init-mime.sh"

@@ -16,9 +16,15 @@ go
 neovim
 imagemagick
 ffmpeg
+reaper
+xdg-utils
+shared-mime-info
+desktop-file-utils
+perl-file-mimeinfo
 luarocks
 wl-clipboard
 wf-recorder
+libpulse
 hyprland
 hyprpaper
 kitty
