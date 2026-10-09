@@ -18,13 +18,17 @@ else
     # Select region with slurp (exits if user presses Escape)
     GEOMETRY=$(slurp 2>/dev/null) || exit 0
 
-    # Capture the monitor source for the current default output, not the microphone.
+    # Use the default sink's monitor source for system audio.
     DEFAULT_SINK=$(pactl get-default-sink) || {
         notify-send "Screen Recording" "Could not determine the default audio output"
         exit 1
     }
     AUDIO_SOURCE="${DEFAULT_SINK}.monitor"
-    if ! pactl list short sources | awk -v source="$AUDIO_SOURCE" '$2 == source { found = 1 } END { exit !found }'; then
+    SOURCES=$(pactl list short sources) || {
+        notify-send "Screen Recording" "Could not list audio sources"
+        exit 1
+    }
+    if ! printf '%s\n' "$SOURCES" | awk -v source="$AUDIO_SOURCE" '$2 == source { found = 1 } END { exit !found }'; then
         notify-send "Screen Recording" "Audio monitor source not found: $AUDIO_SOURCE"
         exit 1
     fi
