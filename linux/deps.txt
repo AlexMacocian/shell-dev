@@ -17,6 +17,7 @@ neovim
 imagemagick
 ffmpeg
 reaper
+blender
 xdg-utils
 shared-mime-info
 desktop-file-utils
