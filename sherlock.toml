@@ -1,14 +1,8 @@
-# Sherlock config, shared by this repo and the AI workspace.
+# Repository-root Sherlock configuration. The AI workspace has its own config
+# in ai/sherlock.toml, with browser automation enabled only there.
 #
-# ai/sherlock.toml is a symlink to this file. Sherlock finds a project root by
-# walking up from the working directory to the first sherlock.toml, and derives
-# the root with filepath.Abs — which does not resolve symlinks — so each
-# directory stays its own project root and keeps its own knowledge/ bundle.
-# There is one file to maintain; replace the symlink with a real file if the two
-# ever need to differ.
-#
-# Entries replace same-named entries from the global ~/.config/sherlock/config.toml
-# wholesale — not field by field — so a service below must be spelled out in full.
+# Entries replace same-named global entries wholesale, so each service must
+# declare all required fields.
 
 [oauth]
 browser = "firefox"

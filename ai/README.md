@@ -9,15 +9,14 @@ cd ~/.local/share/ai && sherlock copilot
 ```
 
 The real directory is `ai/` in this repo; `~/.local/share/ai` is a symlink to it
-(see `linux/init-symlinks.sh`). That is the whole trick: the agent writes
-memories into tracked files, so committing and pushing shell-dev propagates them
-to every other machine.
+(see [linux/init-symlinks.sh](../linux/init-symlinks.sh)). Memory files are
+tracked here and reach other machines when `shell-dev` is pushed.
 
 ## Layout
 
 ```text
 ai/
-├── sherlock.toml              symlink to ../sherlock.toml — marks the project root
+├── sherlock.toml              Sherlock config; sets this directory as project root
 ├── AGENTS.md                  the instruction file, read by every agent
 ├── opencode.json              opencode-only config
 ├── knowledge/                 OKF memory, project scope
@@ -28,19 +27,15 @@ ai/
     └── skills/                <name>/SKILL.md     — procedures for /skills
 ```
 
-## Why `sherlock.toml` has to be here
+## Project root and workspace config
 
 Sherlock walks up from the working directory to the first `sherlock.toml` and
-treats the directory holding it as the project root. Without a file here the
-walk would continue to this repo's root and the agent would write into
-shell-dev's own `knowledge/` bundle instead of this one.
+uses its directory as the project root. This workspace has its own
+[configuration](sherlock.toml), separate from the
+[repository-root configuration](../sherlock.toml). Browser automation is
+enabled only here, and memory uses this workspace's bundle.
 
-The file is a symlink to the repo root's, so there is only one config to
-maintain. That does not merge the two roots: sherlock derives the root with
-`filepath.Abs`, which does not resolve symlinks, so each directory keeps its own
-bundle. Replace the symlink with a real file if the two ever need to differ.
-
-The bundle path is not configurable — it is always `<project root>/knowledge`.
+The bundle path is fixed at `<project root>/knowledge`.
 
 ## The two memory bundles
 
@@ -77,9 +72,16 @@ by opencode v2 — if a rule must apply there today, it has to be in `AGENTS.md`
 
 ## Services
 
-[`sherlock.toml`](sherlock.toml) enables OKF memory, SearXNG search, and
-Paperless document access, and geography/weather tools for this workspace and
-the repository root. Geography/weather requests location on demand: device
+[`sherlock.toml`](sherlock.toml) enables OKF memory, SearXNG search,
+Paperless document access, geography/weather and Firefox automation.
+The experimental direct Proton Mail client reuses a cached session or opens the
+configured browser at `https://account.proton.me/authorize`. Credentials and
+verification are entered only on Proton's website; there is no local or
+terminal login form. It uses Proton's internal session-fork protocol, not
+documented public third-party OAuth. A real-account test through the loaded MCP
+verified browser authorization, message metadata, labels and decrypted message
+bodies.
+Geography/weather requests location on demand: device
 location when available, then approximate IP location (the network exit, not a
 verified physical position); if neither works, it asks for a place. A
 same-named local service replaces the global entry, so include all required
@@ -90,3 +92,18 @@ fields. See the full set in
 `sherlock.toml` the project root falls back to the launch directory, so enabling
 memory globally would drop a `knowledge/` folder into whatever directory
 sherlock happened to start in.
+
+## Browser automation
+
+[Mozilla's Firefox MCP](https://github.com/mozilla/firefox-devtools-mcp) runs
+headless over stdio, using the installed Firefox and a temporary profile.
+It does not attach to normal browsing or retain logins between sessions.
+The package version is pinned in [the config](sherlock.toml); `npx` installs
+it on first use. Node.js >=20.19 and Firefox are required; Selenium manages
+geckodriver.
+
+The `slim` preset exposes page navigation, snapshots, input and screenshots, but
+not script evaluation or privileged developer tools. Page content is untrusted;
+browser actions can submit forms or change remote state. The MCP is not a
+sandbox. Screenshots, saved output and runtime logs can remain on disk even
+though the browser profile is temporary.
