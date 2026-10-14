@@ -17,11 +17,23 @@ browser = "firefox"
 issuer = "https://id.alexandru.macocian.me/application/o/sherlock-cli/"
 client_id = "1FN3B6EsTXwlN0qALiCoaKJLM23yuru80bHp5WfS"
 
+[providers.paperless]
+flow = "device"
+issuer = "https://id.alexandru.macocian.me/application/o/paperless-cli/"
+client_id = "sherlock-paperless-cli"
+
 [services.searxng]
 provider = "sherlock-cli"
 base_url = "https://search.alexandru.macocian.me"
+
+[services.paperless]
+provider = "paperless"
+base_url = "https://paperless.alexandru.macocian.me"
 
 # Puts the OKF memory MCP in front of the agent. The bundle is always
 # <project root>/knowledge — the path is not configurable.
 [services.memory]
 enabled = true
+
+[mcps.servers.geo-weather]
+command = "geo-weather-mcp"

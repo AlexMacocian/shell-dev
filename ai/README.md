@@ -77,11 +77,14 @@ by opencode v2 — if a rule must apply there today, it has to be in `AGENTS.md`
 
 ## Services
 
-`sherlock.toml` enables the OKF memory MCP and searxng web search, for this
-workspace and for the repo root alike. Adding a service means spelling it out in
-full: sherlock replaces a same-named entry from the global
-`~/.config/sherlock/config.toml` wholesale, not field by field. See
-`/mnt/seagate/Dev/charlie/project-charlie/sherlock.toml` for the full set.
+[`sherlock.toml`](sherlock.toml) enables OKF memory, SearXNG search, and
+Paperless document access, and geography/weather tools for this workspace and
+the repository root. Geography/weather requests location on demand: device
+location when available, then approximate IP location (the network exit, not a
+verified physical position); if neither works, it asks for a place. A
+same-named local service replaces the global entry, so include all required
+fields. See the full set in
+[Project Charlie's configuration](../../charlie/project-charlie/sherlock.toml).
 
 `[services.memory]` is deliberately kept out of the global config. With no local
 `sherlock.toml` the project root falls back to the launch directory, so enabling
