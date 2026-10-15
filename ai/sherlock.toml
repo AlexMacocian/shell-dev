@@ -31,6 +31,9 @@ enabled = true
 [services.proton]
 enabled = true
 
+[mcps]
+never_defer = ["searxng", "paperless", "calendar", "memory", "proton", "geo-weather", "firefox"]
+
 [mcps.servers.geo-weather]
 command = "geo-weather-mcp"
 
