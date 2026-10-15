@@ -53,8 +53,8 @@
 ## Memory Directives
 
 - Agents MUST load [okf-memory](./.github/skills/okf-memory/SKILL.md) at the
-  start of each conversation and before handling requests to remember, store,
-  or save information in OKF.
+  start of each conversation and before handling requests to remember, store, or
+  save information in OKF.
 - MUST use OKF memory, not copilot in-built memory.
 - On each conversation, agents MUST look up existing OKF memory, filtering for
   information related to the current topic.
@@ -77,3 +77,12 @@
 - After each implementation or documentation change, agents MUST spawn a GPT-6
   Luna subagent to simplify related docs and remove Claude-isms like heavy
   metaphors or "load-bearing"/"footgun" jargon.
+
+## Tooling
+
+- Use calendar mcp tools for personal centralized events, items, reminders
+  related
+- Use searxng tools for web search
+- Use geo-weather tools for location and weather services
+- Use paperless mcp tools for personal document storage and retrieval
+- Use proton tools for a centralized personal email access
