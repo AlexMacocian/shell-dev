@@ -16,6 +16,10 @@ client_id = "sherlock-paperless-cli"
 provider = "sherlock-cli"
 base_url = "https://search.alexandru.macocian.me"
 
+[services.rss]
+provider = "sherlock-cli"
+base_url = "https://rss.alexandru.macocian.me"
+
 [services.paperless]
 provider = "paperless"
 base_url = "https://paperless.alexandru.macocian.me"
@@ -32,7 +36,7 @@ enabled = true
 enabled = true
 
 [mcps]
-never_defer = ["searxng", "paperless", "calendar", "memory", "proton", "geo-weather", "firefox"]
+never_defer = ["searxng", "rss", "paperless", "calendar", "memory", "proton", "geo-weather", "firefox"]
 
 [mcps.servers.geo-weather]
 command = "geo-weather-mcp"

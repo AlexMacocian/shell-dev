@@ -1,3 +1,9 @@
+## 2026-10-15
+* **Update**: Updated concept `preferences/okf-memory-workflow.md`.
+* **Update**: Updated concept `preferences/okf-memory-workflow.md`.
+* **Creation**: Documented concept `preferences/sherlock-release-flow.md` (Ship Sherlock changes as releases, not local installs).
+* **Creation**: Documented concept `preferences/git-commit-signing.md` (Git commit signing with a USB YubiKey).
+
 ## 2026-10-14
 * **Update**: Updated concept `reference/bloodborne-bbhost-linux.md`.
 

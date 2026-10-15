@@ -34,6 +34,7 @@ complete -c sherlock -n '__fish_seen_subcommand_from run' -f -a 'goose'    -d 'B
 complete -c sherlock -n '__fish_seen_subcommand_from logout' -f -a 'gitea'   -d 'Forget the gitea session'
 complete -c sherlock -n '__fish_seen_subcommand_from logout' -f -a 'grafana' -d 'Forget the grafana session'
 complete -c sherlock -n '__fish_seen_subcommand_from logout' -f -a 'gssh'    -d 'Forget the gssh session'
+complete -c sherlock -n '__fish_seen_subcommand_from logout' -f -a 'rss'     -d 'Forget the rss session'
 complete -c sherlock -n '__fish_seen_subcommand_from logout' -f -a 'searxng' -d 'Forget the searxng session'
 
 # ── `sherlock update [--force]` ──────────────────────────────────────

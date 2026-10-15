@@ -58,19 +58,22 @@
 - MUST use OKF memory, not copilot in-built memory.
 - On each conversation, agents MUST look up existing OKF memory, filtering for
   information related to the current topic.
-- Agents MUST store durable user preferences and facts in OKF, never in built-in
-  Copilot memory.
-- Agents MUST store information on a user's request in OKF, never in built-in
-  Copilot memory.
-- Before recording anything, agents MUST search the appropriate OKF scope for
-  duplicates, and MUST update an existing concept rather than create a second
-  one describing the same thing.
-- SCOPES: `okf-user/` (mounted at `~/.okf`) is the user scope and is readable
-  from every sherlock project; `knowledge/` is the project scope and is readable
-  only here. A fact general enough to outlive this workspace MUST be recorded in
-  the user scope.
-- Agents MUST NOT record sensitive information. Credentials, tokens, and secrets
-  MUST NOT be written to either bundle.
+- OKF bundles are tracked in the public `shell-dev` repository. Agents MUST store
+  only information suitable for public, repository-level memory.
+- When useful, agents MAY reference a private Paperless document in OKF using
+  only a neutral label, its document ID, and its authenticated Paperless URL.
+  The reference grants no access; Paperless read permissions remain required.
+  URLs MUST NOT contain credentials, tokens, or sensitive query parameters.
+- Agents MUST NOT copy private document contents, excerpts, summaries, or
+  personal/private details into OKF. Keep those details in Paperless.
+- Credentials, tokens, and secrets MUST NOT be stored in OKF or Paperless; use
+  an approved secret manager.
+- Before recording eligible information, agents MUST search the appropriate OKF
+  scope for duplicates and update an existing concept rather than create a
+  duplicate.
+- `knowledge/` is project-scoped and visible only in this workspace;
+  `okf-user/` is visible across Sherlock projects. Both scopes have the same
+  public-information restriction.
 
 ## Language Review
 

@@ -73,7 +73,9 @@ by opencode v2 — if a rule must apply there today, it has to be in `AGENTS.md`
 ## Services
 
 [`sherlock.toml`](sherlock.toml) enables OKF memory, SearXNG search,
-Paperless document access, geography/weather and Firefox automation.
+Paperless document access, Miniflux RSS, geography/weather and Firefox automation.
+Miniflux provides read-only access to feeds and entries, including alert summaries,
+without marking entries as read.
 The experimental direct Proton Mail client reuses a cached session or opens the
 configured browser at `https://account.proton.me/authorize`. Credentials and
 verification are entered only on Proton's website; there is no local or
