@@ -61,8 +61,9 @@ tile disappears; nothing else changes.
 The AI tile is the same kind of extension,
 [`.config/omni-shell/extensions/ai.qml`](../.config/omni-shell/extensions/ai.qml).
 It opens a kitty window running `sherlock copilot` in the general AI workspace —
-see [ai/README.md](../ai/README.md). It hides itself on a machine where
-`init-symlinks.sh` has not created the workspace symlink yet.
+see the [personal-ai README](https://gitea.alexandru.macocian.me/amacocian/personal-ai/src/branch/main/README.md).
+It hides itself on a machine where `init-symlinks.sh` has not created the
+workspace symlink yet.
 
 Adding an extension to a *running* shell does not light up the tile: Qt caches
 the directory listing, so a file created after the shell started is skipped with

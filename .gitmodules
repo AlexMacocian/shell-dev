@@ -1,0 +1,3 @@
+[submodule "ai"]
+	path = ai
+	url = https://gitea.alexandru.macocian.me/amacocian/personal-ai

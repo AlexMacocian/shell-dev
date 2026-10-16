@@ -132,13 +132,16 @@ fi
 
 # Symlink the general AI workspace (see ai/README.md).
 #
-# The directory lives in the repo so the agent's memory bundles are tracked
-# files that travel with a push; ~/.local/share/ai is only a door into it. The
-# omni-shell AI tile and `cd ~/.local/share/ai && sherlock copilot` both go
-# through this path, so they keep working if the repo ever moves.
+# ai/ is a submodule (private amacocian/personal-ai) so the agent's memory
+# bundles are tracked files that travel with a push; ~/.local/share/ai is only a
+# door into it. The omni-shell AI tile and `cd ~/.local/share/ai && sherlock
+# copilot` both go through this path, so they keep working if the repo ever
+# moves. An uninitialised submodule is an empty directory and is skipped.
 AI_SOURCE="$REPO_ROOT/ai"
 AI_TARGET="${XDG_DATA_HOME:-$HOME/.local/share}/ai"
-if [[ -d "$AI_SOURCE" ]]; then
+if [[ ! -f "$AI_SOURCE/sherlock.toml" ]]; then
+  echo "Skipping AI workspace: run 'git submodule update --init ai' first."
+elif [[ -d "$AI_SOURCE" ]]; then
   mkdir -p "$(dirname "$AI_TARGET")"
   if [[ -e "$AI_TARGET" && ! -L "$AI_TARGET" ]]; then
     BACKUP="$AI_TARGET.backup.$(date +%Y%m%d_%H%M%S)"
